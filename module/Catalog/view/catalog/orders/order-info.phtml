@@ -1,0 +1,94 @@
+<div class="popup-box popup-order-info">
+    <div class="header">
+        <div class="title">Спасибо за заказ!</div>
+    </div>
+    <div class="body">
+        <?php if($order->getPlugin('attrs')->get('delivery') == 'pickup') { ?>
+        <div class="row">
+            <?php
+            $deliveryDate = \DateTime::createFromFormat('Y-m-d H:i:s', $order->get('time_create'));
+            $weekDay = $deliveryDate->format('N');
+
+            switch($weekDay) {
+                case 1:
+                    $deliveryDelay = 2;
+                    break;
+                case 2:
+                    $deliveryDelay = 1;
+                    break;
+                case 3:
+                    $deliveryDelay = 2;
+                    break;
+                case 4:
+                    $deliveryDelay = 1;
+                    break;
+                case 5:
+                    $deliveryDelay = 3;
+                    break;
+                case 6:
+                    $deliveryDelay = 2;
+                    break;
+                case 7:
+                    $deliveryDelay = 1;
+                    break;
+            }
+
+            $deliveryDate->add(new DateInterval('P' . $deliveryDelay . 'D'));
+
+            if($delivery->get('delay')) {
+                $deliveryDate->add(new DateInterval('P' . $delivery->get('delay') . 'D'));
+            }
+
+            $dt = new \Aptero\String\Date();
+            $dateStr =  $dt->setDate($deliveryDate)->getWeekDay() . ', ' . $this->date($deliveryDate, array('year' => false));
+            ?>
+
+            <div class="label">Заказ поступит на точку выдачи:</div>
+            <?php echo $dateStr ?> после 16:00.
+        </div>
+        <?php /*
+        <div class="row">
+            <div class="label">К оплате на точке выдачи:</div>
+            <b><?php echo $this->price($order->get('price') + $order->get('delivery')) ?></b> <i class="fas fa-ruble-sign"></i>
+        </div>
+        */ ?>
+        <div class="row">
+            При поступлении товара на точку самовывоза вам будет отправлено SMS.
+        </div>
+        <?php } else {?>
+        <div class="row">
+            Мы перезвоним вам в ближайщее время и уточним дату и время доставки.
+        </div>
+        <div class="row">
+            <div class="label">К оплате курьеру:</div>
+            <b><?php echo $this->price($order->get('price') + $order->get('delivery')) ?></b> <i class="fas fa-ruble-sign"></i>
+        </div>
+        <?php } ?>
+
+        <div class="btns">
+            <span class="btn" data-fancybox-close>Закрыть</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    .popup-order-info {
+        width: 300px;
+    }
+
+    .popup-order-info .row {
+        padding: 10px;
+        background: #e9e9e9;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .popup-order-info .row .label {
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+
+    .popup-order-info .btn {
+        display: block;
+    }
+</style>

@@ -1,0 +1,16 @@
+<?php
+$request = $call->getPlugin('item');
+$product = $request->getPlugin('product');
+
+$html =
+    '<tr>'
+        .'<td style="padding-bottom: 6px">'
+            .'<div class="row"><b>Товар: </b>'
+                .'<a href="' . $product->getEditUrl() . '">' . $product->get('name') . '</a> '
+                .'(' . $product->get('size') . ' - ' . $product->get('taste') . ')'
+            .'</div>'
+            .'<div class="row"><b>Стоимость: </b>' . $product->get('price') . '</div>'
+        .'</td>'
+    .'</tr>';
+
+echo $html;

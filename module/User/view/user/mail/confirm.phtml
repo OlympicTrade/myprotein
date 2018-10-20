@@ -1,0 +1,31 @@
+<tr><td style="padding: 0 20px">
+    <table style="min-width: 240px; margin: 0 auto; font-size: 14px;"><tbody>
+
+    <tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+
+    <tr>
+        <td colspan="2" width="100%" style="padding-bottom: 6px; text-align: center">
+            <span class="header">Регистрация</span>
+        </td>
+    </tr>
+
+    <tr><td colspan="2" height="20" style="height: 10px;"></td></tr>
+
+    <tr>
+        <td colspan="2" width="100%" style="text-align: left;">
+            <div style="padding-bottom: 4px;"><b>Логин: </b><?php echo $user->get('email') ?></div>
+            <div style="padding-bottom: 4px;"><b>Пароль: </b><?php echo $password ?></div>
+        </td>
+    </tr>
+
+    <tr><td colspan="2" height="10" style="height: 10px;"></td></tr>
+
+
+    <tr><td colspan="2" style="text-align: center;">
+            <a href="http://<?php echo $this->confirmLink ?>" class="btn" style="width: 240px;">Подтвердить почту</a>
+        </td></tr>
+
+    <tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+
+    </tbody></table>
+</td></tr>

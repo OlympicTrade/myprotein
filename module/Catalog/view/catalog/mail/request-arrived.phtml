@@ -1,0 +1,36 @@
+<?php
+$domain = 'https://' . $_SERVER['HTTP_HOST'];
+$url = $domain . $product->getUrl();
+?>
+<tr><td style="padding: 0 20px">
+
+<table style="max-width: 450px; margin:0 auto; font-size: 14px;"><tbody>
+
+<tr><td colspan="2" height="12" style="height: 20px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: left;">
+        <div style="background: #0060c1; padding: 10px 20px; text-align: center; font-size: 16px; color: #ffffff;">
+            По вашему запросу мы доставили товар в наш магазин и теперь он доступен к заказу
+        </div>
+    </td>
+</tr>
+<tr><td colspan="2" height="30" style="height: 30px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <a href="<?php echo $url ?>" style="display: inline-block; margin-bottom: 20px">
+            <img style="max-width: 280px; height: auto;" src="<?php echo $domain . $product->getPlugin('image')->getImage('m') ?>">
+        </a>
+        <div style="margin-bottom: 10px;"><a style="text-decoration: none; color: #000000; font-size: 19px; font-weight: 700;" href="<?php echo $url ?>"><?php echo $product->get('name') ?></a></div>
+        <div style="margin-bottom: 4px; font-size: 17px;"><?php echo $product->getProp1Name() . ': ' . $product->get('size') ?></div>
+        <div style="margin-bottom: 24px; font-size: 17px;"><?php echo $product->getProp2Name() . ': ' . $product->get('taste') ?></div>
+        <div>
+            <a style="font-size: 16px; display: inline-block; padding: 12px 30px; color: #ffffff; background: #0060c1; text-decoration: none; border-radius: 2px;" href="<?php echo $url ?>">Показать на сайте</a>
+        </div>
+    </td>
+</tr>
+
+<tr><td colspan="2" height="40" style="height: 40px;"></td></tr>
+
+</tbody></table>
+
+</td></tr>

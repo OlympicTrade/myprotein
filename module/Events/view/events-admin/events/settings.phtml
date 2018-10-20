@@ -1,0 +1,44 @@
+<?php $this->headLink()->prependStylesheet('/css/admin/jquery/spellchecker.css') ?>
+<?php $this->headLink()->prependStylesheet('/css/admin/jquery/fancybox/style.css') ?>
+
+<?php $this->headScript()->appendFile('/js/admin/form.js') ?>
+<?php $this->headScript()->appendFile('/js/admin/ckfinder/ckfinder.js') ?>
+<?php $this->headScript()->appendFile('/js/admin/jquery/spellchecker.js') ?>
+<?php $this->headScript()->appendFile('/js/admin/ckeditor/ckeditor.js') ?>
+<?php $this->headScript()->appendFile('/js/admin/jquery/form-validator.js') ?>
+<?php $this->headScript()->appendFile('/js/admin/form-settings.js') ?>
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->header ?>
+
+    <a href="#" class="module-config"><i class="fas fa-cog"></i></a>
+</h1>
+
+<?php $form = $this->settingsForm; ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab active" data-tab="general">SMS RU</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+                <?php echo $this->AdminFormRow($form->get('settings-smsru-api_id')); ?>
+                <?php echo $this->AdminFormRow($form->get('settings-smsru-login')); ?>
+                <?php echo $this->AdminFormRow($form->get('settings-smsru-password')); ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <span class="btn btn-gray" onclick="history.back()">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </span>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

@@ -1,0 +1,95 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->header ?>
+</h1>
+
+<?php $form = $this->editForm ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="general">Основное</div>
+            <div class="tab" data-tab="seo">SEO</div>
+            <div class="tab" data-tab="content">Текст</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+                <?php
+                echo $this->AdminFormRow($form->get('image-image'));
+                echo $this->AdminFormRow($form->get('name'));
+                echo $this->AdminFormRow($form->get('tags'));
+                echo $this->AdminFormRow($form->get('preview'));
+                echo $this->AdminFormRow($form->get('time_create'));
+                echo $this->AdminFormRow($form->get('url'));
+                ?>
+            </div>
+            <div class="tab" data-tab="seo">
+                <?php
+                echo $this->AdminFormRow($form->get('title'));
+                echo $this->AdminFormRow($form->get('keywords'));
+                echo $this->AdminFormRow($form->get('description'));
+                ?>
+            </div>
+            <div class="tab" data-tab="content">
+                <?php if($this->model->getId()) {
+                    $parentModule = $this->model;
+
+                    echo $this->adminTableList($this->contentItemsFields, $this->contentItems, array(
+                        'module'  => 'application',
+                        'section' => 'content',
+                        'buttons' => array(
+                            'edit'   => function($model, $view) use ($parentModule) {
+                                $editUrl = $view->url('admin',
+                                    array(
+                                        'module'  => 'application',
+                                        'section' => 'content',
+                                        'action'  => 'edit'),
+                                    array('query' => array('id' => $model->getId(), 'parent' => $parentModule->getId(), 'module' => 'blog', 'route' => 'adminBlog'))
+                                );
+                                return '<a class="btn btn-green edit" href="' . $editUrl . '"><i class="fas fa-pencil-square-o"></i> Просмотр</a>';
+                            },
+                        ),
+                    ));
+
+                    $addUrl = $this->url('adminContentItems', array(
+                        'action' => 'edit'
+                    ), array(
+                        'query' => array('parent' => $this->model->getId(), 'module' => 'blog', 'route' => 'adminBlog')
+                    ));
+                    ?>
+                    <div style="margin-top: 10px;">
+                        <a href="<?php echo $addUrl ?>" class="btn btn-blue">Добавить</a>
+                    </div>
+                <?php } else { ?>
+                    <div class="notice">
+                        Возможность редактирования контента появиться после первого сохранения.
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <span class="btn btn-gray" onclick="history.back()">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </span>
+        <?php if($this->model->getId()) { ?>
+            <a class="btn btn-red btn-remove-ck" href="#popup-delete">
+                <i class="fas fa-times"></i>
+                Удалить
+            </a>
+        <?php } ?>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove" data-id="<?php echo $this->model->getId() ?>"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>

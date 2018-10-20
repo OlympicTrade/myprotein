@@ -1,0 +1,25 @@
+<?php $domain = 'http://' . $_SERVER['HTTP_HOST']; ?>
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <span style="font-size: 20px; font-weight: bold; padding-bottom: 8px; color: #58656e; text-transform: uppercase; border-bottom: 2px solid #3498db">Запрос на скидку</span>
+    </td>
+</tr>
+<tr><td colspan="2" height="40" style="height: 40px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <table style="width: 400px; margin:0 auto;">
+            <tbody>
+            <tr>
+                <td valign="top" style="font-size: 14px;">
+                    <div style="padding-bottom: 4px;"><b>Товар:</b> <a href="<?php echo $domain . '/admin/catalog/products/edit/?id=' . $review->get('product_id') ?>">Показать</a></div>
+                    <div style="padding-bottom: 4px;"><b>Отзыв:</b> <a href="<?php echo $domain . '/admin/catalog/reviews/edit/?id=' . $review->getId() ?>">Показать</a></div>
+                    <div style="padding-bottom: 10px;"><b>Имя:</b> <?php echo $review->get('name') ?></div>
+                    <div style="padding-bottom: 10px;"><b>E-mail:</b> <?php echo $review->get('email') ?></div>
+                    <div style="padding-bottom: 10px;"><b>Отзыв:</b> <?php echo $review->get('review') ?></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+<tr><td colspan="2" height="50" style="height: 50px;"></td></tr>

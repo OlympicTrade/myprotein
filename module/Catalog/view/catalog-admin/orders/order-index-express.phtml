@@ -1,0 +1,38 @@
+<div class="popup-box panel popup-ie-order">
+    <div class="controls">
+        <span class="btn popup-form" href="/admin/catalog/orders/orders-controls/">Назад в меню</span>
+        <span class="btn green set-status-collected">Установить статус "Собран"</span>
+    </div>
+    <div>
+        <div class="info">
+            <?php echo $this->adminOrderDelivery($orders, ['index-express-full' => true]); ?>
+        </div>
+    </div>
+</div>
+
+<style>
+.popup-ie-order .controls {
+    margin: 0 0 15px 0;
+}
+</style>
+
+<script>
+$(function() {
+    var box = $('.popup-ie-order');
+    var btn = $('.set-status-collected', box);
+    btn.on('click', function() {
+        $.ajax({
+            url: '/admin/catalog/orders/set-status-collected/',
+            method: 'post',
+            data: {
+                type: <?php echo \Delivery\Model\Delivery::COMPANY_INDEX_EXPRESS ?>
+            },
+            dataType: 'json',
+            success: function(resp) {
+                btn.addClass('btn-green').text('Статус установлен');
+
+            }
+        });
+    });
+});
+</script>

@@ -1,0 +1,54 @@
+<?php echo $this->header() ?>
+
+<?php
+$price = (int) $order->getPrice();
+
+$domain = 'https://' . $_SERVER['HTTP_HOST'];
+?>
+
+<div class="block">
+    <div class="wrapper">
+        <div class="payment-form">
+            <div class="online">
+                <div class="title">Оплата заказа №<?php echo $order->getId() ?></div>
+                <div class="notice">Скидка 2% при оплате онлайн: <span class="new"><?php echo $price ?></span> <span class="old"><?php echo $order->getPrice() ?></span></div>
+                <div class="box">
+                    <div data-type="PC" data-price="<?php echo $price ?>" class="pt ya">
+                        <div class="source">Яндекс деньги</div>
+						<div class="commission">Сумма <?php echo $price ?> <i class="fas fa-ruble-sign"></i></div>
+					</div>
+                    <div data-type="AC" data-price="<?php echo $price ?>" class="pt vm">
+                        <div class="source">Оплата картой</div>
+						<div class="commission">Сумма <?php echo $price ?> <i class="fas fa-ruble-sign"></i></div>
+					</div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+
+            <form method="post" action="https://money.yandex.ru/quickpay/confirm.xml">
+                <input type="hidden" name="receiver" value="410011137806564">
+                <input type="hidden" name="formcomment" value="Myprotein Spb">
+                <input type="hidden" name="label" value="<?php echo $order->getId() ?> . M">
+                <input type="hidden" name="quickpay-form" value="shop">
+                <input type="hidden" name="targets" value="Оплата заказа №<?php echo $order->getPublicId() ?>">
+                <input type="hidden" name="sum" value="">
+                <input type="hidden" name="successURL" value="<?php echo $domain ?>/payment/pay/?id=<?php echo $order->getId() ?>&p=<?php echo crc32($order->getPlugin('phone')->get('phone')) ?>">
+                <input type="hidden" name="paymentType" value="">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var paymentBox = $('.payment-form');
+    var paymentForm = $('form', paymentBox);
+
+    $('.pt', paymentBox).on('click', function() {
+        var pt = $(this).data('type');
+        var price = $(this).data('price');
+
+        $('[name="paymentType"]', paymentForm).val(pt);
+        $('[name="sum"]', paymentForm).val(price);
+        paymentForm.submit();
+    });
+</script>

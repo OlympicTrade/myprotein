@@ -1,0 +1,124 @@
+<?php $city = $delivery->getCity() ?>
+
+<?php  if($ajax) { ?>
+<div class="popup-box popup-delivery">
+    <div class="header">
+        <div class="title">Доставка о оплата</div>
+    </div>
+    <div class="body">
+        <div class="delivery-view">
+            <h2>Оплата:</h2>
+            <?php
+            echo
+            '<p>Стоимость курьерской доставки составляет ' . $city->get('delivery_income') . ' руб., при заказе от 3000 руб. - бесплатно. За МКАД по договоренности.</p>'
+            .'<p>Оплата производиться наличными средствами при получения заказа и проверки товара.</p>'
+            ?>
+            <h2>Курьерская доставка</h2>
+            <?php echo $city->get('delivery_text') ?>
+
+            <h2>Самовывоз</h2>
+            <?php echo $delivery->get('pickup_text') ?>
+            <a href="/delivery/points/?type=view" class="popup">Открыть карту пунктов самовывоза</a>
+        </div>
+    </div>
+</div>
+<?php } else { ?>
+<div class="block header-box">
+    <div class="wrapper">
+        <?php echo $this->breadcrumbs($breadcrumbs, array('delimiter' => ' — ', 'showLast' => false)) ?>
+        <h1><?php echo $header ?></h1>
+    </div>
+</div>
+
+<div class="block">
+    <div class="wrapper">
+        <div class="delivery-view">
+            <div class="region">
+                Регион доставки: <a href="/regions/" class="popup"><?php echo $city->get('name') ?></a>
+            </div>
+
+            <h2>Оплата:</h2>
+
+            <?php
+            if($city->isCapital()) {
+                echo '<p>Оплата производиться наличными средствами или банковской картой при получения заказа и проверки товара.</p>';
+            } else {
+                echo '<p>Доставка в данный регион осуществляется по предоплате. Оплату можно произвести банковской картой или Яндекс деньгами</p>';
+            }
+            ?>
+
+            <?php
+            $deliveryFree = $city->getFreeDeliveryPrice(['type' => 'delivery']);
+            $pickupFree = $city->getFreeDeliveryPrice(['type' => 'pickup']);
+            $deliveryDelay = $city->getDeliveryDelay(['type' => 'delivery']);
+            $pickupDelay = $city->getDeliveryDelay(['type' => 'pickup']);
+
+            if($city->get('delivery_income')) {
+                echo
+                    '<div class="item courier">'
+                        .'<h2>Курьерская доставка</h2>'
+                        .'<p>до ' . $this->price($deliveryFree) . ' руб. - <strong>' . $city->get('delivery_income') . ' руб.</strong>'
+                            . ' от ' . $this->price($deliveryFree) . ' руб. - <strong>бесплатно</strong></p>';
+
+                if($deliveryDelay == 1) {
+                    echo '<p>Вы можете получит свой заказ уже завтра';
+                } else {
+                    $dt = (new \DateTime())->modify('+' . $deliveryDelay . ' days');
+                    echo
+                        '<p>Ближайшая дата доставки '
+                        . ' (' . strtolower(\Aptero\String\Date::$weekDays[(int) $dt->format('N')])
+                        . ' ' . $dt->format('d.m') . ').</p>';
+                }
+
+                echo
+                    '</div>';
+            }
+
+            if($city->get('pickup_income') || in_array($city->get('name'), ['Санкт-Петербург', 'Москва'])) {
+                echo
+                    '<div class="item pickup">'
+                        .'<h2 class="title">Самовывоз</h2>'
+                        .'<p>до ' . $this->price($pickupFree) . ' руб. - <strong>' . $city->get('pickup_income') . ' руб.</strong>, '
+                            .' от ' . $this->price($pickupFree) . ' руб. - <strong>бесплатно</strong></p>';
+
+                if($pickupDelay == 1) {
+                    echo '<p>Заказ поступит на точку выдачи уже завтра. Вам придет SMS оповещение, после чего в течении недели вы можете забрать посылку.</p>';
+                } else {
+                    $dt = (new \DateTime())->modify('+' . $pickupDelay . ' days');
+                    echo
+                        '<p>Заказ поступит на точку выдачи через ' . $pickupDelay
+                        . ' ' . \Aptero\String\Numbers::declension($pickupDelay, ['день', 'дня', 'дней'])
+                        . ' (' . strtolower(\Aptero\String\Date::$weekDays[(int) $dt->format('N')])
+                        . ' ' . $dt->format('d.m') . '). Вам придет SMS оповещение, после чего в течении недели вы можете забрать посылку.</p>';
+                }
+
+                echo
+                    '</div>'
+                    .'<div class="maps">'
+                        .'<div class="map" id="delivery-map"></div>'
+                    .'</div>';
+            }
+            ?>
+
+            <?php if($city->get('pickup_income') || in_array($city->get('name'), ['Санкт-Петербург', 'Москва'])) {
+            echo '<div class="delivery-map" id="delivery-map"></div>';
+            } ?>
+        </div>
+    </div>
+</div>
+
+<?php if($city->get('pickup_income')) { ?>
+
+<script>
+    setPickupMap({
+        id: 'delivery-map',
+        scrollZoom: false,
+        pointsData: {
+            type: 'view'
+        }
+    });
+</script>
+
+<?php } ?>
+
+<?php } ?>

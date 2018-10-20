@@ -1,0 +1,9 @@
+<?php echo $this->header(array('type')) ?>
+
+<div class="block blog-list">
+    <div class="wrapper">
+        <?php echo $this->articlesList($articles) ?>
+        <div class="clear"></div>
+        <?php echo $this->paginationControl($articles, 'Sliding', 'pagination-slide', array('route' => 'application/pagination')); ?>
+    </div>
+</div>

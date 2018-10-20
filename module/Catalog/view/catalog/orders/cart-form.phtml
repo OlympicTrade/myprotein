@@ -1,0 +1,126 @@
+<div class="popup-box popup-cart-form">
+    <div class="header">
+        <div class="title">В корзину</div>
+        <div class="desc"><?php echo $product->get('name') ?></div>
+    </div>
+    <div class="body std-form">
+        <div class="form-box type-box">
+            <input type="hidden" value="<?php echo $product->getId() ?>" name="product_id">
+            <div class="row">
+                <div class="label">Размер</div>
+                <?php
+                $html = '<select class="std-select js-size-select" name="size_id">';
+                foreach($product->getPlugin('size') as $size) {
+                    $html .= '<option value="' . $size->getId() . '">' . $size->get('name') . '</option>';
+                }
+                echo $html .= '<select>';
+                ?>
+            </div>
+            <div class="row">
+                <div class="label">Вкус</div>
+                <?php
+                $html = '<select class="std-select js-taste-select" name="taste_id">';
+                foreach($product->getPlugin('taste', array('inStock' => true)) as $taste) {
+                    $html .= '<option value="' . $taste->getId() . '">' . $taste->get('name') . '</option>';
+                }
+                echo $html .= '<select>';
+                ?>
+            </div>
+            <div class="row">
+                <div class="label">Количество</div>
+                <div class="std-counter">
+                    <div class="incr"></div>
+                    <input value="1" min="1" max="999" name="count" class="js-count">
+                    <div class="decr"></div>
+                </div>
+            </div>
+            <div class="price">
+                Итого: <span class="price-full"><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i> <span class="price-per-unit">(<span><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i> за шт.)</span>
+            </div>
+            <div class="row" style="text-align: center;">
+                <div class="in-stock">
+                    <a class="btn to-cart js-cart-add" href="/cart/">Добавить в корзину</a>
+                </div>
+                <div class="not-in-stock">
+                    <span class="btn to-request js-product-request">Предзаказ</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .popup-cart-form .price {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .popup-cart-form .price .price-full {
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        .popup-cart-form .price .price-per-unit {
+            font-size: 13px;
+            color: #5f5f5f;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        .popup-cart-form .in-cart,
+        .popup-cart-form .to-cart,
+        .popup-cart-form .in-request,
+        .popup-cart-form .to-request {
+            display: block;
+            width: 100%;
+            padding-left: 30px;
+            background-position: 20px 50%;
+            background-repeat: no-repeat;
+        }
+
+        .popup-cart-form .in-cart,
+        .popup-cart-form .to-cart {
+            background-color: #f12929;
+        }
+
+        .popup-cart-form .in-request,
+        .popup-cart-form .in-cart {
+            background: url(/images/check-m.png) 20px 50% no-repeat #00a51f;
+        }
+
+        .popup-cart-form .not-in-stock {
+            font-size: 20px;
+            text-align: center;
+            color: #da2626;
+        }
+
+        .popup-cart-form .in-stock,
+        .popup-cart-form .not-in-stock {
+            display: none;
+        }
+    </style>
+
+    <script>
+        var form = $('.popup-cart-form');
+
+        toCartForm(form, {
+            priceUpdate: function (resp) {
+                $('.price-per-unit span', form).text($.aptero.price(resp.price));
+                $('.price-full', form).text($.aptero.price(resp.price * $('.js-count', form).val()));
+
+                if (parseInt(resp.stock)) {
+                    $('.in-stock', form).css({display: 'block'});
+                    $('.not-in-stock', form).css({display: 'none'});
+                } else {
+                    $('.in-stock', form).css({display: 'none'});
+                    $('.not-in-stock', form).css({display: 'block'});
+                }
+            },
+            toCart: function () {
+                $('.to-cart', form).addClass('in-cart').removeClass('to-cart').text('Перейти в корзину');
+            },
+            typeChange: function () {
+                $('.in-cart', form).addClass('to-cart').removeClass('in-cart').text('Добавить в корзину');
+            }
+        });
+    </script>
+</div>

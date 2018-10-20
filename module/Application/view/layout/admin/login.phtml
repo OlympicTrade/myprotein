@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('Admin')) ?>
+
+        <?php
+        echo $this->headLink()
+            ->prependStylesheet('/engine/css/login.css')
+            ->prependStylesheet('/engine/css/elements.css')
+            ->prependStylesheet('/engine/css/reset.css');
+        ?>
+
+        <?php
+        echo $this->headScript()
+            //->prependFile('//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
+            ->prependFile('/engine/js/jquery/jquery.js');
+        ?>
+    </head>
+    <body>
+        <?php echo $this->content; ?>
+    </body>
+</html>

@@ -1,0 +1,45 @@
+<?php include('catalog-header.phtml') ?>
+
+<div class="block">
+    <div class="wrapper container">
+        <div class="sidebar">
+            <div class="widget catalog">
+                <?php echo $this->catalogMenu() ?>
+            </div>
+        </div>
+        <div class="content">
+            <?php
+            if($category->get('parent') == 0) {
+                $topCategory = $category;
+            } else {
+                $topCategory = $category->getParent();
+            }
+
+            $sub = $topCategory->getChildren();
+
+            if($sub->count()) {
+                $url = (new \Zend\Uri\Uri($_SERVER['REQUEST_URI']))->getPath();
+
+                $html = '<div class="sub-categories">';
+                $html .= '<a href="' . $topCategory->getUrl() . '" ' . ($url == $topCategory->getUrl() ? ' class="active"' : '') . '>Все товары</a>';
+                foreach ($sub as $row) {
+                    $html .= '<a href="' . $row->getUrl() . '" ' . ($url == $row->getUrl() ? ' class="active"' : '') . '>' . $row->get('name') . '</a>';
+                }
+                $html .= '</div>';
+                echo $html;
+            }
+            ?>
+            
+            <?php echo $this->productsList($products, ['list' => 'List']) ?>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<?php if($category->get('text')) { ?>
+<div class="block category-text std-text">
+    <div class="wrapper container">
+        <?php echo $category->get('text') ?>
+    </div>
+</div>
+<?php } ?>

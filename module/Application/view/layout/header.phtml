@@ -1,0 +1,113 @@
+<?php
+$this->generateMeta();
+
+$this->headLink()
+    ->prependStylesheet('/css/compress2.css')
+    ->prependStylesheet('//use.fontawesome.com/releases/v5.4.1/css/all.css');
+
+$this->headScript()
+    ->prependFile('/js/compress2.js')
+    ->prependFile('/js/counters.js')
+    ->prependFile('//www.googletagmanager.com/gtag/js?id=UA-121245947-1')
+
+    //->prependFile('/engine/js/jquery/jquery-ui.js')
+    //->prependFile('/engine/js/jquery/jquery.js')
+
+    ->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')
+    ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headTitle() . "\n";
+    echo $this->headMeta()  . "\n";
+    echo $this->headLink()  . "\n";
+    echo $this->headScript()  . "\n";
+    echo $this->settings->get('html_head')
+    ?>
+</head>
+<body>
+<noscript><div><img src="https://mc.yandex.ru/watch/47855381" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<div id="fog"></div>
+<div id="header">
+    <div class="top">
+        <div class="wrapper">
+            <a href="/" class="logo"></a>
+
+            <a href="/about/" class="about">О бренде <br>Myprotein</a>
+            <a href="/delivery/" class="delivery">Доставка и <br>точки выдачи </a>
+            <a href="/order/order-status/" class="order-status popup">Что с моим <br>заказом?</a>
+
+            <div class="h-menu">
+                <div class="item">
+                    <div class="header"><?php echo $contacts->get('phone_1') ?></div>
+                    <a href="/contacts/feedback/" class="popup">Заказать звонок</a>
+                </div>
+                <div class="item">
+                    <div class="header region-name"><?php echo \Delivery\Model\Delivery::getInstance()->getCity()->get('name') ?></div>
+                    <a href="/regions/" class="popup">Изменить регион</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav block">
+        <div class="wrapper">
+            <?php echo $this->catalogMenu(['sub' => false]) ?>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<div id="nav" class="block">
+    <div class="wrapper">
+        <div class="catalog">
+            <a href="/catalog/" class="trigger">
+                Каталог товаров
+            </a>
+            <div class="box">
+                <div class="c-menu">
+                    <?php echo $this->catalogMenu(['sub' => true]) ?>
+                </div>
+                <div class="c-info">
+                    <div class="c-products">
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <form class="search" action="/catalog/search/">
+            <input class="query" name="query" placeholder="ПОИСК">
+            <input class="sbm" type="submit" value="">
+        </form>
+        <div class="menu">
+            <?php if(!$user = \User\Service\AuthService::getUser()) { ?>
+                <div class="item profile">
+                    <a href="/user/" class="popup tr">
+                        <div class="title">Кабинет</div>
+                        <div class="desc">Войти</div>
+                    </a>
+                </div>
+            <?php } else { ?>
+                <div class="item profile">
+                    <a href="/user/" class="tr">
+                        <div class="title">Кабинет</div>
+                        <div class="desc"><?php echo $user->get('name') ? $user->get('name') : $user->get('email') ?></div>
+                    </a>
+                </div>
+            <?php } ?>
+
+            <div class="item cart">
+                <a href="/cart/" class="tr">
+                    <div class="counter"></div>
+                    <div class="title">Корзина</div>
+                    <div class="desc">Пока пуста</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="container">

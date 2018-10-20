@@ -1,0 +1,102 @@
+<?php
+$cart = $order->getPlugin('cart');
+$attrs = $order->getPlugin('attrs');
+$phone = $order->getPlugin('phone');
+
+$row = function($items) {
+    $html =
+        '<div class="row">';
+    foreach ($items as $item) {
+        $html .=
+            '<div class="item">'
+                .'<i class="fas fa-' . $item['icon'] . '"></i>' . $item['val']
+            .'</div>';
+    }
+    $html .=
+        '</div>';
+
+    return $html;
+}
+?>
+
+<div class="popup-box popup-order">
+    <div class="header">
+        Заказ <?php echo $order->getId() ?>
+    </div>
+    <div class="body">
+        <div class="info">
+            <?php
+            $html = '';
+            $html .= $row([
+                ['icon' => 'user', 'val' => $attrs->get('name')],
+                ['icon' => 'phone', 'val' => $order->getPlugin('phone')->get('phone')],
+                ['icon' => 'rub', 'val' => $order->getPrice()],
+            ]);
+
+            switch ($attrs->get('delivery')) {
+                case \DeliveryAdmin\Model\Delivery::TYPE_COURIER:
+                    $html .= $row([
+                        ['icon' => 'globe', 'val' => $order->getCity()->get('name')],
+                        ['icon' => 'truck', 'val' => $order->getDeliveryAddress()],
+                        ['icon' => 'clock-o', 'val' => 'с ' . $attrs->get('time_from') . ' по ' . $attrs->get('time_to')],
+                    ]);
+                    break;
+                case \DeliveryAdmin\Model\Delivery::TYPE_PICKUP:
+                    $point = $order->getPickupPoint();
+                    $html .= $row([
+                        ['icon' => 'globe', 'val' => $order->getCity()->get('name')],
+                        ['icon' => 'home', 'val' => $point->get('address')],
+                    ]);
+                    break;
+                case \DeliveryAdmin\Model\Delivery::TYPE_POST:
+                    $html .= $row([
+                        ['icon' => 'globe', 'val' => $order->getCity()->get('name')],
+                        ['icon' => 'truck', 'val' => $attrs->get('index') . ' ' . $attrs->get('address')],
+                    ]);
+                    break;
+                default:
+                    $html .= $row([
+                        ['icon' => 'globe', 'val' => $order->getCity()->get('name')],
+                        ['icon' => 'warning', 'val' => 'Не выбран тип доставки'],
+                    ]);
+            }
+            echo $html;
+
+            ?>
+        </div>
+
+        <?php echo $this->adminCartList($order) ?>
+    </div>
+
+    <style>
+        .popup-order .info {
+            background: #ececec;
+            padding: 8px 10px;
+            margin-bottom: 15px;
+        }
+
+        .popup-order .info .row {
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .popup-order .info .item {
+            margin-right: 20px;
+            display: inline-block;
+        }
+
+        .popup-order .info i {
+            margin-right: 3px;
+            font-size: 100%;
+        }
+
+        .popup-order .std-counter {
+            padding: 0;
+            border: none;
+        }
+
+        .popup-order .edit {
+            float: left;
+        }
+    </style>
+</div>

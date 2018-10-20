@@ -1,0 +1,130 @@
+<?php
+$color1 = $discount->get('color');
+$color2 = $color1 == '000000' ? 'ffffff' : '000000';
+$btnStyle = 'style="background-color: #' . $color1 . '; color: #' . $color2 . '"';
+?>
+
+<a href="/catalog/?sort=discount&direct=down" class="main-slider" style="background-image: url(<?php echo $discount->getPlugin('image')->getImage('m') ?>)">
+    <div class="box <?php echo $discount->get('shape') ?>" style="background-color: #<?php echo $discount->get('background') ?>; color: #<?php echo $color1 ?>">
+        <div class="inner" style="border-color: #<?php echo $discount->get('border') ?>;">
+            <?php //<div class="header r1">скидки</div> ?>
+            <div class="header r2">Скидки</div>
+            <div class="discount">
+                <span class="bf">до</span>
+                <span class="percent"><?php echo $discount->get('discount') ?></span>
+                <span class="af">%</span>
+            </div>
+            <div class="btn" <?php echo $btnStyle ?>>Выбрать</div>
+        </div>
+    </div>
+</a>
+
+<?php /*
+<a href="/catalog/?sort=discount&direct=down" class="main-slider" style="background-image: url(<?php echo $discount->getPlugin('image')->getImage('m') ?>)">
+    <div class="box <?php echo $discount->get('shape') ?>" style="background-color: #<?php echo $discount->get('background') ?>; color: #<?php echo $color1 ?>">
+        <div class="inner" style="border-color: #<?php echo $discount->get('border') ?>;">
+            <?php //<div class="header r1">скидки</div> ?>
+            <div class="header r2"><?php echo $discount->get('name') ?></div>
+            <div class="discount">
+                <span class="bf">до</span>
+                <span class="percent"><?php echo $discount->get('discount') ?></span>
+                <span class="af">%</span>
+            </div>
+            <div class="btn" <?php echo $btnStyle ?>>Выбрать</div>
+
+            <div class="counter">
+                <div class="tm days" <?php echo $btnStyle ?>></div>
+                <div class="tm hours" <?php echo $btnStyle ?>></div>
+                <div class="tm min" <?php echo $btnStyle ?>></div>
+                <div class="tm sec" <?php echo $btnStyle ?>></div>
+            </div>
+        </div>
+    </div>
+</a>
+
+<script type="text/javascript">
+    var counter = $('.main-slider .counter');
+    var date = '<?php echo str_replace('-', '/', $discount->get('date_to')); ?>';
+	
+    $('.days', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-D</div> дней'));
+    });
+
+    $('.hours', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-H</div> часов'));
+    });
+
+    $('.min', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-M</div> минут'));
+    });
+
+    $('.sec', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-S</div> сек'));
+    });
+</script>
+*/ ?>
+<div class="block">
+    <div class="wrapper">
+        <div class="banners-list cols">
+            <div class="col-66">
+                <div class="cols">
+                    <div class="col-50">
+                        <a href="/about/" class="banner">
+                            <img src="/images/banners/1.jpg" alt="">
+                        </a>
+                    </div>
+                    <div class="col-50">
+                        <span class="banner">
+                            <img src="/images/banners/2.jpg" alt="">
+                        </span>
+                    </div>
+                </div>
+                <div class="cols">
+                    <div class="col-100">
+                        <a href="/delivery/" class="banner">
+                            <img src="/images/banners/3.jpg" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-33">
+                <div class="products-banner">
+                    <div class="header">
+                        Лидеры продаж
+                    </div>
+
+                    <div class="list">
+                        <?php
+                        foreach ($products as $product) {
+                        echo
+                            '<a href="' . $product->getUrl() . '" class="item pr-link product" data-id="' . $product->getId() . '" data-list="Main page">'
+                                .'<div class="pic">'
+                                    .'<img src="' . $product->getPlugin('image')->getImage('s') . '" alt="' . $product->get('name') . '">'
+                                .'</div>'
+                                .'<div class="title">' . $product->get('name') . '</div>'
+                                . $this->stars($product->get('stars'))
+                            .'</a>';
+                        } ?>
+                        <?php for($i = 0; $i < 6; $i++) { ?>
+
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<div class="block blog-list main">
+    <div class="wrapper">
+        <div class="header">
+            <h2>Последнее в блоге</h2>
+            <a href="/blog/">Показать все статьи</a>
+        </div>
+        <div>
+            <?php echo $this->articlesList($articles) ?>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

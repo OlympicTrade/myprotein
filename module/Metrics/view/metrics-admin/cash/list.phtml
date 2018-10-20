@@ -1,0 +1,91 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->engine->module->get('name') ?>
+
+    <?php
+    $addUrl = $this->url('admin', [
+        'module' => $this->engine->module->get('module'),
+        'section' => $this->engine->module->get('section'),
+        'action' => 'edit'
+    ]);
+    ?>
+</h1>
+
+<?php $cash = $statistic['cash'] ?>
+
+<div class="cols">
+    <div class="col col-2-5">
+        <div class="std-infobox bg-violet">
+            <?php //echo $this->price((int) ($cash['supplies'] + $cash['orders'] + $cash['products'] - $cash['money']->credit)) ?> <i class="fas fa-ruble-signle-sign"></i>
+            <div class="label">Суммарно</div>
+        </div>
+    </div>
+    <div class="col col-2-5">
+        <div class="std-infobox bg-yellow">
+            <?php echo $this->price((int) $cash['supplies']) ?> <i class="fas fa-ruble-signle-sign"></i>
+            <div class="label">Закупки</div>
+        </div>
+    </div>
+    <div class="col col-2-5">
+        <div class="std-infobox bg-sky">
+            <?php //echo $this->price($cash['orders']) ?> <i class="fas fa-ruble-signle-sign"></i>
+            <div class="label">Заказы</div>
+        </div>
+    </div>
+    <div class="col col-2-5">
+        <div class="std-infobox bg-green">
+            <?php echo $this->price($cash['products']) ?> <i class="fas fa-ruble-signle-sign"></i>
+            <div class="label">Товары</div>
+        </div>
+    </div>
+    <div class="col col-2-5">
+        <div class="std-infobox bg-red">
+            <?php echo $this->price($cash['money']->credit) ?> <i class="fas fa-ruble-signle-sign"></i>
+            <div class="label">Кредиты</div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="filters">
+        <?php $form = $this->filterForm ?>
+        <?php echo $this->form()->openTag($form) ?>
+        <a href="<?php echo $addUrl ?>" class="btn btn-blue">Добавить</a>
+        <?php echo $this->formElement($form->get('type')) ?>
+        <?php echo $this->formElement($form->get('date_from')) ?>
+        <?php echo $this->formElement($form->get('date_to')) ?>
+
+        <div class="filter search">
+            <?php echo $this->formElement($form->get('search')) ?>
+            <span class="btn btn-blue btn-submit">Применить</span>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+        <div class="clear"></div>
+    </div>
+    <?php //echo $this->adminTableList($this->fields, $this->tableData); ?>
+</div>
+
+<?php /*
+<div class="panel">
+    <div class="filters">
+        <?php $form = $this->filterForm ?>
+        <?php echo $this->form()->openTag($form) ?>
+        <a href="<?php echo $addUrl ?>" class="btn btn-blue">Добавить</a>
+        <div class="filter search">
+            <?php echo $this->formElement($form->get('search')) ?>
+            <span class="btn btn-blue btn-submit">Применить</span>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+        <div class="clear"></div>
+    </div>
+    <?php echo $this->adminTableList($this->fields, $this->tableData); ?>
+</div>
+*/ ?>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>

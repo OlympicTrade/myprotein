@@ -1,0 +1,99 @@
+<script src="/js/libs/jquery/form-validator.js"></script>
+
+<style>
+    .remember-form {
+        padding: 30px 40px;
+    }
+
+    .remember-form .title {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .remember-form .row {
+        margin-bottom: 10px;
+    }
+
+    .remember-form .row-btns {
+        margin-top: 20px;
+    }
+
+    .remember-form .row-btns .btn {
+        width: 100%;
+    }
+
+    .remember-form .msgs .msg {
+        background: #e84732;
+        color: #ffffff;
+        border-radius: 4px;
+        text-align: center;
+        padding: 4px 0;
+        margin-bottom: 10px;
+    }
+</style>
+
+
+<div class="remember-form">
+    <?php
+    if(!empty($errors)) {
+        $html = '<div class="form-errors">';
+        foreach($errors as $error) {
+            $html .= '<div>' . $this->translate($error, 'User') . '</div>';
+        }
+        $html .= '</div>';
+        echo $html;
+    }
+    ?>
+    <div class="std-pdn">
+        <?php
+        $form
+            ->setAttribute('action', $this->url('user', array('action' => 'remember')))
+            ->setAttribute('class', 'std-form')
+            ->setAttribute('id', 'remember-form')
+            ->setAttribute('method', 'post');
+
+        $form->get('login')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'E-mail');
+        ?>
+
+        <?php echo $this->form()->openTag($form); ?>
+
+        <div class="form-box">
+            <div class="form-msgs"></div>
+            <?php echo $this->formCollection($form); ?>
+
+            <div class="row-btns">
+                <input type="submit" value="Восстановить" class="btn">
+            </div>
+        </div>
+        <div class="success-box" style="text-align: center; display: none;">
+            Ссылка для восстановления отправлена на вашу почту
+        </div>
+
+        <?php echo $this->form()->closeTag($form); ?>
+    </div>
+</div>
+
+
+<style>
+    .remember-form {
+        padding: 20px;
+        width: 295px;
+        margin: 30px auto;
+    }
+
+    .remember-form .row {
+        margin-bottom: 10px;
+        padding: 0;
+    }
+
+    .remember-form .row-btns {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .remember-form .row-btns .btn {
+        padding: 0 16px;
+    }
+</style>

@@ -1,0 +1,145 @@
+<div class="panel">
+	<div class="orders-stock">
+		<div class="controls">
+			<span class="btn popup-form" href="/admin/catalog/orders/orders-controls/">Назад в меню</span>
+			<a class="btn" href="/admin/catalog/orders/barcodes/" target="_blank">Печать штрихкодов</a>
+		</div>
+	
+	<?php
+	
+	$html = '';
+	
+	foreach($orders as $order) {
+		$html .= 
+		'<div class="order">'
+			.'<div class="header">'
+				.'<div class="id">№' . $order->getId() . '</div>'
+			.'</div>'
+			.'<div class="body">'
+				.'<table>'
+					.'<tr>'
+						.'<th class="name">Название</th>'
+						.'<th class="size">Вкус.Размер</th>'
+						.'<th class="count">Кол-во</th>'
+						.'<th class="price">Стоимость</th>'
+					.'</tr>';
+					
+		$cart = clone $order->getPlugin('cart');
+        $cart->clear();
+        $cart->select()->order('count DESC');
+					
+		foreach($cart as $cartRow) {
+			$product = $cartRow->getPlugin('product');
+			
+			$taste = $cartRow->getPlugin('taste')->get('name');
+			if(!in_array($taste, array('', 'Без вкуса', 'Натуральный вкус'))) {
+				$tasteStr = '<b style="color: red">' . $taste . '</b>';
+			} else {
+				$tasteStr = $taste;
+			}
+			
+			$size = $cartRow->getPlugin('size')->get('name');
+			$count = $cartRow->get('count');
+			
+			$html .=
+					'<tr>'
+						.'<td class="name">' . $product->get('name') . '</td>'
+						.'<td class="size"><b>' . $size . '</b> - ' . $tasteStr . '</td>'
+						.'<td class="count">' . $count . '</td>'
+						.'<td class="price">' . $this->price($cartRow->get('price') * $count) . '</td>'
+					.'</tr>';
+		}
+		
+		$html .=
+				'</table>'
+			.'</div>'
+		.'</div>';
+	}
+	
+	echo $html;
+	
+	?>
+	</div>
+</div>
+
+<script>
+$(function() {
+	var box = $('.orders-stock');
+	
+	$('.order .header', box).on('click', function() {
+		var order = $(this).parent();
+		
+		order.children('.body').slideDown(200);
+		order.siblings().children('.body').slideUp(200);
+	});
+});
+</script>
+
+<style>
+.orders-stock .order {
+	width: 800px;
+}
+
+.orders-stock .controls {
+	margin: 0 0 15px 0;
+}
+
+.orders-stock .order {
+	border: 2px solid #eee;
+	margin: 0 0 10px 0;
+	max-width: 800px;
+}
+
+.orders-stock .order .header {
+	background: #eee;
+	padding: 4px 10px;
+}
+
+
+.orders-stock .order .header .id,
+.orders-stock .order .header .date {
+	display: inline-block;
+}
+
+.orders-stock .order .header .id {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.orders-stock .order .body {
+	padding: 6px 5px;
+	display: none;
+}
+
+.orders-stock .order .body th,
+.orders-stock .order .body td {
+	padding: 3px 5px;
+	border-bottom: 1px solid #eee;
+	font-size: 14px;
+}
+
+.orders-stock .order .body tr:last-child td {
+	border-bottom: none;
+}
+
+.orders-stock .order .body th {
+	font-weight: 700;
+}
+
+.orders-stock .order .body .name {
+	width: 240px;
+}
+
+.orders-stock .order .body .size {
+	width: 250px;
+}
+
+.orders-stock .order .body .count {
+	width: 100px;
+	text-align: center;
+}
+
+.orders-stock .order .body .price {
+	text-align: right;
+}
+</style>

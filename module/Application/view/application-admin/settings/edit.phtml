@@ -1,0 +1,50 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->header ?>
+</h1>
+
+<?php $form = $this->editForm ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="general">Основное</div>
+            <div class="tab" data-tab="mail">Почта</div>
+            <div class="tab" data-tab="seo">Seo</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+                <?php
+                echo $this->AdminFormRow($form->get('site_name'));
+                echo $this->AdminFormRow($form->get('site_color'));
+                echo $this->AdminFormRow($form->get('site_logo'));
+                echo $this->AdminFormRow($form->get('domain'));
+                echo $this->AdminFormRow($form->get('mdomain'));
+                ?>
+            </div>
+            <div class="tab" data-tab="seo">
+                <?php
+                echo $this->AdminFormRow($form->get('html_head'));
+                echo $this->AdminFormRow($form->get('html_body'));
+                echo $this->AdminFormRow($form->get('robots'));
+                ?>
+            </div>
+            <div class="tab" data-tab="mail">
+                <?php
+                echo $this->AdminFormRow($form->get('mail_sender'));
+                echo $this->AdminFormRow($form->get('mail_email'));
+                echo $this->AdminFormRow($form->get('mail_password'));
+                echo $this->AdminFormRow($form->get('mail_smtp'));
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

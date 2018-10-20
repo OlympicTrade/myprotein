@@ -1,0 +1,34 @@
+<?php
+$domain = 'https://' . $_SERVER['HTTP_HOST'];
+?>
+<tr><td style="padding: 0 20px">
+<table style="min-width: 320px; margin:0 auto; font-size: 14px;"><tbody>
+
+<tr><td colspan="2" height="12" style="height: 20px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: left;">
+        <div><b>Контакты: </b><?php echo $request->get('contact') ?></div>
+    </td>
+</tr>
+<tr><td colspan="2" height="10" style="height: 10px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: left;">
+        <?php
+            $product = $request->getPlugin('product');
+            $html =
+                '<div>'
+                    .'<a href="' . $domain . '/goods/' . $product->get('url') . '" style="color: #222; text-decoration: underline;">'
+                        . $product->get('name')
+                    .'</a>'
+                .'</div>'
+                .'<div style="color: #a4a4a4; font-size: 13px;">' . '(' . $product->get('size') . ' ' . $product->get('taste') . ')' . '</div>';
+
+            echo $html;
+        ?>
+    </td>
+</tr>
+
+<tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+
+</tbody></table>
+</td></tr>

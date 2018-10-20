@@ -1,0 +1,20 @@
+<?php $this->headLink()->prependStylesheet('/modules/events/css/main.css') ?>
+<?php echo $this->eventsList($events); ?>
+<script>
+$(function(){
+    $('.events-list .del').click(function(){
+        var event = $(this).closest('.event');
+        $.ajax({
+            type: 'post',
+            url: '<?php echo $this->url('events', array('action' => 'del-event')) ?>',
+            data: {
+                id: $(this).attr('data-id')
+            },
+            dataType: "json",
+            success: function(resp) {
+                event.fadeOut(200);
+            }
+        });
+    });
+});
+</script>

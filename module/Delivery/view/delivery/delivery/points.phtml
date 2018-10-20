@@ -1,0 +1,60 @@
+<?php
+$isView = $type == 'view';
+?>
+
+
+<div class="popup-box popup-pickup-points">
+    <div class="header">
+        <div class="title">
+            <?php echo $isView ? 'Точки самовывоза' : 'Выберите точку самовывоза' ?>
+        </div>
+    </div>
+    <div class="body">
+        <div class="map" id="delivery-points-map"></div>
+    </div>
+</div>
+
+<style>
+    .popup-pickup-points .map {
+        height: 500px;
+        width: 100%;
+    }
+
+    .popup-pickup-points .header {
+        margin-bottom: 0;
+    }
+
+    .popup-pickup-points .body {
+        padding: 0;
+    }
+</style>
+
+<script>
+    setPickupMap({
+        id:     'delivery-points-map',
+        pointsData: {
+            pid: <?php echo $pointId ?>,
+            type: '<?php echo $type ?>'
+        }
+    }, function(map) {
+        <?php if(!$isView) { ?>
+        $('#delivery-points-map').on('click', '.chose-point', function() {
+            $.ajax({
+                url: '/delivery/point-info/',
+                data: {
+                    id: $(this).data('id')
+                },
+                method: 'post',
+                success: function(resp) {
+                    var orderForm = $('.order-box');
+
+                    $('[name="attrs-point"]', orderForm).val(resp.id);
+                    $('.chose-pickup', orderForm).text(resp.address);
+
+                    $.fancybox.close();
+                }
+            });
+        });
+        <?php } ?>
+    });
+</script>

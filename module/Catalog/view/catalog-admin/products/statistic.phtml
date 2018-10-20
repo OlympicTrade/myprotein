@@ -1,0 +1,109 @@
+<h1>
+    Статистика по товару
+</h1>
+
+<?php
+$statsTable = function($data) use ($filters) {
+    $html =
+        '<table>'
+            .'<tr>'
+                .'<th class="size">Вкус/Цвет</th>'
+                .'<th class="taste">Размер</th>'
+                .'<th>Заказов</th>'
+            .'</tr>';
+
+    foreach ($data as $row) {
+        $product = $row->getPlugin('product');
+
+        $taste = !$filters['group'] || $filters['group'] == 'taste' ? $product->get('taste') : 'Любой';
+        $size  = !$filters['group'] || $filters['group'] == 'size' ? $product->get('size') : 'Любой';
+
+        $html .=
+            '<tr>'
+                .'<td>' . $taste . '</td>'
+                .'<td>' . $size . '</td>'
+                .'<td>' . $row->get('count') . '</td>'
+            .'</tr>';
+    }
+
+    $html .= '</table>';
+
+    return $html;
+};
+?>
+
+<div class="panel">
+    <div class="filters">
+        <a class="btn" href="/admin/catalog/products/statistic/?id=<?php echo $productId ?>">Все</a>
+        <a class="btn" href="/admin/catalog/products/statistic/?id=<?php echo $productId ?>&filters[group]=size">Размер</a>
+        <a class="btn" href="/admin/catalog/products/statistic/?id=<?php echo $productId ?>&filters[group]=taste">Вкус/Цвет</a>
+        <a class="btn" href="/admin/catalog/products/statistic/?id=<?php echo $productId ?>&filters[group]=all">Суммарно</a>
+    </div>
+</div>
+
+<div class="col-4">
+    <div class="panel prod-stats">
+        <div class="header">За все время</div>
+        <?php echo $statsTable($result['all']); ?>
+    </div>
+</div>
+
+<div class="col-4">
+    <div class="panel prod-stats">
+        <div class="header">Полгода</div>
+        <?php echo $statsTable($result['half']); ?>
+    </div>
+</div>
+
+<div class="col-4">
+    <div class="panel prod-stats">
+        <div class="header">2 Месяца</div>
+        <?php echo $statsTable($result['month']); ?>
+    </div>
+</div>
+
+<style>
+    .prod-stats {
+        //width: 400px;
+    }
+
+    .prod-stats .header{
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .prod-stats th {
+        font-weight: bold;
+    }
+
+    .prod-stats th.taste {
+        width: 120px;
+    }
+
+    .prod-stats th.size {
+        width: auto;
+    }
+
+    .prod-stats td {
+        width: auto;
+    }
+
+    .prod-stats th,
+    .prod-stats td {
+        font-size: 14px;
+        padding: 4px 10px;
+    }
+
+    .prod-stats tr:nth-child(2n - 1) td,
+    .prod-stats tr:nth-child(2n - 1) th {
+        background: #e6e6e6;
+    }
+
+    .prod-stats {
+        
+    }
+
+    .prod-stats {
+        
+    }
+</style>

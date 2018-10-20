@@ -1,0 +1,19 @@
+<?php echo $this->ordersList($this->orders); ?>
+<script>
+$('.orders-list .header').on('click', function() {
+    var order = $(this).closest('.order');
+    var body = $('.body', order);
+    var id = order.attr('data-id');
+
+    console.log(123123);
+
+    if(!body.text()) {
+        $.aptero.loadingHtml(body);
+        body.load('/order/cart/' + id + '/', function() {
+            body.slideDown(200);
+        });
+    } else {
+        body.slideToggle(200);
+    }
+});
+</script>

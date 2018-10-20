@@ -1,0 +1,8 @@
+
+@font-face {
+  font-family: 'ProximaNova-BlackIt';
+  src: url('ProximaNova-BlackIt.eot?#iefix') format('embedded-opentype'),  url('ProximaNova-BlackIt.otf')  format('opentype'),
+	     url('ProximaNova-BlackIt.woff') format('woff'), url('ProximaNova-BlackIt.ttf')  format('truetype'), url('ProximaNova-BlackIt.svg#ProximaNova-BlackIt') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

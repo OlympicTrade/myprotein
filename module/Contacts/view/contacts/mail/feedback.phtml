@@ -1,0 +1,22 @@
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <span style="font-size: 20px; font-weight: bold; padding-bottom: 8px; color: #58656e; text-transform: uppercase; border-bottom: 2px solid #3498db">Сообщение с сайта</span>
+    </td>
+</tr>
+<tr><td colspan="2" height="40" style="height: 40px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <table style="width: 400px; margin:0 auto;">
+            <tbody>
+            <tr>
+                <td valign="top" style="font-size: 14px;">
+                    <div style="padding-bottom: 4px;"><b>Имя:</b><?php echo $feedback->get('name') ?></div>
+                    <div style="padding-bottom: 10px;"><b>Телефон:</b> <?php echo $feedback->get('phone') ? ($feedback->get('phone')) : 'Не указан' ?></div>
+                    <?php echo nl2br($feedback->get('question')) ?>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+<tr><td colspan="2" height="50" style="height: 50px;"></td></tr>

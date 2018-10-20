@@ -1,0 +1,146 @@
+<?php
+$inStock = '';
+$notInStock = '';
+if($product->get('stock')) {
+    $inStock = ' style="display: block"';
+} else {
+    $notInStock = ' style="display: block"';
+}
+?>
+
+<div class="product-popup">
+    <div class="product">
+        <div class="pic">
+            <img src="<?php echo $product->getPlugin('image')->getImage('m'); ?>" alt="<?php echo $product->get('name'); ?>">
+            <?php if($product->get('discount')) { ?>
+            <div class="events">
+                <div class="discount">-<?php echo $product->get('discount') ?>%</div>
+            </div>
+            <?php } ?>
+        </div>
+        <div class="info">
+            <div class="name"><?php echo $product->get('name') ?></div>
+            <div class="type-box">
+                <div class="props-box">
+                    <input type="hidden" value="<?php echo $product->getId() ?>" name="product_id">
+                    <div class="row">
+                        <div class="label">Размер</div>
+                        <?php
+                        $html = '<select class="std-select m js-size-select" name="size_id">';
+                        $first = true;
+                        foreach($product->getPlugin('size') as $size) {
+                            if($first) {
+                                $sizeId = $size->getId();
+                                $first = false;
+                            }
+
+                            $html .= '<option value="' . $size->getId() . '">' . $size->get('name') . '</option>';
+                        }
+                        echo $html .= '<select>';
+                        ?>
+                    </div>
+                    <div class="row">
+                        <div class="label">Вкус</div>
+                        <?php
+                        $html = '<select class="std-select m js-taste-select" name="taste_id">';
+                        foreach($product->getPlugin('taste', array('size_id' => $sizeId)) as $taste) {
+                            $html .= '<option value="' . $taste->getId() . '" class="' . ($taste->get('stock') ? 'green' : 'red') . '">' . $taste->get('name') . '</option>';
+                        }
+                        echo $html .= '<select>';
+                        ?>
+                    </div>
+                    <div class="row">
+                        <div class="label">Кол-во</div>
+                        <div class="std-counter m">
+                            <div class="incr"></div>
+                            <input value="1" min="1" max="999" name="count">
+                            <div class="decr"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="price-box">
+                    <div class="title">Стоимость</div>
+
+                    <span class="price"><span><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i></span>
+                    <?php if($product->get('discount')) { ?>
+                        <span class="price-old"><span><?php echo $this->price($product->get('price_old')) ?></span> <i class="fas fa-ruble-sign"></i></span>
+                    <?php } ?>
+
+                    <div class="btns in-stock"<?php echo $inStock ?>>
+                        <a href="/cart/" class="btn m to-cart stock-i js-cart-add">В корзину</a>
+                        <span class="out-of-stock stock-o js-cart-add">нет в наличии</span>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+    <?php include('product-tabs.phtml') ?>
+
+    <div class="clear"></div>
+
+    <script>
+        var box = $('.product-popup');
+        initElements(box);
+        productView(box);
+    </script>
+    
+    <?php if($tabUrl == '') { ?>
+    <?php
+    $jsonLd = array(
+        '@context'     => 'http://schema.org',
+        '@type'        => 'Product',
+        'description'  => $product->get('preview'),
+        'name'         => $product->get('name'),
+        'brand' => (object) array(
+            '@type' => 'Brand',
+            'name'  =>  $product->getPlugin('brand')->get('name')
+        ),
+        'offers'=> (object) array(
+            '@type'  => 'Offer',
+            'price'  => ($product->get('price')),
+            'priceCurrency'  => 'RUB',
+            'availability' => $product->get('count') ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock',
+        )
+    );
+    
+    if($product->get('stars')) {
+        $jsonLd['aggregateRating'] = (object) array(
+            '@type'		  => 'AggregateRating',
+            'ratingValue' => $product->get('stars'),
+            'reviewCount' => $product->get('reviews')
+        );
+    }
+    ?>
+    
+    <script type="application/ld+json">
+    <?php echo \Zend\Json\Json::encode((object) $jsonLd); ?>
+    </script>
+    <?php } ?>
+    
+    <script>/*
+    window.metrikaEc.push({'ecommerce': {
+        'detail': {
+            'products': [{
+                'id': 	 	<?php echo $product->getId() ?>,
+                'name' : 	'<?php echo $product->get('name') ?>',
+                'price': 	<?php echo $product->get('price') ?>
+            }]
+        }
+    }});
+    
+    ga('ec:addProduct', {
+        id:         <?php echo $product->getId() ?>,
+        name:       '<?php echo $product->get('name') ?>',
+        category:   '<?php echo $product->getPlugin('catalog')->get('name') ?>',
+        brand:      '<?php echo $product->getPlugin('brand')->get('name') ?>',
+    });
+    ga('ec:setAction', 'detail');
+    ga('send', 'event', 'detail');*/
+    </script>
+</div>

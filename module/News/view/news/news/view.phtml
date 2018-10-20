@@ -1,0 +1,20 @@
+<?php $this->headLink()->prependStylesheet('/modules/news/css/main.css') ?>
+<div class="main-header">
+    <div class="box">
+        <h1><?php echo $news->get('name') ?></h1>
+        <?php echo $this->breadcrumbs($breadcrumbs, ' <i class="fas fas-chevron-right"></i> ') ?>
+    </div>
+</div>
+
+
+<div class="block">
+    <div class="wrapper">
+        <div class="news-view std-text">
+			<?php if($news->getPlugin('image')->hasImage()) { ?>
+				<div class="pic"><img src="<?php echo $news->getPlugin('image')->getImage('m') ?>" alt="<?php echo $news->get('name') ?>"></div>
+			<?php } ?>
+            <?php echo $news->get('text') ?>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>

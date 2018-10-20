@@ -1,0 +1,111 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->header ?>
+</h1>
+
+<?php $form = $this->editForm ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="address">Адрес</div>
+            <div class="tab" data-tab="general">Контакты</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+                <?php
+                echo $this->AdminFormRow($form->get('phone_1'));
+                echo $this->AdminFormRow($form->get('phone_2'));
+                echo $this->AdminFormRow($form->get('phone_3'));
+                ?>
+                <div class="separator"></div>
+                <?php
+                echo $this->AdminFormRow($form->get('email'));
+                echo $this->AdminFormRow($form->get('skype'));
+                ?>
+                <div class="separator"></div>
+                <?php
+                echo $this->AdminFormRow($form->get('vkontakte'));
+                echo $this->AdminFormRow($form->get('facebook'));
+                echo $this->AdminFormRow($form->get('youtube'));
+                ?>
+            </div>
+            <div class="tab" data-tab="address">
+                <?php
+                echo $this->AdminFormRow($form->get('address'));
+                echo $this->AdminFormRow($form->get('show_map'));
+                echo $this->formElement($form->get('latitude'));
+                echo $this->formElement($form->get('longitude'));
+                ?>
+                <div class="row">
+                    <span class="label">Карта</span>
+                    <div id="contacts_map" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <span class="btn btn-gray" onclick="history.back()">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </span>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove" data-id="<?php echo $this->model->getId() ?>"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>
+
+<style>
+    #contacts_map {
+        width: 56.6%;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid #D3D3D3;
+        border-radius: 3px;
+    }
+
+    #contacts_map img {
+        max-width: none;
+        width: auto;
+        height: auto;
+    }
+</style>
+
+<script type="text/javascript" src="//api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+<script>
+    $(function(){
+        var latEl = $('#latitude');
+        var lonEl = $('#longitude');
+
+        ymaps.ready(function() {
+            var map = new ymaps.Map('contacts_map', {
+                center: [latEl.val(), lonEl.val()],
+                controls: [],
+                zoom: 15
+            });
+
+            var marker = new ymaps.Placemark(map.getCenter(), {}, {
+                iconLayout: 'default#image',
+                draggable: true
+            });
+            map.geoObjects.add(marker);
+
+            marker.events.add('dragend', function(e) {
+                var cMarker = e.get('target');
+                var coords = cMarker.geometry.getCoordinates();
+
+                latEl.val(coords[0]);
+                lonEl.val(coords[1]);
+            });
+        });
+    });
+</script>

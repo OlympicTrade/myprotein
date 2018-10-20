@@ -1,0 +1,80 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('section') ?>"></i>
+    <?php echo $this->header ?>
+</h1>
+
+<?php $form = $this->editForm ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="general">Основное</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+                <?php
+                echo $this->AdminFormRow($form->get('name'));
+                echo $this->AdminFormRow($form->get('parent'));
+                echo $this->AdminFormRow($form->get('type'));
+                ?>
+                <div>
+                    <div class="menu-type" data-type="1" style="display: none;">
+                    <?php echo $this->AdminFormRow($form->get('page_id')); ?>
+                    </div>
+                    <div class="menu-type" data-type="2" style="display: none;">
+                    <?php echo $this->AdminFormRow($form->get('url'));?>
+                    </div>
+                </div>
+                <?php
+                echo $this->AdminFormRow($form->get('active'));
+                echo $this->AdminFormRow($form->get('sort'));
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <?php
+        $menuId   = $this->model->getId() ? $this->model->get('menu_id') : (int) $_GET['menu'];
+        $backLink = $this->url('adminMenu', array('action' => 'edit'), array('query' => array('id' => $menuId)));
+        ?>
+        <a href="<?php echo $backLink ?>#edit-tabs=items" class="btn btn-gray">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </a>
+        <?php if($this->model->getId()) { ?>
+        <a class="btn btn-red btn-remove-ck" href="#popup-delete">
+            <i class="fas fa-times"></i>
+            Удалить
+        </a>
+        <?php } ?>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>
+
+<script>
+$(function(){
+    var form = $('.edit-form');
+
+    $('input[name="type"]').on('click', function(){
+        form.find('.menu-type').css('display', 'none');
+        form.find('.menu-type[data-type="' + $(this).val() + '"]').css('display', 'block');
+    });
+
+    $('input[name="type"]:checked').trigger('click');
+
+    $('select[name="page_id"]', form).on('change', function() {
+        $('input[name="name"]', form).val($(this).find('option[value="' + $(this).val() + '"]').text().replace('— ', ''));
+    });
+});
+</script>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove" data-id="<?php echo $this->model->getId() ?>"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>

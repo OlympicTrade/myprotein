@@ -1,0 +1,206 @@
+<?php if(\User\Service\AuthService::getUser()) { ?>
+<script> location.href = "/user/";</script>
+<?php } else { ?>
+
+<?php if(!$isAjax) { ?>
+<div class="block">
+    <div class="wrapper">
+<?php } ?>
+<div class="popup-box popup-login">
+    <div class="header">
+        <div class="title">Вход на сайт</div>
+    </div>
+    <div class="body std-form">
+        <?php
+        $form
+            ->setAttribute('action', $this->url('user', array('action' => 'login')))
+            ->setAttribute('class', 'std-form')
+            ->setAttribute('id', 'login-form')
+            ->setAttribute('method', 'post');
+
+        $form->get('login')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'Логин');
+
+        $form->get('password')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'Пароль');
+        ?>
+
+        <?php echo $this->form()->openTag($form); ?>
+
+        <div class="form-box">
+            <div class="form-errors"></div>
+
+            <div class="row">
+                <?php echo $this->formElement($form->get('login')) ?>
+            </div>
+
+            <div class="row">
+                <?php echo $this->formElement($form->get('password')) ?>
+                <a href="<?php echo $this->url('remind') ?>" class="popup remind">Забыли пароль?</a>
+            </div>
+
+            <div class="row-btns">
+                <input type="submit" value="Войти" class="btn btn-login">
+                <a href="<?php echo $this->url('registration') ?>" class="btn btn-registration popup">Регистрация</a>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="success-box">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+
+        <?php echo $this->form()->closeTag($form); ?>
+    </div>
+    <div class="soc-block">
+        <div class="header bloc">
+            <div class="title">Вход через соц. сеть</div>
+        </div>
+        <div class="body">
+            <div class="list">
+                <a class="vk" href="<?php echo $socAdapters['vk']->getAuthUrl() ?>"></a>
+                <a class="fb" href="<?php echo $socAdapters['facebook']->getAuthUrl() ?>"></a>
+                <a class="go" href="<?php echo $socAdapters['google']->getAuthUrl() ?>"></a>
+                <a class="ya" href="<?php echo $socAdapters['yandex']->getAuthUrl() ?>"></a>
+                <?php /*
+                <a class="od" href="<?php echo $socAdapters['odnoklassniki']->getAuthUrl() ?>"></a>
+                <a class="ma" href="<?php echo $socAdapters['mailru']->getAuthUrl() ?>"></a>
+                */ ?>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<?php if(!$isAjax) { ?>
+    </div>
+</div>
+<?php } ?>
+
+<script>
+	var form = $('#login-form');
+	form.formSubmit({
+		success: function(resp, form){
+			$('.form-box', form).fadeOut(200, function(){
+				$('.success-box', form).fadeIn(200);
+			});
+			location.href="/user/";
+		}
+	});
+</script>
+<style>
+    .popup-login {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .popup-login .header {
+        text-align: center;
+    }
+
+    .popup-login .row {
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .popup-login .row-btns {
+        margin-top: 20px;
+        position: relative;
+    }
+
+    .popup-login .row .remind {
+        position: absolute;
+        right: 11px;
+        top: 12px;
+    }
+
+    .popup-login .row-btns .btn {
+        padding: 0 16px;
+        display: block;
+        float: left;
+    }
+
+    .popup-login .row-btns .btn-login {
+        margin-right: 3%;
+        width: 37%;
+    }
+
+    .popup-login .row-btns .btn-registration {
+        width: 60%;
+    }
+
+    .popup-login .soc-block {
+        border-top: 1px solid #d2d2d2;
+        padding-bottom: 10px;
+    }
+
+    .popup-login .soc-block .header {
+        border: none;
+        margin-bottom: auto;
+    }
+
+    .popup-login .soc-block .list {
+        text-align: center;
+    }
+    
+    .popup-login .soc-block .list a {
+        display: inline-block;
+        background: url('/images/social-log.png');
+        width: 34px;
+        height: 34px;
+        transition: all ease .2s;
+        margin: 0 5px;
+    }
+    .popup-login .soc-block .list a:last-child {
+        margin-right: 0;
+    }
+
+    .popup-login .soc-block a.vk {
+        background-position: 0 0;
+    }
+
+    .popup-login .soc-block a.fb {
+        background-position: -34px 0;
+    }
+
+    .popup-login .soc-block a.ma {
+        background-position: -68px 0;
+    }
+
+    .popup-login .soc-block a.od {
+        background-position: -102px 0;
+    }
+
+    .popup-login .soc-block a.go {
+        background-position: -136px 0;
+    }
+
+    .popup-login .soc-block a.ya {
+        background-position: -170px 0;
+    }
+
+    .popup-login .soc-block a.vk:hover {
+        background-position: 0 -34px;
+    }
+
+    .popup-login .soc-block a.fb:hover {
+        background-position: -34px -34px;
+    }
+
+    .popup-login .soc-block a.ma:hover {
+        background-position: -68px -34px;
+    }
+
+    .popup-login .soc-block a.od:hover {
+        background-position: -102px -34px;
+    }
+
+    .popup-login .soc-block a.go:hover {
+        background-position: -136px -34px;
+    }
+
+    .popup-login .soc-block a.ya:hover {
+        background-position: -170px -34px;
+    }
+</style>
+<?php } ?>

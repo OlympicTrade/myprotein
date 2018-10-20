@@ -1,0 +1,41 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->engine->module->get('name') ?>
+
+    <?php/*
+    $settingsUrl = $this->url('admin', array(
+        'module' => $this->engine->module->get('module'),
+        'section' => $this->engine->module->get('section'),
+        'action' => 'settings'
+    ));
+
+    <a href="<?php echo $settingsUrl ?>" class="module-config"><i class="fas fa-cog"></i></a>
+    */?>
+</h1>
+
+
+<?php
+$exportUrl = $this->url('admin', array(
+    'module' => $this->engine->module->get('module'),
+    'section' => $this->engine->module->get('section'),
+    'action' => 'subscribe'
+));
+?>
+<div class="panel">
+    <a href="<?php echo $exportUrl ?>" class="btn btn-blue csv-export">Список для рассылки</a>
+</div>
+
+<div class="panel">
+    <div class="filters">
+        <?php $form = $this->filterForm ?>
+        <?php echo $this->form()->openTag($form) ?>
+        <div class="filter search">
+            <?php echo $this->formElement($form->get('search')) ?>
+            <span class="btn btn-blue btn-submit">Применить</span>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+        <div class="clear"></div>
+    </div>
+    <?php echo $this->adminTableList($this->fields, $this->tableData); ?>
+</div>

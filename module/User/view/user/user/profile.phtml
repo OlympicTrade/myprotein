@@ -1,0 +1,17 @@
+<div class="block">
+    <div class="wrapper">
+        <div class="tabs profile-tabs">
+            <div class="tabs-header">
+                <span class="tab active">Корзина</span>
+                <span class="tab" data-load="/orders/">Заказы</span>
+                <a href="/logout/" class="tab">Выйти</a>
+            </div>
+            <div class="tabs-body">
+                <div class="tab">
+                    <?php echo $this->cartList($cart, $price); ?>
+                </div>
+                <div class="tab"></div>
+            </div>
+        </div>
+    </div>
+</div>

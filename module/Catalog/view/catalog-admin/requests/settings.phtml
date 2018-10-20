@@ -1,0 +1,54 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->header ?>
+
+    <a href="#" class="module-config"><i class="fas fa-cog"></i></a>
+</h1>
+
+<?php $form = $this->settingsForm; ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab active" data-tab="general">Страницы</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+                <?php
+                $view = $this;
+                $meta = function($title, $prefix) use($view, $form) {
+                    echo '<div class="separator">' . $title . '</div>';
+                    echo $this->AdminFormRow($form->get('settings-' . $prefix . 'title'));
+                    echo $this->AdminFormRow($form->get('settings-' . $prefix . 'description'));
+                    echo $this->AdminFormRow($form->get('settings-' . $prefix . 'keywords'));
+                };
+
+                $meta('Товар', '');
+                $meta('Видео', 'video_');
+                $meta('Характеристики', 'props_');
+                $meta('Отзывы', 'reviews_');
+                $meta('Инструкция', 'instruction_');
+                $meta('Сертификат', 'certificate_');
+                ?>
+
+                <div class="separator">1С синхронизация</div>
+                <?php
+                echo $this->AdminFormRow($form->get('settings-1cLogin'));
+                echo $this->AdminFormRow($form->get('settings-1cPassword'));
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <span class="btn btn-gray" onclick="history.back()">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </span>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

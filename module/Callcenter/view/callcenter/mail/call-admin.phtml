@@ -1,0 +1,43 @@
+<?php
+$domain = 'https://' . $_SERVER['HTTP_HOST'];
+$phone = $call->getPlugin('phone');
+?>
+<tr><td style="padding: 0 20px">
+<table style="min-width: 320px; margin: 0 auto;"><tbody>
+    <tr><td height="7" style="height: 20px;"></td></tr>
+    <tr>
+        <td width="100%" style="padding-bottom: 6px">
+            <div style="font-size: 20px; font-weight: 700; margin-bottom: 10px;"><?php echo $call->get('theme') ?></div>
+            <div style="font-size: 15px; margin-bottom: 10px;"><?php echo nl2br($call->get('desc')) ?></div>
+        </td>
+    </tr>
+
+    <tr><td height="20" style="height: 20px;"></td></tr>
+
+    <tr>
+        <td  width="100%" style="padding-bottom: 6px">
+            <div class="row"><b>Тел.: </b><a href="tel:+<?php echo $phone->get('phone') ?>">+<?php echo $phone->get('phone') ?></a></div>
+            <div class="row"><b>ФИО: </b><?php echo $call->get('name') ?></div>
+        </td>
+    </tr>
+
+    <tr><td height="20" style="height: 20px;"></td></tr>
+
+    <?php
+    switch ($call->get('type_id')) {
+        case \CallcenterAdmin\Model\Call::TYPE_RETURN:
+            include('order.phtml');
+            break;
+        case \CallcenterAdmin\Model\Call::TYPE_ORDER:
+            include('order.phtml');
+            break;
+        case \CallcenterAdmin\Model\Call::TYPE_REQUEST:
+            include('request.phtml');
+            break;
+    }
+    ?>
+
+    <tr><td height="20" style="height: 20px;"></td></tr>
+    
+</tbody></table>
+</td></tr>

@@ -1,0 +1,39 @@
+<?php $domain = 'http://' . $_SERVER['HTTP_HOST']; ?>
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <span style="font-size: 20px; font-weight: bold; padding-bottom: 8px; color: #58656e; text-transform: uppercase; border-bottom: 2px solid #3498db">Ваш заказ №<?php echo $order->getId() ?> оформлен!</span>
+    </td>
+</tr>
+<tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <table style="width: 400px; margin:0 auto;">
+            <tbody>
+            <tr>
+                <td valign="top" style="font-size: 14px;">
+                    <div style="padding-bottom: 4px;"><b>Адрес:</b><?php echo $order->get('address') ?></div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+
+<tr><td colspan="2" height="50" style="height: 50px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+        <span style="font-size: 20px; font-weight: bold; padding-bottom: 8px; color: #58656e; text-transform: uppercase; border-bottom: 2px solid #3498db">Вы заказали:</span>
+    </td>
+</tr>
+<tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: center;">
+		<?php foreach($order->getPlugin('cart') as $row) { $product = $row->getPlugin('product'); ?>
+		<div style="padding-top: 4px;"><a href="<?php echo $domain . '/goods/' . $product->get('url') ?>" style="color: #222; text-decoration: underline;"><?php echo $product->get('name') ?></a> — <?php echo $row->get('count') ?> шт. за <?php echo $row->get('count') * $row->get('price') ?>  руб.</div>
+		<?php } ?>
+		<div style="padding-top: 12px; color: #ffffff; font-size: 20px;"><strong>Итого: <?php echo $order->get('price') ?> руб.</strong></div>
+	</td>
+</tr>
+
+<tr><td colspan="2" height="20" style="height: 20px;"></td></tr>

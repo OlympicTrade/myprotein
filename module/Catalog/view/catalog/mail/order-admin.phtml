@@ -1,0 +1,118 @@
+<?php
+$domain = 'https://' . $_SERVER['HTTP_HOST'];
+$attrs = $order->getPlugin('attrs');
+$isPickup = $attrs->get('delivery') == 'pickup';
+$phone = $order->getPlugin('phone');
+?>
+<tr><td style="padding: 0 20px">
+<table style="min-width: 320px; margin:0 auto; font-size: 14px;"><tbody>
+
+<?php
+$troubles = [];
+
+if(!$attrs->get('delivery')) {
+    $troubles[] = 'не выбран тип доставки';
+}
+
+if(!$phone->get('confirmed')) {
+    $troubles[] = 'телефон не проверен';
+}
+
+$stockTroubles = false;
+foreach($order->getPlugin('cart') as $row) {
+    if($row->get('count') != $row->get('order_count')) {
+        $stockTroubles = true;
+    }
+}
+
+if($stockTroubles) {
+    $troubles[] = 'нет товаров';
+}
+
+if($troubles) {
+?>
+<tr><td colspan="2" height="7" style="height: 20px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="padding-bottom: 6px">
+        <div style="padding: 4px 10px; background: #c11700; color: #ffffff; font-size: 15px; text-align: center;">
+            Проблемы: <?php echo implode(', ', $troubles); ?>
+        </div>
+    </td>
+</tr>
+<?php } ?>
+
+<tr><td colspan="2" height="12" style="height: 20px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="padding-bottom: 6px">
+        <span style="font-size: 18px; font-weight: bold; color: #000; text-transform: uppercase; border-bottom: 1px solid #cccccc">Заказ №<?php echo $order->getId() ?></span>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: left;">
+        <div style="padding-bottom: 4px;"><b>ФИО: </b><?php echo $attrs->get('name') ?></div>
+        <div style="padding-bottom: 4px;"><b>Телефон: </b><a href="tel:+<?php echo $phone->get('phone') ?>">+<?php echo $phone->get('phone') ?></a></div>
+        <div style="padding-bottom: 4px;"><b>Стоимость: </b><?php echo $order->get('full_price') ?>
+            <?php if($order->get('delivery')) {
+                echo ' (' . $order->get('price') . ' + ' . $order->get('delivery') . ')';
+            } ?>
+            руб.
+        </div>
+    </td>
+</tr>
+
+<?php if($attrs->get('delivery')) { ?>
+<tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="padding-bottom: 6px">
+        <span style="font-size: 18px; font-weight: bold; padding-bottom: 4px; color: #000; text-transform: uppercase; border-bottom: 1px solid #cccccc"><?php echo $isPickup ? 'Самовывоз' : 'Доставка' ?></span>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: left;">
+        <div style="padding-bottom: 4px;">
+            <?php $address =  $order->getPlugin('region')->get('name') . ' ' . $order->getDeliveryAddress() ?>
+            <a href="https://yandex.ru/maps/?mode=search&text=<?php echo $order->getDeliveryAddress() ?>"><?php echo $address ?></a>
+        </div>
+        <?php if(!$isPickup) { ?>
+        <div style="padding-bottom: 4px;">
+            Дата доставки: <?php echo $attrs->get('date') . ' с ' . $attrs->get('time_from') . ' до ' . $attrs->get('time_to') ?>
+        </div>
+        <?php } ?>
+    </td>
+</tr>
+<?php } ?>
+
+<tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+<tr>
+    <td colspan="2" width="100%" style="padding-bottom: 6px">
+        <span style="font-size: 18px; font-weight: bold; padding-bottom: 4px; color: #000; text-transform: uppercase; border-bottom: 1px solid #cccccc">Корзина</span>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" width="100%" style="text-align: left;">
+        <?php
+        foreach($order->getPlugin('cart') as $row) {
+            $product = $row->getPlugin('product');
+            $count = $row->get('count');
+            $oCount = $row->get('order_count');
+
+            $html =
+                '<div style="padding-top: 4px;">'
+                    .'<a href="' . $domain . '/goods/' . $product->get('url') . '" style="color: #222; text-decoration: underline;">'
+                        . $product->get('name')
+                    .'</a> — ' . $oCount . ' шт. за ' . $oCount * $row->get('price') . ' руб.'
+                    . ($oCount == $count ?: ' <a href="/admin/catalog/products/edit/?id=' . $product->getId() . '#edit-tabs=stock" style="color: red">(' . $count . ' шт. на складе)</a>')
+                .'</div>'
+                .'<div style="color: #a4a4a4; font-size: 13px;">' . '(' . $row->getPlugin('size')->get('name') . ' ' . $row->getPlugin('taste')->get('name') . ')' . '</div>';
+
+            echo $html;
+        }
+        ?>
+        <div style="padding-top: 12px; color: #ffffff; font-size: 20px;"><strong>Итого: <?php echo $order->get('price') ?> руб.</strong></div>
+    </td>
+</tr>
+
+<tr><td colspan="2" height="20" style="height: 20px;"></td></tr>
+
+</tbody></table>
+</td></tr>

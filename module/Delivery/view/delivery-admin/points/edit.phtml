@@ -1,0 +1,147 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->header ?>
+</h1>
+
+<?php $form = $this->editForm ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="general">Основное</div>
+            <div class="tab" data-tab="photo">Фото</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="photo">
+                <?php
+                echo $this->AdminFormRow($form->get('images-images'));
+                ?>
+            </div>
+            <div class="tab" data-tab="general">
+                <?php
+                echo $this->AdminFormRow($form->get('city_id'));
+                echo $this->AdminFormRow($form->get('city'));
+                echo $this->AdminFormRow($form->get('price'));
+                echo $this->AdminFormRow($form->get('fitting'));
+                echo $this->AdminFormRow($form->get('shoes'));
+                echo $this->AdminFormRow($form->get('partial'));
+                echo $this->AdminFormRow($form->get('payment_cards'));
+                echo $this->AdminFormRow($form->get('phone'));
+                echo $this->AdminFormRow($form->get('worktime'));
+                echo $this->AdminFormRow($form->get('delay'));
+                ?>
+                <div class="row">
+                    <span class="label">Адрес</span>
+                    <?php echo $this->formElement($form->get('address')); ?>
+                    <span class="btn update-map">Позаказть на карте</span>
+                </div>
+                <?php
+                echo $this->AdminFormRow($form->get('route'));
+                ?>
+                <div class="row">
+                    <span class="label">Карта</span>
+                    <div id="contacts_map" style="height: 400px;"></div>
+                </div>
+                <?php
+                echo $this->AdminFormRow($form->get('latitude'));
+                echo $this->AdminFormRow($form->get('longitude'));
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <span class="btn btn-gray" onclick="history.back()">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </span>
+        <?php if($this->model->getId()) { ?>
+            <a class="btn btn-red btn-remove-ck" href="#popup-delete">
+                <i class="fas fa-times"></i>
+                Удалить
+            </a>
+        <?php } ?>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove" data-id="<?php echo $this->model->getId() ?>"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>
+
+<style>
+    #contacts_map {
+        width: 56.6%;
+        display: inline-block;
+        vertical-align: top;
+        border: 1px solid #D3D3D3;
+        border-radius: 3px;
+    }
+
+    #contacts_map img {
+        max-width: none;
+        width: auto;
+        height: auto;
+    }
+</style>
+
+<script type="text/javascript" src="//api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+<script>
+    $(function(){
+        var form = $('.edit-form');
+        //$('[name="phone"]', form).inputmask('+7 (999) 999-99-99');
+        //$('[name="work_time"]', form).inputmask('с 99:99 до 99:99');
+
+        var latEl = $('#latitude');
+        var lonEl = $('#longitude');
+
+        ymaps.ready(function() {
+            var map = new ymaps.Map('contacts_map', {
+                center: [latEl.val(), lonEl.val()],
+                controls: [],
+                zoom: 13
+            });
+
+            var marker = new ymaps.Placemark(map.getCenter(), {}, {
+                iconLayout: 'default#image',
+                draggable: true
+            });
+            map.geoObjects.add(marker);
+
+            marker.events.add('dragend', function(e) {
+                var cMarker = e.get('target');
+                var coords = cMarker.geometry.getCoordinates();
+
+                latEl.val(coords[0]);
+                lonEl.val(coords[1]);
+            });
+
+            var city = $('[name="delivery_id"]', form);
+            var address = $('[name="address"]', form);
+            $('.update-map', form).on('click', function () {
+                var cityName = city.find('option[value="' + city.val() + '"]').text();
+
+                var myGeocoder = ymaps.geocode(cityName + ', ' + address.val());
+
+                myGeocoder.then(
+                    function (res) {
+                        var coords = res.geoObjects.get(0).geometry.getCoordinates();
+                        marker.geometry.setCoordinates(coords);
+                        map.setCenter(coords);
+
+                        latEl.val(coords[0]);
+                        lonEl.val(coords[1]);
+                    },
+                    function (err) {
+                    }
+                );
+            });
+        });
+    });
+</script>

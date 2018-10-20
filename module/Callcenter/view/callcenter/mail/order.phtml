@@ -1,0 +1,63 @@
+<?php
+$order = $call->getPlugin('item');
+$attrs = $order->getPlugin('attrs');
+$isPickup = $attrs->get('delivery') == 'pickup';
+
+$html =
+'<tr>'
+    .'<td style="padding-bottom: 6px">'
+        .'<div class="row"><b>Заказ: </b><a href="' . $order->getEditUrl() . '">' . $order->getPublicId() . '</a></div>'
+        .'<div class="row"><b>Доставка: </b>' . $call->get('name') . '</div>'
+        .'<div class="row"><b>Стоимость: </b>' . ($order->get('price') + $order->get('delivery')) . 'руб.</div>'
+    .'</td>'
+.'</tr>';
+
+if($attrs->get('delivery')) {
+    $html .=
+    '<tr><td height="20" style="height: 20px;"></td></tr>'
+    .'<tr>'
+        .'<td>'
+            .'<span class="h2">' .  ($isPickup ? 'Самовывоз' : 'Доставка') . '</span>'
+        .'</td>'
+    .'</tr>'
+    .'<tr>'
+        .'<td>'
+            .'<div class="row">'
+                .'<a href="https://yandex.ru/maps/?mode=search&text=' . $order->getDeliveryAddress() . '">' . $order->getPlugin('city')->get('name') . ' ' . $order->getDeliveryAddress() . '</a>'
+            .'</div>'
+            .(!$isPickup ? '<div class="row">Дата доставки: ' . $attrs->get('date') . ' с ' . $attrs->get('time_from') . ' до ' . $attrs->get('time_to') . '</div>' : '')
+        .'</td>'
+    .'</tr>';
+}
+
+$html .=
+    '<tr><td height="20" style="height: 20px;"></td></tr>'
+    .'<tr>'
+        .'<td style="padding-bottom: 6px">'
+            .'<span style="font-size: 18px; font-weight: bold; padding-bottom: 4px; color: #000; text-transform: uppercase; border-bottom: 1px solid #cccccc">Корзина</span>'
+        .'</td>'
+    .'</tr>'
+    .'<tr>'
+        .'<td style="text-align: left;">';
+
+foreach($order->getPlugin('cart') as $row) {
+    $product = $row->getPlugin('product');
+    $count = $row->get('count');
+    $oCount = $row->get('order_count');
+
+    $html .=
+        '<div style="padding-top: 4px;">'
+            .'<a href="' . $domain . '/goods/' . $product->get('url') . '" style="color: #222; text-decoration: underline;">'
+                . $product->get('name')
+            .'</a> — ' . $oCount . ' шт. за ' . $oCount * $row->get('price') . ' руб.'
+            . ($oCount == $count ?: ' <a href="/admin/catalog/products/edit/?id=' . $product->getId() . '#edit-tabs=stock" style="color: red">(' . $count . ' шт. на складе)</a>')
+        .'</div>'
+        .'<div style="color: #a4a4a4; font-size: 13px;">' . '(' . $row->getPlugin('size')->get('name') . ' ' . $row->getPlugin('taste')->get('name') . ')' . '</div>';
+}
+
+$html .=
+        '<div style="padding-top: 12px; color: #ffffff; font-size: 20px;"><b>Итого: ' . $order->get('price') . 'руб.</b></div>'
+    .'</td>'
+.'</tr>';
+
+echo $html;

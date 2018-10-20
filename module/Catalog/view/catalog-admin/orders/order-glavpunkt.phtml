@@ -1,0 +1,147 @@
+<div class="popup-box panel popup-gp-order">
+    <div class="controls">
+        <span class="btn popup-form" href="/admin/catalog/orders/orders-controls/">Назад в меню</span>
+        <?php /*<span class="btn green add-invoice">Создать новую накладную</span>*/ ?>
+        <span class="btn set-status-collected">Cтатус "Собран"</span>
+        <span class="btn get-last-invoice">Печать накладной</span>
+    </div>
+    <div>
+        <div class="console"></div>
+    </div>
+</div>
+
+<script>
+$(function() {
+    var box = $('.popup-gp-order');
+    var consoleBox = $('.console', box);
+
+    function consoleClean() {
+        consoleBox.empty();
+    }
+
+    function consoleAdd(key, val, type) {
+        $('.row-ld', consoleBox).remove();
+
+        var html = '';
+
+        if(key !== undefined && key !== null) {
+            html =
+                '<div class="row row-kv">'+
+                    '<div class="key">' + key + ':</div>';
+        } else {
+            html =
+                '<div class="row row-kv">';
+        }
+
+        html +=
+            '<div class="status ' + type + '">' + val + '</div>';
+
+        html +=
+            '</div>';
+
+        consoleBox.append(html);
+    }
+
+    function consoleLoading() {
+        consoleBox.append(
+            '<div class="row row-ld">' +
+                '<div class="loading"><i class="fas fa-spin fa-refresh"></i></div>' +
+            '</div>');
+    }
+
+    $('.set-status-collected', box).on('click', function() {
+        consoleLoading();
+
+        $.ajax({
+            url: '/admin/catalog/orders/set-status-collected/',
+            method: 'post',
+            data: {type: <?php echo \Delivery\Model\Delivery::COMPANY_GLAVPUNKT ?>},
+            dataType: 'json',
+            success: function(resp) {
+                consoleClean();
+                $.each(resp.rows, function(key, val) {
+                    if(val == '') {
+                        consoleAdd(key, 'Статус изменен', 'success');
+                    } else {
+                        consoleAdd(key, val, 'error');
+                    }
+                });
+                getInvoice();
+            }
+        });
+    });
+
+
+    $('.get-last-invoice', box).on('click', function() {
+        getInvoice();
+    });
+
+    function getInvoice() {
+        $.ajax({
+            url: '/admin/catalog/orders/get-invoice-pdf/',
+            method: 'post',
+            data: {type: <?php echo \Delivery\Model\Delivery::COMPANY_GLAVPUNKT ?>},
+            dataType: 'json',
+            success: function(resp) {
+                if(resp.file == 'false' || resp.file == '0') {
+                    consoleAdd(null, 'Ошибка создания накладной', 'error');
+                }
+
+                consoleAdd(null, '<a href="' + resp.file + '" target="_blank">Печать накладной</a>', 'success');
+                window.open(resp.file, '_blank').focus();
+            }
+        });
+    }
+});
+</script>
+
+<style>
+    .popup-gp-order  {
+        min-width: 400px;
+    }
+
+    .popup-gp-order .controls {
+        margin: 0 0 15px 0;
+    }
+    
+    .popup-gp-order .console {
+        border-radius: 2px;
+        border: 1px solid #eee;
+        padding: 2px 5px;
+    }
+
+    .popup-gp-order .console .row {
+        position: relative;
+        font-size: 13px;
+        padding: 3px 10px 3px 10px;
+        border-bottom: 1px solid #eee;
+        clear: both;
+    }
+
+    .popup-gp-order .console .row.row-kv {
+
+    }
+
+    .popup-gp-order .console .row:last-child {
+        border-bottom: none;
+    }
+
+    .popup-gp-order .console .row .key {
+        float: left;
+        margin: 0 10px 2px 0;
+    }
+
+    .popup-gp-order .console .error {
+        color: red;
+    }
+
+    .popup-gp-order .console .success {
+        color: green;
+    }
+
+    .popup-gp-order .console .loading {
+        text-align: center;
+        font-size: 20px;
+        padding: 10px;
+    }
+</style>

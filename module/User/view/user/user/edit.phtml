@@ -1,0 +1,104 @@
+<?php $this->headScript()->prependFile('/js/jquery/form-validator.js'); ?>
+<?php $this->headScript()->prependFile('/js/jquery/inputmask.js'); ?>
+<?php $this->headLink()->prependStylesheet('/modules/user/css/main.css') ?>
+
+<?php
+$this->formRow()->setTranslatorTextDomain('User');
+$form->setAttributes(array(
+    'action'    => $this->url('user', array('action' => 'edit')),
+    'class'     => 'std-form',
+    'id'        => 'user-edit-form',
+    'method'    => 'post',
+    'enctype'   => 'multipart/form-data',
+));
+
+$form->get('attrs-name')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Имя:');
+
+$form->get('attrs-city')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Город:');
+
+$form->get('attrs-phone')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Телефон:');
+
+$form->get('attrs-company')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Название компании:');
+
+$form->get('attrs-inn')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('ИНН:');
+
+$form->get('attrs-kpp')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('КПП:');
+
+$form->get('attrs-ogrn')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('ОГРН:');
+
+$form->get('attrs-okved')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('ОКВЭД:');
+
+$form->get('attrs-u_address')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Юр. адрес:');
+
+$form->get('attrs-f_address')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Факт. адрес:');
+
+$form->get('attrs-c_phone')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Телефон:');
+
+$form->get('attrs-bank')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Банк:');
+
+$form->get('attrs-rc')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('Р/C:');
+
+$form->get('attrs-kc')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('К/C:');
+
+$form->get('attrs-bik')
+    ->setAttribute('class', 'std-input')
+    ->setLabel('БИК:');
+?>
+
+<form action="/user/edit/" method="post" class="block profile-edit std-form">
+    <div class="col">
+        <div class="title">Персональные данные</div>
+        <?php echo $this->formRow($form->get('attrs-name')); ?>
+        <?php echo $this->formRow($form->get('attrs-city')); ?>
+        <?php echo $this->formRow($form->get('attrs-phone')); ?>
+        <input type="submit" value="Сохранить" class="btn sbm">
+
+        <span class="user-saved">
+            <i class="fas fa-check"></i> изменения приняты
+        </span>
+    </div>
+    <div class="col">
+        <div class="title">Реквизиты, для юридического лица</div>
+        <?php echo $this->formRow($form->get('attrs-company')); ?>
+        <?php echo $this->formRow($form->get('attrs-inn')); ?>
+        <?php echo $this->formRow($form->get('attrs-kpp')); ?>
+        <?php echo $this->formRow($form->get('attrs-ogrn')); ?>
+        <?php echo $this->formRow($form->get('attrs-okved')); ?>
+        <?php echo $this->formRow($form->get('attrs-u_address')); ?>
+        <?php echo $this->formRow($form->get('attrs-f_address')); ?>
+        <?php echo $this->formRow($form->get('attrs-c_phone')); ?>
+        <?php echo $this->formRow($form->get('attrs-bank')); ?>
+        <?php echo $this->formRow($form->get('attrs-rc')); ?>
+        <?php echo $this->formRow($form->get('attrs-kc')); ?>
+        <?php echo $this->formRow($form->get('attrs-bik')); ?>
+    </div>
+    <div class="clear"></div>
+</form>

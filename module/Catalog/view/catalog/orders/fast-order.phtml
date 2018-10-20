@@ -1,0 +1,49 @@
+<div class="popup-box popup-fast-order">
+    <div class="header">
+        <div class="title">Заказ в 1 клик</div>
+        <div class="desc"><?php echo $product->get('name') ?></div>
+    </div>
+    <div class="body">
+        <form class="std-form js-fast-order" action="<?php echo $this->url('catalogFastOrder') ?>" method="post">
+            <div class="form-box">
+                <input type="hidden" value="<?php echo $count ?>" name="count">
+                <input type="hidden" value="<?php echo $product->getId() ?>" name="pid">
+                <input type="hidden" value="<?php echo $product->get('price_id') ?>" name="price_id">
+                <input type="hidden" value="<?php echo $product->get('taste_id') ?>" name="taste_id">
+                <div class="row">
+                    <input name="attrs-name" class="std-input" placeholder="Имя">
+                </div>
+                <div class="row">
+                    <input name="attrs-phone" class="std-input phone" placeholder="+7 (___) ___-__-__">
+                </div>
+                <div class="row" style="text-align: center;">
+                    <input type="submit" class="btn" value="Оформить заказ">
+                </div>
+            </div>
+            <div class="success-box">
+                <div class="sb-title">Спасибо за заказ</div>
+                <div class="sb-desc">Мы свяжемся с вами в ближайшее время для уточнения параметров оплаты и доставки</div>
+                <span class="btn" data-fancybox-close>Закрыть</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    require(['jquery', 'libFormValidator'], function($) {
+        $(function() {
+            var form = $('.js-fast-order');
+            require(['libInputMask'], function() {
+                $('input.phone', form).inputmask('+7 (999) 999-99-99');
+            });
+
+            form.formSubmit({
+                success: function(resp, form){
+                    $('.form-box', form).fadeOut(200, function(){
+                        $('.success-box', form).fadeIn(200);
+                    });
+                }
+            });
+        });
+    });
+</script>

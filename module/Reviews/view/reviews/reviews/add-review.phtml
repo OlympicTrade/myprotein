@@ -1,0 +1,75 @@
+<div class="popup-box popup-review">
+    <div class="header">
+        <div class="title">Новый отзыв</div>
+    </div>
+    <div class="body">
+        <form class="std-form js-product-review-form" action="<?php echo $this->url('addReview') ?>" method="post">
+            <div class="form-box">
+                <div class="row">
+                    <div class="label">Как вас зовут?</div>
+                    <input name="name" class="std-input">
+                </div>
+                <div class="row">
+                    <div class="label">Комментарий</div>
+                    <textarea name="review" class="std-textarea"></textarea>
+                </div>
+                <div class="row">
+                    <input type="submit" class="btn" value="Отправить отзыв">
+                </div>
+            </div>
+            <div class="success-box">
+                <div class="sb-title">Спасибо за отзыв</div>
+                <div class="sb-desc">Ваш отзыв отправлен на модерацию</div>
+                <span class="btn" data-fancybox-close>Закрыть</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    require(['jquery', 'libFormValidator'], function($) {
+        $(function() {
+
+            var form = $('.js-product-review-form');
+
+            var stars = $('.row-stars .star', form);
+            var starsInput = $('.row-stars input[name="stars"]', form);
+
+            function fillSatrs(star) {
+                stars.each(function(){
+                    if($(this).index() <= star.index()) {
+                        $(this).addClass('fill');
+                    } else {
+                        $(this).removeClass('fill');
+                    }
+                });
+            }
+
+            stars.on('click', function() {
+                var star = $(this);
+                stars.removeClass('active');
+                star.addClass('active');
+                starsInput.val(star.index() + 1);
+                fillSatrs(star);
+            });
+
+            stars.hover(function() {
+                var star = $(this);
+                fillSatrs(star);
+            }, function() {
+                fillSatrs($('.row-stars .active', form));
+            });
+
+            form.formSubmit({
+                success: function(resp, form){
+                    $('.form-box', form).fadeOut(200, function(){
+                        $('.success-box', form).fadeIn(200);
+                    });
+                }
+            });
+        });
+    });
+</script>
+<style>
+
+</style>

@@ -1,0 +1,137 @@
+<?php if($ajax) { ?>
+<div class="athlete-view ajax">
+    <div class="box">
+        <h1>
+            <?php echo $athlete->get('full_name') ?>
+            <span>(<?php echo $athlete->get('sport') ?>)</span>
+        </h1>
+
+        <?php if($athlete->get('text')) { ?>
+        <div class="desc">
+            <?php echo $athlete->get('text') ?>
+        </div>
+        <?php } ?>
+
+        <div class="pic">
+            <img src="<?php echo $athlete->getPlugin('image')->getImage('m') ?>" alt="<?php echo $athlete->get('full_name') ?>">
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="gallery">
+        <?php
+
+        $html = '';
+
+        $image = $athlete->getPlugin('image');
+        $html .=
+            '<div class="thumb" data-url="' . $image->getImage('m') . '">'
+                .'<img src="' . $image->getImage('m') . '" alt="">'
+            .'</div>';
+        
+        for($i = 1; $i <= 3; $i++) {
+            $vFiled = 'video_' . $i;
+            if($athlete->get($vFiled)) {
+                $html .=
+                    '<div class="thumb" data-url="//www.youtube.com/embed/' . $athlete->get($vFiled) . '">'
+                        .'<div class="iframe-box">'
+                            .'<iframe src="//www.youtube.com/embed/' . $athlete->get($vFiled) . '" frameborder="0" allowfullscreen></iframe>'
+                        .'</div>'
+                    . '</div>';
+            }
+        }
+
+        foreach($athlete->getPlugin('images') as $image) {
+            $html .=
+                '<div class="thumb" data-url="' . $image->getImage('m') . '">'
+                    .'<img src="' . $image->getImage('m') . '" alt="">'
+                .'</div>';
+        }
+
+        echo $html;
+        ?>
+    </div>
+</div>
+<?php } else { ?>
+<?php echo $this->header() ?>
+<div class="block">
+    <div class="wrapper">
+        <div class="athlete-view">
+            <div class="desc">
+                <?php echo $athlete->get('text') ?>
+            </div>
+            <div class="pic">
+                <img src="<?php echo $athlete->getPlugin('image')->getImage('m') ?>" alt="<?php echo $athlete->get('full_name') ?>">
+            </div>
+            <div class="clear"></div>
+
+            <div class="gallery">
+                <?php
+                $html = '';
+
+                $image = $athlete->getPlugin('image');
+                $html .=
+                    '<div class="thumb" data-url="' . $image->getImage('m') . '">'
+                        .'<img src="' . $image->getImage('m') . '" alt="">'
+                    .'</div>';
+
+                for($i = 1; $i <= 3; $i++) {
+                    $vFiled = 'video_' . $i;
+                    if($athlete->get($vFiled)) {
+                        $html .=
+                            '<div class="thumb" data-url="//www.youtube.com/embed/' . $athlete->get($vFiled) . '">'
+                                .'<div class="iframe-box">'
+                                    .'<iframe width="560" height="349" src="//www.youtube.com/embed/' . $athlete->get($vFiled) . '" frameborder="0" allowfullscreen></iframe>'
+                                .'</div>'
+                            . '</div>';
+                    }
+                }
+
+                foreach($athlete->getPlugin('images') as $image) {
+                    $html .=
+                        '<div class="thumb" data-url="' . $image->getImage('m') . '">'
+                            .'<img src="' . $image->getImage('m') . '" alt="">'
+                        .'</div>';
+                }
+
+                echo $html;
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+<script>
+    var box = $('.athlete-view');
+
+    $('.gallery', box).owlCarousel({
+        loop: true,
+        margin: 7,
+        nav: false,
+        responsive:{
+            0:{
+                items:3
+            },
+            600:{
+                items:4
+            },
+            1000:{
+                items:6
+            }
+        }
+    });
+
+    $('.gallery .thumb', box).on('click', function () {
+        $('.pic', box).empty().append($(this).clone());
+    });
+</script>
+
+
+
+
+
+
+
+
+

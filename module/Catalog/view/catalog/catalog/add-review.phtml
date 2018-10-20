@@ -1,0 +1,82 @@
+<div class="popup-box popup-product-review">
+    <div class="header">
+        <div class="title">Новый отзыв</div>
+        <div class="desc"><?php echo $product->get('name') ?></div>
+    </div>
+    <div class="body">
+        <form class="std-form js-product-review-form" action="<?php echo $this->url('productAddReview') ?>" method="post">
+            <div class="form-box">
+                <input type="hidden" value="<?php echo $product->getId() ?>" name="product_id">
+                <div class="row-stars">
+                    <input type="hidden" value="0" name="stars">
+                    <div class="stars">
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <input name="name" class="std-input" placeholder="Представьтесь">
+                </div>
+                <?php if(!\User\Service\AuthService::hasUser()) { ?>
+                <div class="row">
+                    <input name="email" class="std-input" placeholder="E-mail">
+                </div>
+                <?php } ?>
+                <div class="row">
+                    <textarea name="review" class="std-textarea" placeholder="Отзыв"></textarea>
+                </div>
+                <div class="row" style="text-align: center;">
+                    <input type="submit" class="btn" value="Отправить отзыв">
+                </div>
+            </div>
+            <div class="success-box">
+                <div class="sb-title">Спасибо за отзыв</div>
+                <div class="sb-desc">Ваш отзыв отправлен на модерацию</div>
+                <span class="btn" data-fancybox-close>Закрыть</span>
+            </div>
+        </form>
+    </div>
+
+	<script>
+		var form = $('.js-product-review-form');
+
+		var stars = $('.row-stars .star', form);
+		var starsInput = $('.row-stars input[name="stars"]', form);
+
+		function fillSatrs(star) {
+			stars.each(function(){
+				if($(this).index() <= star.index()) {
+					$(this).addClass('full');
+				} else {
+					$(this).removeClass('full');
+				}
+			});
+		}
+
+		stars.on('click', function() {
+			var star = $(this);
+			stars.removeClass('active');
+			star.addClass('active');
+			starsInput.val(star.index() + 1);
+			fillSatrs(star);
+		});
+
+		stars.hover(function() {
+			var star = $(this);
+			fillSatrs(star);
+		}, function() {
+			fillSatrs($('.row-stars .active', form));
+		});
+
+		form.formSubmit({
+			success: function(resp, form){
+				$('.form-box', form).fadeOut(200, function(){
+					$('.success-box', form).fadeIn(200);
+				});
+			}
+		});
+	</script>
+</div>

@@ -1,0 +1,56 @@
+<div class="popup-box popup-fast-order">
+    <div class="header">
+        <div class="title"><?php echo $product->get('name') ?></div>
+        <?php /*
+        <div class="title">Заявка на товар</div>
+        <div class="desc"><?php echo $product->get('name') ?></div>
+        */?>
+    </div>
+    <div class="body">
+        <form class="std-form js-product-request" action="<?php echo $this->url('productRequestFrom') ?>" method="post">
+            <div class="form-box">
+                <div class="notice">
+                    Мы закажем товар и уведомим вас о поступлении
+                </div>
+
+                <input type="hidden" value="<?php echo $count ?>" name="count">
+                <input type="hidden" value="<?php echo $product->getId() ?>" name="pid">
+                <input type="hidden" value="<?php echo $product->get('size_id') ?>" name="size_id">
+                <input type="hidden" value="<?php echo $product->get('taste_id') ?>" name="taste_id">
+                <div class="row">
+                    <input name="contact" class="std-input" placeholder="Телефон или E-mail">
+                </div>
+                <div class="btns" style="text-align: center;">
+                    <input type="submit" class="btn" value="Оставить заявку">
+                </div>
+            </div>
+            <div class="success-box">
+                <div class="sb-title">Спасибо за заявку</div>
+                <div class="sb-desc">Мы уведомим вас о поступлении товара в магазин</div>
+                <span class="btn" data-fancybox-close>Закрыть</span>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        .popup-fast-order .header .title {
+            font-size: 15px;
+        }
+
+        .popup-fast-order .notice {
+            margin-bottom: 12px;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        var form = $('.js-product-request');
+        form.formSubmit({
+            success: function(resp, form){
+                $('.form-box', form).fadeOut(200, function(){
+                    $('.success-box', form).fadeIn(200);
+                });
+            }
+        });
+    </script>
+</div>

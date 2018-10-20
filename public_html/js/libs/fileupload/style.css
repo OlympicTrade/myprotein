@@ -1,0 +1,65 @@
+.file-upload {
+
+}
+
+.file-upload input {
+    display: none;
+}
+
+.file-upload .attache-btn {
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.file-upload .attache-btn:hover {
+    color: #0f89d2;
+}
+
+.file-upload {
+    border-bottom: 2px solid #8a8a8a;
+    padding-bottom: 8px;
+}
+
+.upload-list{
+
+}
+
+.upload-list .file {
+    position: relative;
+    height: 25px;
+    margin-bottom: 5px;
+}
+
+.upload-list .file .filename {
+    font-size: 15px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.upload-list .file .filesize {
+    position: absolute;
+    right: 22px;
+    top: 0;
+}
+
+.upload-list .file .close {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    color: #d63524;
+    cursor: pointer;
+}
+
+.upload-list .file .progress {
+    width: 100%;
+    background: #00aeef;
+    height: 2px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.upload-list li.error p{
+    color:red;
+}

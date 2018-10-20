@@ -1,0 +1,97 @@
+<?php if($ajax) { ?>
+<div class="athlete-view ajax">
+    <div class="box">
+        <div class="col-r">
+            <h1><?php echo $athlete->get('full_name') ?></h1>
+            <?php echo $athlete->get('text') ?>
+        </div>
+        <div class="col-l">
+            <div class="pic">
+                <img src="<?php echo $athlete->getPlugin('image')->getImage('m') ?>" alt="<?php echo $athlete->get('full_name') ?>">
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="gallery">
+        <?php
+        $html = '';
+
+        $image = $athlete->getPlugin('image');
+        $html .=
+            '<div class="thumb" data-url="' . $image->getImage('m') . '">'
+                .'<img src="' . $image->getImage('m') . '" alt="">'
+            .'</div>';
+
+        for($i = 1; $i <= 3; $i++) {
+            $vFiled = 'video_' . $i;
+            if($athlete->get($vFiled)) {
+                $html .=
+                    '<div class="thumb" data-url="//www.youtube.com/embed/' . $athlete->get($vFiled) . '">'
+                            .'<div class="iframe-box">'
+                            .'<iframe src="//www.youtube.com/embed/' . $athlete->get($vFiled) . '" frameborder="0" allowfullscreen></iframe>'
+                            .'</div>'
+                    . '</div>';
+            }
+        }
+
+        foreach($athlete->getPlugin('images') as $image) {
+            $html .=
+                '<div class="thumb" data-url="' . $image->getImage('m') . '">'
+                    .'<img src="' . $image->getImage('m') . '" alt="">'
+                .'</div>';
+        }
+
+        echo $html;
+        ?>
+    </div>
+</div>
+<?php } else { ?>
+<?php echo $this->header() ?>
+<div class="block">
+    <div class="wrapper">
+        <div class="athlete-view">
+            <div class="box">
+                <div class="col-r">
+                    <?php echo $athlete->get('text') ?>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="gallery">
+                <?php
+                $html = '';
+
+                foreach($athlete->getPlugin('images') as $image) {
+                    $html .=
+                        '<div class="thumb">'
+                            .'<img src="' . $image->getImage('m') . '" alt="">'
+                        .'</div>';
+                }
+
+                for($i = 1; $i <= 3; $i++) {
+                    $vFiled = 'video_' . $i;
+                    if($athlete->get($vFiled)) {
+                        $html .=
+                            '<div class="thumb" data-url="//www.youtube.com/embed/' . $athlete->get($vFiled) . '">'
+                                .'<div class="iframe-box">'
+                                    .'<iframe width="560" height="349" src="//www.youtube.com/embed/' . $athlete->get($vFiled) . '" frameborder="0" allowfullscreen></iframe>'
+                                .'</div>'
+                            . '</div>';
+                    }
+                }
+
+                echo $html;
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php } ?>
+
+
+
+
+
+
+

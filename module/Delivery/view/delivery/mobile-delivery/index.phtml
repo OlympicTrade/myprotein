@@ -1,0 +1,90 @@
+<?php $city = $delivery->getCity() ?>
+
+<?php if($ajax) { ?>
+<div class="popup-box popup-delivery">
+    <div class="header">
+        <div class="title">Доставка</div>
+    </div>
+    <div class="body">
+        <div class="delivery-view">
+            <h2>Оплата:</h2>
+            <p>Оплата производиться наличными средствами при получения заказа и проверки товара.</p>
+
+            <h2>Курьерская доставка</h2>
+            <?php echo $delivery->get('delivery_text') ?>
+
+            <h2>Самовывоз</h2>
+            <?php echo $delivery->get('pickup_text') ?>
+            <a href="/delivery/points/?type=view" class="popup">Открыть карту пунктов самовывоза</a>
+        </div>
+    </div>
+</div>
+<?php } else { ?>
+<a class="block-header" href="javascript:history.back()">
+    <div class="back"></div>
+    <h1><?php echo $header ?></h1>
+</a>
+
+
+<div class="block">
+    <div class="wrapper">
+        <div class="delivery-view">
+            <div class="region">
+                Регион доставки: <a href="/regions/" class="popup"><?php echo $city->get('name') ?></a>
+            </div>
+
+            <h2>Оплата:</h2>
+            <?php
+            if($city->isCapital()) {
+                echo '<p>Оплата производиться наличными средствами или банковской картой при получения заказа и проверки товара.</p>';
+            } else {
+                echo '<p>Доставка в данный регион осуществляется по предоплате. Оплату можно произвести банковской картой или Яндекс деньгами</p>';
+            }
+            ?>
+
+            <?php
+            //post
+            $freeDelivery = $city->getFreeDeliveryPrice();
+
+            echo
+                '<h2>Курьерская доставка</h2>'
+                .'<p>Стоимость курьерской доставки составляет ' . $city->get('delivery_income') . ' руб., при заказе от ' . $freeDelivery . ' руб. - бесплатно.</p>'
+                .'<p>Оплата производиться наличными средствами при получения заказа и проверки товара.</p>';
+
+
+            echo
+                '<h2>Самовывоз</h2>'
+                .'<p>Стоимость самовывоза составляет ' . $city->get('pickup_income') . ' руб., при заказе от ' . $freeDelivery . ' - бесплатно.</p>'
+                .'<p>При поступлении товаров на точку выдачи, вам приходит SMS оповещение, затем в течении 7 дней вы сможете забрать свой заказ.</p>';
+
+
+            /*$post = new \Aptero\Delivery\RussianPost();
+            $price = $post->getPrice([
+                'weight'      => '1000',
+                'summ'        => '1400',
+                'to_index'    => $city->get('index'),
+            ]);
+
+            echo
+                '<h2>Почта России</h2>'
+                .'<p>Доставка Почтой России. Заказ отправляеться на следующий день после оформления и вам по SMS высылается номер отслеживания посылки. Необходима полная предоплата заказа.</p>'
+                .'<p>Стоимость доставки: <b>' . $this->price($price) . ' <i class="fas fa-ruble-sign"></i></b> (может изменится в зависимости от стоимости и веса заказа)</p>';*/
+            ?>
+
+            <div class="maps">
+                <div class="map" id="delivery-map"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    setPickupMap({
+        id:     'delivery-map',
+        zoom:   10,
+        pointsData: {
+            type: 'view'
+        }
+    });
+</script>
+<?php } ?>

@@ -1,0 +1,123 @@
+<style>
+    .reset-form {
+        padding: 30px 40px;
+    }
+	
+	.reset-form {
+        padding: 20px;
+        width: 335px;
+        margin: 30px auto;
+        text-align: center;
+    }
+
+    .reset-form .title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 25px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .reset-form .row {
+        margin-bottom: 10px;
+    }
+
+    .reset-form .row-btns {
+        margin-top: 20px;
+    }
+
+    .reset-form .msgs .msg {
+        background: #e84732;
+        color: #ffffff;
+        border-radius: 4px;
+        text-align: center;
+        padding: 4px 0;
+        margin-bottom: 10px;
+    }
+</style>
+
+<?php if(!$isAjax) { ?>
+<div class="block">
+    <div class="wrapper">
+<?php } ?>
+<div class="popup-box popup-reset">
+    <div class="header">
+        <div class="title">Новый пароль</div>
+    </div>
+    <div class="body std-form">
+
+        <?php
+        $form
+            ->setAttribute('action', '')
+            ->setAttribute('class', 'std-form')
+            ->setAttribute('id', 'reset-form')
+            ->setAttribute('method', 'post');
+
+        $form->get('password_repeat')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'Еще раз');
+
+        $form->get('password')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'Пароль');
+        ?>
+
+        <?php echo $this->form()->openTag($form); ?>
+
+        <div class="form-box">
+            <div class="form-errors"></div>
+
+            <?php echo $this->formCollection($form); ?>
+
+            <div class="row-btns">
+                <input type="submit" value="Отправить" class="btn">
+            </div>
+        </div>
+
+        <div class="success-box">
+            Пароль обновлен
+
+            <div class="sb-btns">
+                <a href="<?php echo $this->url('login') ?>" class="popup btn">Войти</a>
+            </div>
+        </div>
+
+        <?php echo $this->form()->closeTag($form); ?>
+    </div>
+</div>
+<?php if(!$isAjax) { ?>
+    </div>
+</div>
+<?php } ?>
+
+<script>
+    var form = $('#reset-form');
+    form.formSubmit({
+        success: function(resp, form){
+            $('.form-box', form).fadeOut(200, function(){
+                $('.success-box', form).fadeIn(200);
+            });
+        }
+    });
+</script>
+
+<style>
+    .popup-reset {
+        width: 295px;
+        margin: 0 auto;
+    }
+
+    .popup-reset .row-btns {
+        text-align: center;
+    }
+
+    .popup-reset .title {
+        text-align: center;
+    }
+
+    .popup-reset .row-btns .btn {
+        width: 100%;
+    }
+</style>
+
+

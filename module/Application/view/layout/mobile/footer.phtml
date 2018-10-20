@@ -1,0 +1,21 @@
+<div id="footer" class="block">
+	<ul class="menu">
+        <li><a href="/delivery/">Доставка и оплата</a></li>
+        <li><a href="/about/">О бренде Myprotein</a></li>
+    </ul>
+    <div class="clear"></div>
+    
+    <ul class="contacts">
+        <li class="row"><a href="<?php echo $this->link($contacts->get('phone_1')) ?>"><i class="fas fa-phone"></i> <?php echo $contacts->get('phone_1') ?></a></li>
+        <li class="row"><a href="<?php echo $this->link($contacts->get('email')) ?>"><i class="far fa-envelope"></i> <?php echo $contacts->get('email') ?></a></li>
+        <?php /*<li class="row"><a href="<?php echo $contacts->get('vkontakte') ?>"><i class="fab fa-vk"></i> myprotein_buy</a></li>*/ ?>
+    </ul>
+</div>
+
+<?php
+echo $this->settings->get('html_body');
+?>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css">
+<noscript><div><img src="https://mc.yandex.ru/watch/47855381" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+</body>
+</html>

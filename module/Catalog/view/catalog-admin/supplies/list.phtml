@@ -1,0 +1,348 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->engine->module->get('name') ?>
+
+    <?php
+    $addUrl = $this->url('admin', array(
+        'module' => $this->engine->module->get('module'),
+        'section' => $this->engine->module->get('section'),
+        'action' => 'edit'
+    ));
+    
+    $settingsUrl = $this->url('admin', array(
+        'module' => $this->engine->module->get('module'),
+        'section' => $this->engine->module->get('section'),
+        'action' => 'settings'
+    ));
+    ?>
+    <a href="<?php echo $settingsUrl ?>" class="module-config"><i class="fas fa-cog"></i></a>
+</h1>
+
+<div class="panel supply-users">
+    <div class="list">
+    <?php
+    $users = \CatalogAdmin\Model\Supplies::$users;
+    $maxWight = 30;
+
+    $data = [];
+
+    foreach ($users as $key => $user) {
+        $data[$key] = [
+            'name'   => $user,
+            'weight' => 0,
+        ];
+    }
+
+    foreach ($statistic['weight'] as $stat) {
+        $data[$stat['user_id']]['weight'] = $stat['weight'];
+    }
+
+    foreach ($data as $id => $stat) {
+        $percent = (int) min(($stat['weight'] / $maxWight) * 100, 100);
+        echo
+            '<a href="/admin/catalog/supplies/list/?user_id=' . $id . '#supplies-list" class="box">'
+                .'<div class="name">' . $stat['name'] . '</div>'
+                .'<div class="stat">'
+                    .'<div class="percent" style="width: ' . $percent . '%">'
+                        .'<span class="val">' . $stat['weight'] . ' кг</span>'
+                    .'</div>'
+                .'</div>'
+            .'</a>';
+    } ?>
+    </div>
+    <div class="clear"></div>
+    <a href="javascript:" class="show-hide">Показать/Скрыть список имен</a>
+</div>
+
+<?php
+$html = '';
+$price = 0;
+
+foreach ($statistic['requested'] as $row) {
+    $product = $row->getPlugin('product');
+
+    if($row->get('limit') <= ($row->get('supplies_stock') + $row->get('products_stock'))) {
+        continue;
+    }
+
+    $price += ($row->get('limit') - $row->get('stock')) * $product->get('price') *0.7;
+
+    $html .=
+        '<div class="box ' . $class . '">'
+            .'<a href="/admin/catalog/products/edit/?id=' . $product->getId() . '" class="name" title="' . $product->get('name') . '">' . $product->get('name') . '</a>'
+            .($product->get('mp_url') ? '<a href="' . $product->get('mp_url') . '" target="_blank" class="mp" title="' . $product->get('name') . '"><i class="fas fa-shopping-cart"></i></a>' : '')
+            .'<span class="check"><i class="fas fa-check"></i></span>'
+            .'<div class="size">' . $product->get('size') . ' (' . $product->get('taste') . ')</div>'
+            .'<div>'
+                .'<div class="row">'
+                    .'<div class="label">На складе:</div> ' . ($row->get('supplies_stock') ? '(' . (int) $row->get('products_stock') . ' + ' . $row->get('supplies_stock') . ')' : (int) $row->get('products_stock')) . ' шт'
+                .'</div>'
+                .'<div class="row">'
+                    .'<div class="label">Закупить:</div> ' . (int)($row->get('limit') - $row->get('stock')) . ' шт'
+                .'</div>'
+            .'</div>'
+        .'</div>';
+}
+
+if($html) {
+    echo
+        '<div class="panel supply-products">'
+        .$html
+        .'<div class="clear"></div>'
+            .'<div class="cash-gap">'
+                .'Сумма закупки: ' . $this->price($price) . ' руб.'
+            .'</div>'
+        .'</div>';
+}
+
+?>
+
+<div class="panel supply-products">
+    <div style="margin-bottom: 20px;">
+        <a href="/admin/catalog/supplies/list/">Все</a>
+        | <a href="/admin/catalog/supplies/list/?margin=green#supplies-products-list">Зеленые</a>
+        | <a href="/admin/catalog/supplies/list/?margin=yellow#supplies-products-list">Желтые</a>
+        | <a href="/admin/catalog/supplies/list/?margin=red#supplies-products-list">Красные</a>
+        | <a href="/admin/catalog/supplies/list/?margin=black#supplies-products-list">Черные</a>
+    </div>
+    <?php
+    $html = '';
+    $price = 0;
+
+    foreach ($statistic['lacked'] as $row) {
+        $product = $row->getPlugin('product');
+
+        if($row->get('limit') <= $row->get('stock')) {
+            continue;
+        }
+
+        $price += ($row->get('limit') - $row->get('stock')) * $product->get('price') *0.7;
+        $margin = $product->get('margin');
+        if($margin == 0) {
+            $class = 'b';
+        } elseif($margin < 40) {
+            $class = 'g';
+        } elseif($margin < 50) {
+            $class = 'y';
+        } else {
+            $class = 'r';
+        }
+
+        $html .=
+            '<div class="box ' . $class . '">'
+                .'<a href="/admin/catalog/products/edit/?id=' . $product->getId() . '" class="name" title="' . $product->get('name') . '">' . $product->get('name') . '</a>'
+                .($product->get('mp_url') ? '<a href="' . $product->get('mp_url') . '" target="_blank" class="mp" title="' . $product->get('name') . '"><i class="fas fa-shopping-cart"></i></a>' : '')
+                .'<span class="check"><i class="fas fa-check"></i></span>'
+                .'<div class="size">' . $product->get('size') . ' (' . $product->get('taste') . ')</div>'
+                .'<div>'
+                    .'<div class="row">'
+                        .'<div class="label">Лимит:</div> ' . (int)$row->get('limit') . ' шт'
+                    .'</div>'
+                    .'<div class="row">'
+                        .'<div class="label">На складе:</div> ' . ((int) $row->get('supplies_stock') ? '(' . $row->get('products_stock') . ' + ' . $row->get('supplies_stock') . ')' : (int) $row->get('products_stock')) . ' шт'
+                    .'</div>'
+                    .'<div class="row">'
+                        .'<div class="label">Закупить:</div> ' . (int)($row->get('limit') - $row->get('stock')) . ' шт'
+                    .'</div>'
+                .'</div>'
+            .'</div>';
+    }
+
+    echo $html;
+    ?>
+    <div class="clear"></div>
+
+    <div class="cash-gap">
+        Сумма закупки: <?php echo $this->price($price) . ' руб.' ?>
+    </div>
+</div>
+
+<div class="panel" id="supplies-list">
+    <div class="filters">
+        <?php $form = $this->filterForm ?>
+        <?php echo $this->form()->openTag($form) ?>
+        <a href="<?php echo $addUrl ?>" class="btn btn-blue">Добавить</a>
+        <div class="filter search">
+            <?php echo $this->formElement($form->get('search')) ?>
+            <span class="btn btn-blue btn-submit">Применить</span>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+        <div class="clear"></div>
+    </div>
+    <?php echo $this->adminTableList($this->fields, $this->tableData); ?>
+</div>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>
+
+<script>
+    var su = $('.supply-users');
+    $('.show-hide', su).on('click', function () {
+        $('.list', su).slideToggle(200);
+    });
+
+
+    var sp = $('.supply-products');
+    $('.check', sp).on('click', function () {
+        $(this).closest('.box').toggleClass('fade');
+    });
+</script>
+
+<style>
+    .supply-users .list {
+        display: none;
+    }
+
+    .supply-users .box {
+        color: #333333;
+        position: relative;
+        float: left;
+        margin-right: 10px;
+        width: 380px;
+        margin-bottom: 10px;
+        background: #eaeaea;
+        padding: 5px 5px 5px 5px;
+    }
+
+    .supply-users .box:hover {
+        background: #d0d0d0;
+    }
+
+    .supply-users .name {
+        width: 260px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 13px;
+        overflow: hidden;
+    }
+
+    .supply-users .stat {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        border: 1px solid #333333;
+        height: 20px;
+        width: 100px;
+        background: #ffffff;
+    }
+
+    .supply-users .percent {
+        width: 75%;
+        color: #ffffff;
+        background: #108fe3;
+        height: 18px;
+        overflow: hidden;
+    }
+
+    .supply-users .val {
+        display: inline-block;
+        margin-left: 5px;
+    }
+
+    .supply-products {
+        overflow-y: scroll;
+        max-height: 500px;
+    }
+
+    .supply-products .box {
+        position: relative;
+        float: left;
+        margin-right: 9px;
+        margin-bottom: 12px;
+        width: 190px;
+        border: 1px solid #333333;
+        border-top: 3px solid #333333;
+        transition: all ease .2s;
+    }
+
+    .supply-products .box.fade {
+        opacity: 0.4;
+    }
+
+    .supply-products .box.g {
+        border-top: 3px solid #2e9c33;
+    }
+
+    .supply-products .box.y {
+        border-top: 3px solid #d9d600;
+    }
+
+    .supply-products .box.r {
+        border-top: 3px solid #ef4105;
+    }
+
+    .supply-products .mp,
+    .supply-products .check {
+        display: block;
+        width: 22px;
+        height: 22px;
+        line-height: 22px;
+        text-align: center;
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 13px;
+        color: #000000;
+        background: #eeeeee;
+        cursor: pointer;
+    }
+
+    .supply-products .mp:hover,
+    .supply-products .check:hover {
+        background: #0060c1;
+        color: #ffffff;
+    }
+
+    .supply-products .check {
+        top: 22px;
+    }
+
+    .supply-products .box.fade .check {
+        color: #2e9c33;
+    }
+
+    .supply-products .name {
+        display: block;
+        font-size: 14px;
+        padding: 6px 22px 0 8px;
+        overflow: hidden;
+        height: 26px;
+    }
+
+    .supply-products .size {
+        font-size: 13px;
+        color: #939393;
+        padding: 0 8px 0 8px;
+        margin-bottom: 8px;
+        height: 18px;
+        overflow: hidden;
+    }
+
+    .supply-products .row {
+        padding: 2px 8px;
+        position: relative;
+        text-align: right;
+        font-size: 13px;
+    }
+
+    .supply-products .row:nth-child(2n) {
+        background: #eeeeee;
+    }
+
+    .supply-products .row .label {
+        position: absolute;
+        left: 10px;
+        top: 0;
+    }
+
+    .supply-products .cash-gap {
+        padding: 6px 10px;
+        font-size: 15px;
+        background: #e5e5e5;
+        font-weight: 600;
+    }
+</style>

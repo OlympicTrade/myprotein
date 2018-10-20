@@ -1,0 +1,295 @@
+<div class="popup-box popup-regions">
+    <div class="header">
+        <div class="title">Ваш регион: </div>
+    </div>
+    <div class="body">
+        <div class="menu">
+            <div class="col search">
+                <span class="item">
+                    <i class="fas fa-search loupe"></i>
+                    <i class="far fa-times-circle clear"></i>
+                    <input placeholder="Поиск по названию">
+                </span>
+            </div>
+            <div class="col type">
+                <span class="list active" data-type="list">Списком</span>
+                <span class="map" data-type="map">На карте</span>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="results">
+            <div class="map" id="regions-map"></div>
+            <div class="list">
+                <div class="regions">
+                    <?php foreach($regions as $region) {
+                        $class = 'row' . ($region->get('priority') == 100 ? ' im' : '');
+                        echo '<div class="' . $class . '" data-id="' . $region->getId() . '">' . $region->get('name') . '</div>';
+                    } ?>
+                </div>
+                <div class="cities"></div>
+            </div>
+            <div class="search"></div>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            var box = $('.popup-regions');
+            var menu = $('.menu', box);
+            var results = $('.results', box);
+            var list = $('.list', results);
+            var map = $('.map', results);
+            var search = $('.search', results);
+
+            var focus = 0;
+            function setFocus(el) {
+                focus++;
+                el.css({zIndex: focus})
+                    .siblings()
+                    .removeClass('focus');
+            }
+
+            function setRegion(cityId, cityName) {
+                $.cookie('city', cityId, {expires: 365, path: "/"});
+
+                <?php if($reload) { ?>
+                    location.reload();
+                <?php } else { ?>
+                    $('.region-name').text(cityName);
+                    $.fancybox.close();
+                <?php } ?>
+            }
+
+            setFocus(list);
+
+            $('.type span', menu).on('click', function (){
+                var el = $(this);
+                $(this).addClass('active')
+                    .siblings()
+                    .removeClass('active');
+
+                console.log(el.data('type'));
+
+                setFocus($('.' + el.data('type'), results));
+            });
+
+            $('.search .clear', menu).on('click', function () {
+                $('.search input', menu).val('');
+                $('.search .clear', menu).css({display: 'none'});
+                search.css({zIndex: '0'});
+            });
+
+            $('.search input', menu).on('keyup', function () {
+                if($(this).val() == '') {
+                    $('.search .clear', menu).trigger('click');
+                    return;
+                }
+
+                $('.search .clear', menu).css({display: 'block'});
+                $.ajax({
+                    url: '/delivery/cities-search/',
+                    data: {q: $(this).val()},
+                    method: 'post',
+                    success: function(resp) {
+                        setFocus(search);
+                        search.html(resp.html);
+                    }
+                });
+            });
+            
+            $('.regions .row', list).on('click', function() {
+                $.ajax({
+                    url: '/delivery/get-cities/',
+                    data: {rid: $(this).data('id')},
+                    method: 'post',
+                    success: function(resp) {
+                        $('.cities', list).html(resp.html);
+                    }
+                });
+            });
+
+            results.on('click', '.cities .row, .search .row', function() {
+                var el = $(this);
+                setRegion(el.data('id'), el.data('name'));
+            });
+
+            setPickupMap({
+                id:  'regions-map',
+                url: '/delivery/cities-map-data/',
+                zoom: 4,
+                onInit: function(map) {
+                    $('#regions-map').on('click', '.chose-city', function() {
+                        setRegion($(this).data('id'), $(this).data('name'));
+                    });
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .popup-regions {
+            width: 500px;
+        }
+
+        .popup-regions .header {
+            margin-bottom: 0;
+        }
+
+        .popup-regions .body {
+            padding: 0;
+        }
+
+        .popup-regions .menu {
+            border-bottom: 1px solid #cdcdcd;
+        }
+
+        .popup-regions .menu .col {
+            padding: 15px;
+            width: 50%;
+            float: left;
+        }
+
+        .popup-regions .menu .col.search {
+            width: 60%;
+            padding: 15px 7px 15px 15px;
+        }
+
+        .popup-regions .menu .col.type {
+            width: 40%;
+            padding: 15px 15px 15px 7px;
+        }
+
+        .popup-regions .menu .item {
+            border: 1px solid #cdcdcd;
+            border-radius: 2px;
+            font-size: 15px;
+            display: block;
+        }
+
+        .popup-regions .menu .map .item {
+            padding: 5px 14px;
+        }
+
+        .popup-regions .menu .map .item i {
+            margin-right: 5px;
+        }
+
+        .popup-regions .menu .search .item {
+            position: relative;
+        }
+
+        .popup-regions .menu .search .loupe {
+            position: absolute;
+            top: 5px;
+            left: 14px;
+        }
+
+        .popup-regions .menu .search .clear {
+            position: absolute;
+            top: 5px;
+            font-size: 18px;
+            right: 6px;
+            display: none;
+            cursor: pointer;
+        }
+
+        .popup-regions .menu .search input {
+            width: 100%;
+            border: none;
+            padding: 5px 30px 5px 38px;
+            font-size: 15px;
+        }
+
+        .popup-regions .menu .type .map {
+
+        }
+
+        .popup-regions .menu .type span {
+            width: 50%;
+            float: left;
+            display: block;
+            padding: 5px 4px;
+            color: #000000;
+            border: 1px solid #c7c7c7;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .popup-regions .menu .type .list {
+            border-radius: 2px 0 0 2px;
+            border-right: 1px solid #c7c7c7;
+        }
+
+        .popup-regions .menu .type .map {
+            border-radius: 0 2px 2px 0;
+        }
+
+        .popup-regions .menu .type span.active {
+            background: #0060c1;
+            border-color: #0060c1;
+            color: #ffffff;
+        }
+
+        .popup-regions .results {
+            height: 470px;
+            position: relative;
+        }
+
+        .popup-regions .results .list,
+        .popup-regions .results .search,
+        .popup-regions .results .map {
+            font-size: 15px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+        }
+
+        .popup-regions .results .list.focus,
+        .popup-regions .results .search.focus,
+        .popup-regions .results .map.focus {
+            z-index: 10;
+        }
+
+        .popup-regions .results .list .regions,
+        .popup-regions .results .list .cities {
+            display: block;
+            float: left;
+            overflow-y: scroll;
+            width: 50%;
+            height: 470px;
+        }
+
+        .popup-regions .results .list .regions {
+            background: #f8f8f8;
+        }
+		
+        .popup-regions .results .empty {
+            padding: 4px 15px;
+        }
+		
+        .popup-regions .results .row {
+            cursor: pointer;
+            padding: 4px 15px;
+        }
+
+        .popup-regions .results .row.im {
+            font-weight: bold;
+        }
+
+        .popup-regions .results .row:hover {
+            color: #0060c1;
+        }
+
+        .popup-regions .point-desc .row {
+            padding: 2px 0;
+        }
+
+        .popup-regions .point-desc .title {
+            font-weight: 700;
+        }
+    </style>
+</div>

@@ -1,0 +1,16 @@
+<h2>Myprotein</h2>
+
+<hr/>
+
+<h3>File:</h3>
+<pre><?php echo $exception->getFile() ?>: <?php echo $exception->getLine() ?></pre>
+
+<h3>Message:</h3>
+<pre><?php echo get_class($exception); ?>: <?php echo $exception->getMessage() ?></pre>
+
+<h3>Stack trace:</h3>
+<?php
+foreach (explode("\n", $exception->getTraceAsString()) as $row) {
+    echo '<p>' . $row . '</p>';
+}
+?>

@@ -1,0 +1,294 @@
+<div class="panel">
+	<?php /*
+	<form class="filter" action="" method="get">
+		<?php
+		//echo $this->AdminFormRow($form->get('type'));
+		echo $this->AdminFormRow($form->get('date_from'));
+		echo $this->AdminFormRow($form->get('date_to'));
+		//echo $this->AdminFormRow($form->get('interval'));
+		?>
+		<div class="clear"></div>
+	</form>
+	*/ ?>
+	
+    <div class="adwords-stats">
+        <?php
+        $html = '';
+        $adwProfit = 0;
+        $adwClients = 0;
+        $adwViews = 0;
+		
+		$row = function($key, $val) {
+			return 
+			'<div class="row">'
+				.'<div class="key">' . $key . '</div>'
+				. $val
+			.'</div>';
+		};
+		
+        foreach($adwordsStatistic as $adwords) {
+            $profit = $adwords['income'] - $adwords['cost'];
+            $adwProfit += $profit;
+            $adwOutgo += $adwords['cost'];
+            $adwClients += $adwords['clients'];
+            $adwViews += $adwords['views'];
+            $html .=
+                '<div class="item">'
+                    .'<a href="/admin/adwords/adwords/edit/?id=' . $adwords['id'] . '" class="name">'
+                        . $adwords['source'] . ' - ' . $adwords['company']
+                    .'</a>'
+                    .'<div class="list">'
+						.$row('Посетителей', (int) $adwClients)
+						.$row('Просмотров', (int) $adwViews)
+						.$row('Перекрытие', (int) $adwords['cross'])
+						.$row('Заказов', (int) $adwords['orders'])
+						.$row('Доход', (int) $adwords['income'])
+						.$row('Расход', (int) $adwords['cost'])
+						.$row('Прибыль', '(' . ((int) @($profit / $adwords['cost'] * 100)) . '%) ' . $profit)
+
+                        .'<div class="title">Стоимость одного:</div>'
+						
+						.$row('Посетителя', (int) @($adwords['cost'] / $adwClients))
+						.$row('Просмотра', (int) @($adwords['cost'] / $adwViews))
+						.$row('Заказа', (int) @($adwords['cost'] / $adwords['orders']))
+                    .'</div>'
+                .'</div>';
+        }
+        echo $html;
+        ?>
+        <div class="clear"></div>
+    </div>
+	
+	<div class="statistic-chart">
+		<?php
+		$balance = $balanceStatistic;
+		$totalProfit = $balance['profit'] - $adwOutgo;
+		
+		$trow = function($key, $val) {
+			return 
+			'<div class="trow">'
+				.'<div class="label">' . $key . '</div>'
+				. $val
+			.'</div>';
+		};
+		
+		$html = 
+			 $trow('Доход', $this->price($balance['income']))
+			.$trow('Расход', $this->price($balance['outgo']))
+			.$trow('Доля рекламы', $this->price((int) @($adwProfit / $totalProfit * 100)) . ' %')
+			.$trow('Всего посетителей', $this->price($adwClients))
+			.$trow('Всего просмотров', $this->price($adwViews))
+			.$trow('Прибыль', $this->price($totalProfit));
+		
+		echo $html;
+		?>
+	</div>
+	
+	<div class="statistic-chart">
+		<?php
+		$products = [];
+		
+		foreach ($saleStatistic as $row) {
+			$products[] = $row;
+		}
+		
+		usort($products, function($a, $b) {
+			return (($a['s_price'] - $a['b_price']) * $a['count']) < (($b['s_price'] - $b['b_price']) * $b['count']);
+		});
+
+		echo $trow('Товар:', 'Прибыль');
+		
+		foreach ($products as $row) {
+			$prodProfit = (int) ($row['s_price'] - $row['b_price']) * $row['count'];
+			echo $trow(
+				$this->subStr($row['name'], 33, '') . ' (' . $row['taste'] . ' - ' . $row['size'] . ') :',
+				'(' . round($prodProfit / $balance['income'] * 100) . '%) ' . $this->price($prodProfit)
+			);
+		} ?>
+	</div>
+</div>
+
+<style>
+    .adwords-stats .item {
+        width: 200px;
+        border: 1px solid #7d7d7d;
+        float: left;
+        margin-right: 20px;
+    }
+	
+    .adwords-stats .item .title {
+        font-weight: bold;
+        padding: 14px 10px 4px 10px;
+    }
+
+    .adwords-stats .name {
+        display: block;
+        color: #0090d9;
+        padding: 6px 10px;
+    }
+
+    .adwords-stats .row {
+        position: relative;
+        margin: 0;
+        padding: 4px 10px;
+        width: auto;
+        text-align: right;
+    }
+
+    .adwords-stats .row:nth-child(2n - 1) {
+        background: #e6e6e6;
+    }
+
+    .adwords-stats .row .key {
+        position: absolute;
+        left: 10px;
+    }
+
+    .adwords-stats .summary {
+        margin-top: 20px;
+        padding: 6px 10px;
+        font-size: 15px;
+        background: #e5e5e5;
+        font-weight: 600;
+    }
+
+    .adwords-stats .summary div {
+        margin-bottom: 5px;
+    }
+
+    .statistic-chart .filter {
+        float: none;
+        margin-bottom: 20px;
+    }
+
+    .statistic-chart .row {
+        margin-right: 20px;
+        display: inline-block;
+        width: 350px;
+    }
+
+    .statistic-chart .row input,
+    .statistic-chart .row select {
+        width: 100%;
+    }
+
+    .statistic-chart .row .label {
+        margin-bottom: 4px;
+    }
+
+    .statistic-chart .chart {
+        min-width: 310px;
+        height: 400px;
+        margin: 0 auto;
+    }
+
+    .statistic-chart {
+        margin-top: 30px;
+    }
+
+    .statistic-chart .summary,
+    .statistic-chart .trow {
+        position: relative;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 4px 10px;
+        width: 560px;
+        text-align: right;
+    }
+
+    .statistic-chart .summary {
+        border-top: 1px solid #333;
+    }
+
+    .statistic-chart .trow:nth-child(2n - 1) {
+        background: #e6e6e6;
+    }
+
+    .statistic-chart .label {
+        position: absolute;
+        left: 0;
+        width: 400px;
+        vertical-align: top;
+        text-align: left;
+    }
+</style>
+
+<script>
+    var box = $('.statistic-chart');
+
+    $('.filter select, .filter input', box).on('change keyup', function() {
+        $(this).closest('form').submit();
+    });
+</script>
+
+<?php /*
+<?php
+$fields = $statistic['fields'];
+$graphs = $fields['graph'];
+
+$labelsStr = '';
+
+$result = array();
+foreach($graphs[0]['data'] as $row) {
+    $result[] = $row;
+    if(is_string($fields['labels']['field'])) {
+        $labelsStr .= '"' . str_replace('"', '\"', $row[$fields['labels']['field']]) . '", ';
+    }
+}
+$graphs[0]['data'] = $result;
+
+$datasetStr = '';
+foreach($graphs as $graph) {
+    $dataSrt = '';
+    foreach($graph['data'] as $val) {
+        $dataSrt  .= call_user_func_array($graph['filter'], array($val)) . ', ';
+    }
+
+    $datasetStr .=
+        '{
+            name: "' . $graph['name'] . '",
+            data: [' . $dataSrt . ']
+        },';
+}
+?>
+
+<script src="/engine/js//chart/highcharts.js"></script>
+<script src="/engine/js//chart/exporting.js"></script>
+<script>
+    var box = $('.statistic-chart');
+
+    $('.filter select, .filter input', box).on('change keyup', function() {
+        $(this).closest('form').submit();
+    });
+
+    $('.chart', box).highcharts({
+        chart: {
+            type: 'areaspline'
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: [<?php echo $labelsStr ?>],
+        },
+        yAxis: {
+            title: {
+                text: ''
+            },
+        },
+        tooltip: {
+            shared: true,
+            valueSuffix: '<?php echo ' ' . $fields['labels']['units'] ?>'
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            areaspline: {
+                fillOpacity: 0.5
+            }
+        },
+        series: [<?php echo $datasetStr ?>]
+    });
+</script>
+*/ ?>

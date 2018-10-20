@@ -1,0 +1,76 @@
+<?php if(!$isAjax) { ?>
+<div class="block">
+    <div class="wrapper">
+<?php } ?>
+<div class="popup-box popup-remind">
+    <div class="header">
+        <div class="title">Обновление пароля</div>
+    </div>
+    <div class="body std-form">
+    <?php
+        $form
+            ->setAttribute('action', $this->url('user', array('action' => 'remind')))
+            ->setAttribute('class', 'std-form')
+            ->setAttribute('id', 'remind-form')
+            ->setAttribute('method', 'post');
+
+        $form->get('login')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'E-mail');
+        ?>
+
+        <?php echo $this->form()->openTag($form); ?>
+
+        <div class="form-box">
+            <div class="form-errors"></div>
+
+            <div class="row">
+                <?php echo $this->formElement($form->get('login')) ?>
+            </div>
+
+            <div class="row-btns">
+                <input type="submit" value="Восстановить" class="btn">
+            </div>
+        </div>
+
+        <div class="success-box">
+            Ссылка для восстановления пароля отправлена на вашу почту
+        </div>
+
+        <?php echo $this->form()->closeTag($form); ?>
+    </div>
+</div>
+<?php if(!$isAjax) { ?>
+    </div>
+</div>
+<?php } ?>
+
+<script>
+    var form = $('#remind-form');
+    form.formSubmit({
+        success: function(resp, form){
+            $('.form-box', form).fadeOut(200, function(){
+                $('.success-box', form).fadeIn(200);
+            });
+        }
+    });
+</script>
+
+<style>
+    .popup-remind {
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    .popup-remind .row-btns {
+        text-align: center;
+    }
+
+    .popup-remind .title {
+        text-align: center;
+    }
+
+    .popup-remind .row-btns .btn {
+        width: 100%;
+    }
+</style>

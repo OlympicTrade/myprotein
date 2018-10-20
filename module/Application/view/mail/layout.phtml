@@ -1,0 +1,135 @@
+<?php $domain = 'http://' . $_SERVER['HTTP_HOST']; ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Myprotein</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: 'Helvetica', sans-serif;
+        }
+
+        .row {
+            font-size: 15px;
+            margin-bottom: 4px;
+            text-align: left;
+        }
+        
+        .h2 {
+            font-size: 18px;
+            font-weight: bold;
+            padding-bottom: 4px;
+            color: #000;
+            text-transform: uppercase;
+            border-bottom: 1px solid #cccccc;
+        }
+
+        .header {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .btn {
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.2s;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-weight: 600;
+            background: #0060c1;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 20px;
+        }
+
+        .btn:hover {
+            background: #0062e6;
+        }
+    </style>
+</head>
+<body style="padding: 0; margin: 0;">
+
+<table border="0" cellpadding="0" width="100%" cellspacing="0" style="background: #f1f1f1; margin:0 auto; padding:0; ">
+    <tr>
+        <td style="padding: 20px 10px">
+            <table border="0" cellpadding="0" width="100%" cellspacing="0" style="background: #485361; margin:0 auto; padding:0; max-width: 600px; min-width: 400px;">
+                <tr>
+                    <td style="padding: 10px; background: #0060c1; vertical-align: top; border-radius: 5px;">
+                        <table border="0" cellpadding="0" width="100%" cellspacing="0" style="margin:0; padding:0; width: 100%;">
+                            <tr>
+                                <td style="background-color: #ffffff; border-radius: 5px 5px 0 0;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="width: 100%;">
+                                        <tr>
+                                            <td colspan="2" style="width: 100%; text-align: center; padding: 0 0 0 10px">
+                                                <img border="0" alt="" border="0" style="border:none; outline:none; text-decoration:none;" src="<?php echo $domain ?>/mail/header.png" class="logo">
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="2" height="10" style="height: 10px; background: #0060c1"></td></tr>
+										<?php /*
+                                        <tr>
+                                            <td colspan="2" width="100%" style="background: #0060c1">
+                                                <table width="600" align="center" cellspacing="0" cellpadding="0" border="0" class="devicewidth">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td width="150" align="center" style="font-family: Helvetica, arial, sans-serif; font-size: 24px; color: #ffffff; padding: 10px 0;" st-content="heading">
+                                                            <a target="_blank" style="color: #ffffff; font-size: 15px; text-transform: uppercase; text-decoration: none"
+                                                               href="<?php echo $domain ?>/catalog/">Каталог</a>
+                                                        </td>
+                                                        <td width="150" align="center" style="font-family: Helvetica, arial, sans-serif; font-size: 24px; color: #ffffff; padding: 10px 0;" st-content="heading">
+                                                            <a target="_blank" style="color: #ffffff; font-size: 15px; text-transform: uppercase; text-decoration: none"
+                                                               href="<?php echo $domain ?>/brands/">Производители</a>
+                                                        </td>
+                                                        <td width="150" align="center" style="font-family: Helvetica, arial, sans-serif; font-size: 24px; color: #ffffff; padding: 10px 0;" st-content="heading">
+                                                            <a target="_blank" style="color: #ffffff; font-size: 15px; text-transform: uppercase; text-decoration: none"
+                                                               href="<?php echo $domain ?>/delivery/">Доставка</a>
+                                                        </td>
+                                                        <td width="150" align="center" style="font-family: Helvetica, arial, sans-serif; font-size: 24px; color: #ffffff; padding: 10px 0;" st-content="heading">
+                                                            <a target="_blank" style="color: #ffffff; font-size: 15px; text-transform: uppercase; text-decoration: none"
+                                                               href="<?php echo $domain ?>/contacts/">Контакты</a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="2" height="50" style="height: 50px;"></td></tr>
+										*/ ?>
+
+                                        <?php echo $this->content; ?>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table>
+                                        <tbody>
+                                        <tr><td colspan="2" height="10" style="height: 10px;"></td></tr>
+                                        <tr>
+                                            <td valign="top" style="color: #fff; font-size: 14px;">
+                                                <div style="padding-bottom: 4px;"><b>Сайт:</b> <a href="<?php echo $domain ?>" style="color: #fff">myprotein.spb.ru</a></div>
+                                                <div style="padding-bottom: 4px;"><b>Телефон:</b> <a href="tel:+79523885885" style="color: #fff">+7 (952) 388-58-85</a></div>
+                                                <div><b>E-mail:</b> <a href="mailto:info@myprotein.spb.ru" style="color: #fff">info@myprotein.spb.ru</a></div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

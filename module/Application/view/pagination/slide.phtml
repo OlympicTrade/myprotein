@@ -1,0 +1,23 @@
+<?php if ($this->pageCount > 1) { ?>
+<div class="pagination">
+    <ul>
+    <?php if($this->previous) { ?>
+        <li class="prev"><a href="<?php echo \Aptero\Url\Url::getUrl(array('page' => $this->previous)) ?>"><i class="fas fa-angle-left"></i></a></li>
+    <?php } else { ?>
+        <li class="prev disabled"><a href="javascript:"><i class="fas fa-angle-left"></i></a></li>
+    <?php } ?>
+
+    <?php foreach ($this->pagesInRange as $page) { ?>
+        <li class="page<?php echo $page == $this->current ? ' active' : '' ?>">
+            <a href="<?php echo \Aptero\Url\Url::getUrl(array('page' => $page)) ?>"><?php echo $page; ?></a>
+        </li>
+    <?php } ?>
+
+    <?php if($this->next) { ?>
+        <li class="prev"><a href="<?php echo \Aptero\Url\Url::getUrl(array('page' => $this->next)) ?>"><i class="fas fa-angle-right"></i></a></li>
+    <?php } else { ?>
+        <li class="prev disabled"><a href="javascript:"><i class="fas fa-angle-right"></i></a></li>
+    <?php } ?>
+    </ul>
+</div>
+<?php } ?>

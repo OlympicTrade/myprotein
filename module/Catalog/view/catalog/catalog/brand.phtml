@@ -1,0 +1,61 @@
+<div class="content">
+    <div class="block header-block">
+        <div class="breadcrumbs">
+            <?php echo $this->breadcrumbs($breadcrumbs, array('delimiter' => ' → ', 'showLast' => false)) ?>
+        </div>
+
+        <h1><?php echo $this->header ?></h1>
+
+        <div class="info">
+            <a href="#" class="print"><span>Распечатать</span></a>
+            <a href="#" class="share"><span>Поделиться</span></a>
+        </div>
+    </div>
+
+    <div class="block products-filters">
+        <div class="filter sort">
+            Сортировать по:
+            <span class="active" data-val="price">цене</span>
+            <span data-val="name">имени</span>
+            <span data-val="popular">популярности</span>
+        </div>
+        <div class="filter positions">
+            Выводить по:
+            <span class="active" data-val="12">12</span>
+            <span data-val="24">24</span>
+            <span data-val="48">48</span>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="block products-block">
+        <?php echo $this->productsList($products) ?>
+    </div>
+
+    <?php echo $this->htmlBlocks('delivery') ?>
+
+    <?php if($page <= 1) { ?>
+    <div class="block text-block std-text">
+        <?php echo $brand->get('text') ?>
+    </div>
+    <?php } ?>
+</div>
+
+<div class="sidebar">
+    <form class="widget filters">
+        <input type="hidden" value="1" name="page">
+        <div class="result">Найдено <span>96 товаров</span></div>
+        <div class="box">
+            <div class="header">Стоимость <div class="arr"></div></div>
+            <div class="body price">
+                <div class="range-slider" data-min="<?php echo $this->min ?>" data-max="<?php echo $this->max ?>">
+                    <div class="inputs">
+                        <div class="col">от <input class="std-input val_from" value="<?php echo $this->min ?>"></div>
+                        <div class="col">до <input class="std-input val_to"   value="<?php echo $this->max ?>"> <span class="rub"></span></div>
+                    </div>
+                    <input type="text" class="rail" name="minMax">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

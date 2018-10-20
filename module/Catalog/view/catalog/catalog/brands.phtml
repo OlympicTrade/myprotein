@@ -1,0 +1,28 @@
+<div class="content">
+    <div class="block header-block">
+        <div class="breadcrumbs">
+            <?php echo $this->breadcrumbs($breadcrumbs, array('delimiter' => ' → ', 'showLast' => false)) ?>
+        </div>
+
+        <h1><?php echo $this->header ?></h1>
+
+        <div class="info">
+            <a href="javascript:window.print();" class="print"><span>Распечатать</span></a>
+            <div class="share">
+                <span>Поделиться</span>
+                <div class="icons">
+                    <script type="text/javascript" src="//yastatic.net/es5-shims/0.0.2/es5-shims.min.js" charset="utf-8"></script>
+                    <script type="text/javascript" src="//yastatic.net/share2/share.js" charset="utf-8"></script>
+                    <div class="ya-share2" data-services="vkontakte,facebook,odnoklassniki,twitter"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="block brands-block">
+        <?php echo $this->brandsList($brands) ?>
+    </div>
+</div>
+
+<div class="sidebar">
+</div>

@@ -1,0 +1,11 @@
+<a class="block-header" href="/">
+    <div class="back"></div>
+    <h1><?php echo $header ?></h1>
+</a>
+
+<div class="widget catalog">
+	<?php echo $this->catalogMenu(['sub' => false]) ?>
+</div>
+
+
+<?php echo $this->mobileProductsList($products, ['list' => 'list']) ?>

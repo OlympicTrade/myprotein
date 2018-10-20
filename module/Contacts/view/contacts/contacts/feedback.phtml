@@ -1,0 +1,58 @@
+
+<div class="popup-box feedback-popup">
+    <form action="/contacts/">
+        <div class="form-box">
+            <div class="header">Отправить сообщение</div>
+            <div class="body std-form">
+                <div class="row">
+                    <div class="element">
+                        <div class="label">Имя</div>
+                        <input type="text" name="name" class="std-input" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="element">
+                        <div class="label">Телефон или E-mail</div>
+                        <input type="text" name="phone" class="std-input" value="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="element">
+                        <div class="label">Сообщение</div>
+                        <textarea name="question" class="std-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="btns">
+                    <button type="submit" class="btn orange">Отправить <i class="fas fa-angle-right"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="success-box">
+            <div class="header">Сообщение отправлено</div>
+            <div class="sb-desc">
+                Мы сделаем все вожзможное для решения вашей проблемы и известим вас о результатах.
+            </div>
+        </div>
+    </form>
+
+    <script>
+        var form = $('.feedback-popup form');
+
+        form.formSubmit({
+            success: function(resp) {
+                $('.form-box', form).css({display: 'none'});
+                $('.success-box', form).fadeIn(300);
+            }
+        });
+    </script>
+
+    <style>
+        .feedback-popup {
+            width: 450px;
+        }
+
+        .feedback-popup .sb-desc {
+            padding: 0 40px 30px 40px;
+        }
+    </style>
+</div>

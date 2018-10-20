@@ -1,0 +1,62 @@
+<?php echo $this->header() ?>
+
+<div class="block blog-view">
+    <div class="wrapper">
+        <div class="col-l">
+            <div class="cb-image">
+                <img src="<?php echo $article->getPlugin('image')->getImage('m') ?>" alt="<?php echo $article->get('name') ?>">
+            </div>
+            <?php echo $this->contentRender($article->getPlugin('content')) ?>
+
+            <?php /*
+            <div class="tags">
+                <div class="label">Теги</div>
+                <?php
+                $html = '';
+                foreach(explode(',', $article->get('tags')) as $tag) {
+                    $html .= ', <a href="/blog/search/?query=' . $tag . '">' . trim($tag) . '</a>';
+                }
+                echo ltrim($html, ', ');
+                ?>
+            </div>
+            */ ?>
+
+            <div class="cb-links">
+                <div class="header">Ссылки и исследования</div>
+                <div class="std-text body">
+                    <p>Buford, T.W., Kreider ,R.B., Stout, J.R., Greenwood, M., Campbell, B., Spano, M., Ziegenfuss, T.,
+                        Lopez, H., Landis, J. and Antonio. J. (2007).</p>
+                    
+                    <p>International Society of Sports Nutrition position stand: creatine supplementation and exercise.
+                        Journal of the International Society of Sports Nutrition 4: 6. Campbell, B.I., Wilborn, C.D.
+                        and La Bounty, P.M. (2010).</p>
+                    
+                    <p>Supplements for strength-power athletes. Strength and Conditioning Journal 32 (1): 93-100.
+                        Paddon-Jones, D., Borsheim, E. and Wolfe, R.R. (2004).</p>
+                    
+                    <p>Potential ergogenic effects of arginine and creatine supplementation. Journal of Nutrition 134:
+                        2888s-2894s. Volek, J.S., Duncan, N.D., Mazzetti, S. A., Staron, R.S., Putukian, M., Gomez,
+                        A.L., Pearson, D.R., Fink, W.J. and Kraemer, W.J. (1999).</p>
+                    
+                    <p>Performance and muscle fiber adaptations to creatine supplementation and heavy resistance
+                        training. Medicine &amp; Science in Sport and Exercise 31: 1147-1156.</p>
+                </div>
+            </div>
+
+            <div class="comments">
+                <div class="summary">
+                    <span class="btn add-comment popup" href="/blog/add-comment/?aid=<?php echo $article->getId() ?>">Добавить комментарий</span>
+                </div>
+                <div class="list">
+                    <?php echo $this->articlesComments($article, $article->getPlugin('comments')) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-r">
+            <div class="reco-articles">
+                <?php echo $this->articlesReco($recoArticles) ?>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

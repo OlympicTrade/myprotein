@@ -1,0 +1,199 @@
+<?php /*
+<div class="cols">
+    <div class="col-6">
+        <div class="std-box spots-list">
+            <div class="title"><i class="fas fa-instagram"></i> Площадки</div>
+            <div>
+                <?php foreach($spots as $spot) { ?>
+                <a href="<?php echo $this->url('spots', array('action' => 'spot', 'id' => $spot->getId())) ?>" class="row">
+                    <?php echo $spot->get('account') ?>
+                </a>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="std-box">
+            asdasd
+        </div>
+    </div>
+</div>
+<style>
+    .std-list .title {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .std-list .row {
+        display: block;
+        color: #ffffff;
+        margin-bottom: 4px;
+        border-radius: 5px;
+        padding: 5px 10px;
+        background: #23B7E5;
+        text-decoration: none;
+    }
+</style>
+ */ ?>
+
+<div class="std-box landing">
+    <div class="title">
+        Приветствуем Вас на первой в России рекламной бирже для сети Интаграм<br>
+        Для того, чтобы приступить к работе на бирже в качестве рекламодателя создайте Ваше первое рекламное задание.
+    </div>
+    <div class="cols">
+        <div class="col-6">
+            <div class="block advert">
+                <i class="fas fa-bullhorn bg"></i>
+                <div class="header">Рекламодателу</div>
+                <?php if($adverts->count()) { ?>
+                    <?php foreach($adverts as $advert) { ?>
+                        <div class="row-img">
+                            <a class="mlink" href="<?php echo $this->url('adverts', array('action' => 'advert', 'id' => $advert->getId())) ?>">
+                                <img src="<?php echo $advert->getPlugin('image')->getImage('a') ?>">
+                            </a>
+                        </div>
+                    <?php } ?>
+                    <div class="clear"></div>
+                <?php } else { ?>
+                    <div class="desc">
+                        Для того, чтобы приступить к работе на бирже, создайте Ваше первое рекламное задание
+                    </div>
+                <?php } ?>
+
+                <a class="btn btn-blue" href="<?php echo $this->url('adverts', array('action' => 'edit')) ?>">Добавить объявление</a>
+            </div>
+        </div>
+        <?php if($spots->count()) { ?>
+        <?php $this->headLink()->prependStylesheet('/modules/spots/css/main.css') ?>
+
+        <?php $this->headScript()->prependFile('http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'); ?>
+        <?php $this->headScript()->prependFile('http://cdn.oesmith.co.uk/morris-0.4.1.min.js'); ?>
+        <div class="col-6">
+            <div class="block spot">
+                <i class="fas fa-instagram bg"></i>
+                <div class="header">Площадки</div>
+                <?php foreach($spots as $spot) { ?>
+                    <div class="row">
+                        <a class="mlink" href="<?php echo $this->url('spots', array('action' => 'spot', 'id' => $spot->getId())) ?>">
+                            <?php echo $spot->get('account') ?>
+                        </a>
+                        <div class="btns">
+                            <a href="<?php echo $this->url('spots', array('action' => 'edit', 'id' => $spot->getId())) ?>">
+                                <i class="fas fa-pencil"></i>
+                            </a>
+                            <a data-fancybox-type="ajax" class="popup-form" href="<?php echo $this->url('spots', array('action' => 'statistic', 'id' => $spot->getId())) ?>">
+                                <i class="fas fa-bar-chart"></i>
+                            </a>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <a class="btn btn-blue" href="<?php echo $this->url('spots', array('action' => 'confirm')) ?>">Добавить площадку</a>
+            </div>
+        </div>
+        <?php } else { ?>
+        <div class="col-6">
+            <div class="block spot">
+                <i class="fas fa-instagram bg"></i>
+                <div class="header">Администратору</div>
+
+                <div class="desc">
+                    Для того, чтобы приступить к работе на бирже в качестве администратора – добавьте Ваш аккаунт Инстаграм в систему.
+                </div>
+
+                <a class="btn btn-blue" href="<?php echo $this->url('spots', array('action' => 'confirm')) ?>">Добавить аккаунт</a>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<style>
+    .landing .row {
+        position: relative;
+        margin-bottom: 4px;
+        border-radius: 5px;
+        background: #23B7E5;
+        text-align: left;
+        margin-right: 150px;
+    }
+
+    .landing .row a {
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    .landing .mlink {
+        display: block;
+        padding: 5px 10px;
+    }
+
+    .landing .btns {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+    }
+
+    .landing .btns a {
+        margin-left: 4px;
+    }
+
+    .row-img {
+        width: 90px;
+        height: 90px;
+        border-radius: 5px;
+        background: #23B7E5;
+        margin: 0 8px 5px 0;
+        float: left;
+    }
+
+    .row-img .mlink {
+        padding: 0;
+    }
+
+    .row-img .mlink img {
+        border-radius: 5px;
+    }
+
+    .landing .title {
+        margin-bottom: 20px;
+    }
+
+    .landing .block {
+        position: relative;
+        border-radius: 4px;
+        padding: 20px;
+        color: #ffffff;
+    }
+
+    .landing .block.spot {
+        background: #c75757;
+    }
+
+    .landing .block.advert {
+        background: #19a589;
+    }
+
+    .landing .header {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .landing .desc {
+        font-size: 14px;
+        padding-right: 30px;
+        margin-bottom: 20px;
+        height: 60px;
+    }
+
+    .landing .block .bg {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        line-height: 0.8;
+        color: rgba(0, 0, 0, 0.1);
+        font-size: 60pt;
+    }
+</style>

@@ -1,0 +1,1417 @@
+<div class="order-form">
+    <div class="progress">
+        <div class="step" data-step="1">Шаг 1. Контакты</div>
+        <div class="step" data-step="2">Шаг 2. Доставка</div>
+        <div class="step" data-step="4">Шаг 3. Завершение</div>
+    </div>
+    <div class="steps">
+        <input type="hidden" name="oid" value="">
+        <div class="step auth" data-step="1">
+            <div class="wrap">
+                <div class="row row-region">
+                    Ваш регион: <span class="region-name"><?php echo \Delivery\Model\Delivery::getInstance()->getCity()->get('name') ?></span> <a href="/regions/" class="popup" data-reload="0">изменить</a>
+                </div>
+                <div class="row">
+                    <input class="std-input" type="text" name="attrs-name" placeholder="Имя">
+                    <div class="error">Введите имя</div>
+                </div>
+                <div class="row">
+                    <input class="std-input" type="text" name="phone" placeholder="Телефон">
+                    <div class="error">Введите телефон</div>
+                </div>
+                <div class="notice">
+                    Мы не рассылаем рекламу и не передаем данные третьим лицам.
+                    Телефон используется только для информмирования о статусе заказа.
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="btn close">Закрыть</div>
+                <div class="btn orange next" data-step="2">Продолжить</div>
+            </div>
+        </div>
+        <div class="step delivery" data-step="2">
+            <div class="map-wrap">
+                <div class="row">
+                    <div class="map" id="delivery-points-map"></div>
+                    <div class="error">Выберите точку самовывоза</div>
+                </div>
+                <div class="btn map-close">Закрыть карту</div>
+            </div>
+            <div class="wrap">
+                <div class="type">
+                    <div class="notice">Выберите способ доставки</div>
+                    <div class="box">
+                        <div class="op" data-type="courier">
+                            <div class="name">Доставка</div>
+                            <div class="desc">
+                                от <span data-courier-date></span>
+                                (<span data-courier-price></span>)
+                            </div>
+                        </div>
+                        <div class="op" data-type="pickup">
+                            <div class="name">Самовывоз <span data-pickup-count-str></span></div>
+                            <div class="desc">
+                                от <span data-pickup-date></span>
+                                (<span data-pickup-price></span>)
+                            </div>
+                        </div>
+                        <div class="op" data-type="post">
+                            <div class="name">Почта России</div>
+                            <div class="desc">
+                                <span data-post-price></span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="attrs-delivery">
+                    <div class="clear"></div>
+                    <div class="info" data-type="pickup">
+                        О прибытии товаров на точку вас оповетит SMS. Заказ будет жидать вас 7 дней.
+                    </div>
+                    <div class="info" data-type="courier">
+                        Курьер позвонит за 40 минут до прибытия.
+                    </div>
+                    <div class="info" data-type="post">
+                        Отправка производиться на следующий день после заказа. Номер трекера будет выслан по SMS
+                    </div>
+                    <div class="error">Выберите способ доставки</div>
+                </div>
+
+                <div class="pickup form">
+                    <div class="row">
+                        <div class="map-open"><i class="fas fa-map-marker-alt"></i> Выбрать точку самовывоза</div>
+                        <div class="error">Выберите точку самовывоза</div>
+                        <input type="hidden" name="attrs-point">
+                        <input type="hidden" name="attrs-pickup-date">
+                    </div>
+
+                    <div class="notice">
+                        <div class="row-1">Дата доставки: <b><span data-pickup-date></span></b> <b>15:30</b></div>
+                        <div class="row-2">Заказ будет ожидать вас в течении <b>7 дней</b></div>
+                    </div>
+                </div>
+
+                <div class="courier address form">
+                    <div class="row address">
+                        <div class="dl-element">
+                            <div class="pt street"><input type="text" name="attrs-street" placeholder="Улица*"></div>
+                            <div class="pt house"><input type="text" name="attrs-house" class="" placeholder="Дом*"></div>
+                            <div class="pt building"><input type="text" name="attrs-building" class="" placeholder="Корп"></div>
+                            <div class="pt flat"><input type="text" name="attrs-flat" class="" placeholder="Кв"></div>
+                        </div>
+                        <div class="error">Введите адрес доставки</div>
+                    </div>
+
+                    <div class="row date">
+                        <div class="dl-element">
+                            <div class="pt date"><input type="text" name="attrs-date" placeholder="Дата*" readonly="true"></div>
+                            <?php
+                            /** @var \Delivery\Model\City $city */
+                            $city = \Delivery\Model\Delivery::getInstance()->getCity();
+
+                            if($city->isSpb()) {
+                                $timeOptions =
+                                    '<option value="09:00-12:00">c 09:00 до 12:00</option>'.
+                                    '<option value="12:00-15:00">c 12:00 до 15:00</option>'.
+                                    '<option value="15:00-18:00">c 15:00 до 18:00</option>'.
+                                    '<option value="18:00-21:00">c 18:00 до 21:00</option>';
+                            } elseif ($city->isMoscow()) {
+                                $timeOptions =
+                                    '<option value="09:00-14:00">c 09:00 до 14:00</option>'.
+                                    '<option value="11:00-16:00">c 11:00 до 16:00</option>'.
+                                    '<option value="13:00-18:00">c 13:00 до 18:00</option>';
+                            } else {
+                                $timeOptions =
+                                    '<option value="09:00-14:00">c 09:00 до 14:00</option>'.
+                                    '<option value="11:00-16:00">c 11:00 до 16:00</option>'.
+                                    '<option value="13:00-18:00">c 13:00 до 18:00</option>';
+                            }
+                            ?>
+                            <div class="pt from">
+                                <select name="attrs-time_from">
+                                    <option value="">время доставки</option>
+                                    <?php echo $timeOptions ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="error">Введите дату и время доставки</div>
+                    </div>
+                </div>
+
+                <div class="post address form">
+                    <div class="row address">
+                        <div class="dl-element">
+                            <div class="pt city"><input type="text" name="attrs-city" placeholder="Город*"></div>
+                            <div class="pt index"><input type="text" name="attrs-index" placeholder="Индекс*"></div>
+                        </div>
+                        <div class="error">Введите город и индекс доставки</div>
+                    </div>
+
+                    <div class="row address">
+                        <div class="dl-element">
+                            <div class="pt street"><input type="text" name="attrs-street" placeholder="Улица*"></div>
+                            <div class="pt house"><input type="text" name="attrs-house" class="" placeholder="Дом*"></div>
+                            <div class="pt building"><input type="text" name="attrs-building" class="" placeholder="Корп"></div>
+                            <div class="pt flat"><input type="text" name="attrs-flat" class="" placeholder="Кв"></div>
+                        </div>
+                        <div class="error">Введите адрес доставки</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="btn prev" data-step="1">Назад</div>
+                <div class="btn orange next" data-step="3">Продолжить</div>
+            </div>
+        </div>
+        <div class="step confirm" data-step="3">
+            <div class="wrap">
+                <div class="notice">
+                    Вам был отправлен SMS код
+                    для подтверждения заказа
+                </div>
+                <div class="label">Введите SMS код</div>
+                <input type="text" class="std-input sms-code" placeholder="••••">
+                <div class="sms-error">Неверный код</div>
+                <div class="sms-resend">
+                    <div class="counter">
+                        До повторной отправки SMS
+                        <div><span></span> сек</div>
+                    </div>
+
+                    <div class="resend">
+                        <span class="btn">Повторно отправить SMS</span>
+                    </div>
+
+                    <div class="skip">
+                        <div class="tr"><span>Не приходит SMS?</span></div>
+                        <div class="nx"><span class="btn">Продолжить без кода</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="btn prev" data-step="1">Назад</div>
+                <div class="btn orange next" data-step="4">Продолжить</div>
+            </div>
+        </div>
+        <div class="step finish" data-step="4">
+            <div class="wrap">
+                <div class="title">Заказ оформлен</div>
+
+                <div class="order-info">
+                    <div class="row">
+                        <div class="key">Номер заказа</div>
+                        <div class="val"><span class="order-id"></span></div>
+                    </div>
+                    <div class="row">
+                        <div class="key">К оплате</div>
+                        <div class="val"><span class="order-price"></span> <i class="fas fa-ruble-signle-sign"></i></div>
+                    </div>
+
+                    <div class="delivery">
+                        <div class="title delivery-type"></div>
+                        <div class="address delivery-address"></div>
+                    </div>
+
+                    <?php /*
+                    <div class="notice payment">
+                        Скидка 2% при оплате онлайн
+                    </div> */ ?>
+                    <a target="_blank" class="btn orange pay-btn" href="">Оплатить Online</a>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="btn close">Завершить заказ</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var box = $('.order-form');
+        var progress = $('.progress', box);
+        var steps = $('.steps', box);
+        var step1 = $('.step[data-step="1"]', box);
+        var step2 = $('.step[data-step="2"]', box);
+        var step3 = $('.step[data-step="3"]', box);
+        var step4 = $('.step[data-step="4"]', box);
+        var $orderId = $('[name="oid"]', steps);
+
+        initElements(box);
+
+        function setStep(curStep, nextStep, validateEn) {
+            curStep  = parseInt(curStep);
+            nextStep = parseInt(nextStep);
+
+            validateEn = validateEn == undefined ? true : validateEn;
+
+            if(validateEn && nextStep > curStep && !validate(curStep)) { return; }
+
+            $('.step', steps).removeClass('active');
+            $('.step[data-step="' + nextStep + '"]', steps).addClass('active');
+
+            $('.step', progress).each(function() {
+                var step = $(this);
+
+                nextStep = nextStep == 3 ? 2 : nextStep;
+
+                if(parseInt(step.data('step')) < nextStep) {
+                    step.removeClass('active');
+                    step.addClass('past');
+                } else if(step.data('step') == nextStep) {
+                    step.addClass('active');
+                    step.removeClass('past');
+                } else {
+                    step.removeClass('active');
+                    step.removeClass('past');
+                }
+            });
+
+            if(nextStep == 4) {
+                $.ajax({
+                    url: '/order/ecommerce-info/',
+                    method: 'post',
+                    data: {id: $orderId.val()},
+                    success: function(resp) {
+                        gtag('event', 'purchase', resp);
+
+                        window.metrikaEc.push({ecommerce: {
+                            add: {
+                                actionField: {
+                                    id: resp.orderId,
+                                    goal_id: 39331183,
+                                    revenue: resp.value,
+                                },
+                                products: resp.items,
+                            }
+                        }});
+                    }
+                });
+
+                gtag('event', 'order_event', {event_category: 'catalog', event_action: 'order', event_label: 'complete', value: 10});
+                //getYandexCounter().reachGoal('order_complete');
+                $.cart.clear();
+            }
+        }
+
+        function validate(stepNbr) {
+            var validate = true;
+
+            if(stepNbr == 1) {
+                validate &= step1Validate();
+            } else if(stepNbr == 2) {
+                validate &= step2Validate();
+            } else if(stepNbr == 3) {
+                validate &= step3Validate();
+            }
+
+            return validate;
+        }
+
+        function step3Validate() {
+            $.ajax({
+                url: '/order/',
+                async: false,
+                method: 'post',
+                data: {
+                    step: 3,
+                    code: $('.sms-code', step3).val(),
+                    oid:  $orderId.val()
+                },
+                success: function (resp) {
+                    if(parseInt(resp.status) == 0) {
+                        step3.addClass('error');
+                    } else {
+                        getYandexCounter().reachGoal('order_complete');
+                        validate = true;
+                        step3.removeClass('error');
+                    }
+                }
+            });
+
+            return validate;
+        }
+
+        var smsTimer = null;
+        function step2Validate() {
+            var validate = true;
+
+            var dtInput = $('[name="attrs-delivery"]', steps);
+            var courier = $('.courier.form', step2);
+            var pickup  = $('.pickup.form', step2);
+            var post    = $('.post.form', step2);
+            if(dtInput.val() == 'courier') {
+                $('.row', courier).removeClass('invalid');
+                var fields = ['attrs-street', 'attrs-house', 'attrs-date', 'attrs-time_from'];
+                fields.forEach(function(item, i) {
+                    var el = $('[name="' + item + '"]', courier);
+                    if(!el.val()) {
+                        validate &= false;
+                        el.closest('.row').addClass('invalid');
+                    }
+                });
+            } else if(dtInput.val() == 'post') {
+                $('.row', post).removeClass('invalid');
+                var fields = ['attrs-street', 'attrs-house', 'attrs-index', 'attrs-city'];
+                fields.forEach(function(item, i) {
+                    var el = $('[name="' + item + '"]', post);
+                    if(!el.val()) {
+                        validate &= false;
+                        el.closest('.row').addClass('invalid');
+                    }
+                });
+            } else if(dtInput.val() == 'pickup') {
+                var el = $('[name="attrs-point"]', pickup);
+                if(!el.val()) {
+                    validate &= false;
+                    $('.map-open', pickup).closest('.row').addClass('invalid');
+                }
+            } else {
+                validate &= false;
+                $('.type', step2).addClass('invalid');
+            }
+
+            if(!validate) {
+                return  false;
+            }
+
+            var data;
+
+            switch (dtInput.val()) {
+                case 'courier':
+                    data = $.aptero.serializeArray(courier);
+                    break;
+                case 'pickup':
+                    data = $.aptero.serializeArray(pickup);
+                    break;
+                case 'post':
+                    data = $.aptero.serializeArray(post);
+                    break;
+            }
+
+            data.step = 2;
+            data.oid  = $orderId.val();
+            data['attrs-delivery'] = dtInput.val();
+
+            $.ajax({
+                url: '/order/',
+                method: 'post',
+                data: data,
+                success: function (resp) {
+                    $('.pay-btn', step4).attr('href', '/payment/pay/?o=' + resp.info.id);
+                    $('.order-id', step4).text(resp.info.pid);
+                    $('.order-price', step4).text($.aptero.price(resp.info.price));
+                    $('.delivery-type', step4).text(resp.info.typeName);
+                    $('.delivery-address', step4).text(resp.info.address);
+                    $('.delivery-address', step4).append('<div class="nt">' + resp.info.notice + '</div>');
+                    $('.delivery-address', step4).append('<div class="nt">' + resp.info.payment + '</div>');
+
+                    if(resp.info.type == 'post') {
+                        $('.payment', step4).css({display: 'none'});
+                    }
+
+                    gtag('event', 'set_checkout_option', {
+                        checkout_step: 2,
+                        checkout_option: 'Delivery type',
+                        value: resp.info.typeName
+                    });
+
+                    $.ajax({
+                        url: '/order/ecommerce-info/',
+                        method: 'post',
+                        data: {id: resp.oid},
+                        success: function(resp) {
+                            gtag('event', 'checkout_progress', {
+                                checkout_step: 3,
+                                items: resp.items
+                            });
+                        }
+                    });
+
+                    gtag('event', 'order_event', {event_category: 'catalog', event_action: 'order', event_label: 'delivery', value: 50});
+                    getYandexCounter().reachGoal('order_delivery');
+                }
+            });
+
+            var counter = $('.sms-resend .counter', step3);
+            var resend = $('.sms-resend .resend', step3);
+            var skip = $('.sms-resend .skip', step3);
+
+            var count = 8;
+
+            if(smsTimer) {clearInterval(smsTimer); }
+            $('span', counter).text(count);
+            smsTimer = setInterval(function() {
+                count--;
+                $('span', counter).text(count);
+                if(count <= 0) {
+                    clearInterval(smsTimer);
+                    counter.css({display: 'none'});
+                    resend.fadeIn(200);
+                }
+            }, 1000);
+
+            getYandexCounter().reachGoal('order_delivery');
+
+            return true;
+        }
+
+        function step1Validate() {
+            var validate = true;
+
+            var name = $('[name="attrs-name"]', step1);
+            if(!name.val()) {
+                validate &= false; name.closest('.row').addClass('invalid');
+            }
+
+            var phone = $('[name="phone"]', step1);
+            if(!phone.val() || phone.val().match(/\d/g).length != 11) {
+                validate &= false; phone.closest('.row').addClass('invalid');
+            }
+
+            initMap();
+
+            if(!validate) {
+                return  false;
+            }
+
+            $.ajax({
+                url: '/order/',
+                method: 'post',
+                data: {
+                    step:  1,
+                    oid:   $orderId.val(),
+                    'attrs-name':  name.val(),
+                    phone: phone.val()
+                },
+                success: function (resp) {
+                    $orderId.val(resp.oid);
+                    if(resp.oid == '0') {
+                        validate &= false;
+                    }
+
+                    updateDeliveryData();
+
+                    if(resp.phone != 0) {
+                        $('.next', step2).data('step', 4);
+                    }
+
+                    gtag('event', 'set_checkout_option', {
+                        checkout_step: 1,
+                        checkout_option: 'User name and phone',
+                        value: name.val()
+                    });
+
+                    $.ajax({
+                        url: '/order/ecommerce-info/',
+                        method: 'post',
+                        data: {id: resp.oid},
+                        success: function(resp) {
+                            gtag('event', 'checkout_progress', {
+                                checkout_step: 2,
+                                items: resp.items
+                            });
+                        }
+                    });
+
+                    gtag('event', 'order_event', {event_category: 'catalog', event_action: 'order', event_label: 'name_phone', value: 50});
+                    getYandexCounter().reachGoal('order_name');
+                }
+            });
+
+            return validate;
+        }
+
+        function step1init() {
+            var phone = $('[name="phone"]', step1);
+            phone.inputmask('+7 (999) 999-99-99');
+
+            phone.on('keyup', function () {
+                var str = phone.val().match(/\d/g);
+                if(str != null && str.length == 11) { phone.closest('.row').removeClass('invalid'); }
+            });
+
+            var name = $('[name="attrs-name"]', step1);
+            name.on('keyup', function () {
+                if(name.val()) { name.closest('.row').removeClass('invalid'); }
+            });
+
+            $.cart.ecoomerceCart(function(cart) {
+                gtag('event', 'begin_checkout', {
+                    'items': cart
+                });
+            });
+        }
+
+        function step2init() {
+            var controls = $('.controls', step2);
+            var dtInput = $('[name="attrs-delivery"]', steps);
+
+            var courier = $('.courier.form', step2);
+            var pickup  = $('.pickup.form', step2);
+
+            $('.type .op', step2).on('click', function () {
+                var type = $(this).data('type');
+                dtInput.val(type);
+
+                $('.type .op', step2).removeClass('active');
+                $(this).addClass('active');
+
+                $('.form', step2).css({display: 'none'});
+                $('.form.' + type, step2).fadeIn(200);
+
+                $('.info', step2).css({display: 'none'});
+                $('.info[data-type="' + type + '"]', step2).slideDown(200);
+                $('.type', step2).removeClass('invalid');
+            });
+
+            var address = $('.row.address', courier);
+            $('.pt', address).on('keyup change', function () {
+                if(
+                    $('[name="attrs-street"]', address).val()
+                    && $('[name="attrs-house"]', address).val())
+                {
+                    address.removeClass('invalid');
+                }
+            });
+
+            var date = $('.row.date', courier);
+            $('.pt', courier).on('keyup change', function () {
+                if($('[name="attrs-date"]', date).val() && $('[name="attrs-time_from"]', date).val()) {
+                    date.removeClass('invalid');
+                }
+            });
+
+            var map = $('.map-wrap', step2);
+            $('.map-open', pickup).on('click', function () {
+                map.fadeIn(200);
+            });
+            $('.map-close', map).on('click', function () {
+                map.fadeOut(200);
+            });
+        }
+
+        function step3init() {
+            var counter = $('.sms-resend .counter', step3);
+            var resend = $('.sms-resend .resend', step3);
+            var skip = $('.sms-resend .skip', step3);
+
+            $('.tr', skip).on('click', function () {
+                $('.nx', skip).fadeIn(200);
+            });
+
+            $('.btn', skip).on('click', function () {
+                setStep(3, 4);
+            });
+
+            $('.btn', resend).on('click', function () {
+                resend.text('SMS отправлено');
+                skip.fadeIn(200);
+                $.ajax({
+                    url: '/order/',
+                    method: 'post',
+                    data: {
+                        step: 3,
+                        code: 'resend',
+                        oid:  $orderId.val()
+                    }
+                });
+            });
+
+            $('.nx', skip).on('click', function () {
+                setStep(3, 4, false);
+            });
+        }
+
+        function step4init() {
+            var items = $('.item', step4);
+
+            items.on('click', function (){
+                items.removeClass('active');
+                $(this).addClass('active');
+            });
+        }
+
+        function updateDeliveryData() {
+            $('.op, .info', step2).css({display: 'none'});
+
+            $.ajax({
+                url: '/order/delivery-info/',
+                method: 'post',
+                data: {id: $orderId.val()},
+                success: function (resp) {
+                    var price = function (price) {
+                        return price ? price + ' руб.' : 'бесплатно';
+                    };
+
+                    var deliveryData = resp.delivery;
+                    $('[data-pickup-date]').text(deliveryData.pickup.date);
+                    $('[data-pickup-price]').text(price(deliveryData.pickup.price.income));
+
+                    $('[data-courier-date]').text(deliveryData.courier.date);
+                    $('[data-courier-price]').text(price(deliveryData.courier.price.income));
+                    updateDatepicker($('[name="attrs-date"]', step2), deliveryData.courier.delay, deliveryData.courier.exclude);
+
+                    if(deliveryData.pickup.points > 0) {
+                        $('.op', step2).addClass('half');
+                        $('.op[data-type="courier"]', step2).css({display: 'block'});
+                        $('.op[data-type="pickup"]', step2).css({display: 'block'});
+                    } else {
+                        $('.op', step2).removeClass('half');
+                        $('.op[data-type="courier"]', step2).css({display: 'block'}).trigger('click');
+                        $('.op[data-type="pickup"]', step2).css({display: 'none'});
+                    }
+                }
+            });
+        }
+
+        function updateDatepicker(el, startDelay, excludedDays) {
+            var options = $.config.datepicker;
+            options.minDate = startDelay;
+
+            var dates = [];
+
+            excludedDays.forEach(function (exDate) {
+                dates.push(exDate);
+            });
+
+            options.beforeShowDay = function(date){
+                var string = $.datepicker.formatDate("dd.mm.yy", date);
+                return [dates.indexOf(string) == -1]
+            };
+
+            el.datepicker(options);
+        }
+
+        function initMap() {
+            return setPickupMap({
+                id:   'delivery-points-map',
+                zoom: 10,
+                onInit: function() {
+                    $('#delivery-points-map').on('click', '.chose-point', function() {
+                        $.ajax({
+                            url: '/delivery/point-info/',
+                            data: { id: $(this).data('id') },
+                            method: 'post',
+                            success: function(resp) {
+                                var pickup = $('.pickup.form', step2);
+                                var map = $('.map-wrap', step2);
+
+                                $('.map-open', pickup).text(resp.address).addClass('chosen').closest('.row').removeClass('invalid');
+                                $('.notice', pickup).css({display: 'block'});
+                                $('[name="attrs-point"]', pickup).val(resp.id);
+                                map.fadeOut(200);
+                            }
+                        });
+                    });
+                }
+            });
+        }
+
+        $('.controls .next', box).on('click', function () {
+            setStep($(this).closest('.step').data('step'), $(this).data('step'));
+        });
+
+        $('.controls .prev', box).on('click', function () {
+            var prevStep = parseInt($(this).closest('.step').data('step')) - 1;
+            setStep($(this).closest('.step').data('step'), prevStep);
+        });
+
+        $('.controls .close', box).on('click', function () {
+            $.fancybox.close();
+        });
+
+        setStep(0, 1);
+        //setStep(0, 2);
+        //updateDeliveryData();
+        step1init();
+        step2init();
+        step3init();
+        step4init();
+    </script>
+
+    <style>
+        .order-form .steps .step {
+            position: relative;
+            padding: 45px 0 40px 0;
+        }
+
+        .order-form .steps .wrap {
+            width: 350px;
+            min-height: 280px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .order-form .controls {
+            width: 350px;
+            margin: 0 auto 30px auto;
+            height: 40px;
+        }
+
+        .order-form .controls .close,
+        .order-form .controls .prev,
+        .order-form .controls .next {
+            float: left;
+            display: block;
+            width: 47.5%;
+            margin-right: 5%;
+            height: 40px;
+            line-height: 40px;
+            text-transform: none;
+            font-weight: 400;
+            padding: 0 5px;
+        }
+
+        .order-form .controls .next {
+            margin-right: 0;
+        }
+
+        .order-form .controls .close,
+        .order-form .controls .prev {
+            background: none;
+            border: 2px solid #bfbfbf;
+            color: #333;
+        }
+
+        .order-form .steps .step {
+            display: none;
+        }
+
+        .order-form .steps .step.active {
+            display: block;
+        }
+
+        .order-form .steps .step.auth .wrap {
+            padding-top: 20px;
+        }
+
+        .order-form .steps .step.auth .notice {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .order-form .steps .step.auth .std-input {
+            height: 48px;
+        }
+
+        .order-form .steps .step.auth .row-region {
+            font-size: 15px;
+        }
+
+        .order-form .steps .step.auth .row-region a {
+            color: #0060c1;
+            text-decoration: underline;
+            margin-left: 4px;
+        }
+
+        .order-form .steps .step .error {
+            display: none;
+            position: relative;
+            top: -1px;
+            margin: 0 auto;
+            padding: 2px 10px;
+            background: #ee4923;
+            color: #fff;
+            border-radius: 0 0 2px 2px;
+            font-size: 13px;
+        }
+
+        .order-form .steps .step .invalid .error {
+            display: block;
+        }
+
+        .order-form .steps .step .invalid .std-input {
+            border-color: #ee4923;
+        }
+
+        .order-form .steps .step .row {
+            margin-bottom: 14px;
+        }
+
+        .order-form .steps .step .point-desc .row {
+            margin-bottom: 2px;
+        }
+
+        .order-form .steps .step.delivery .type {
+            margin-bottom: 20px;
+        }
+
+        .order-form .steps .step.delivery .type .notice {
+            margin-bottom: 12px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .order-form .steps .step.delivery .type .box .op {
+            display: none;
+            padding: 6px 0 0 10px;
+            height: 50px;
+            width: 100%;
+            float: left;
+            font-size: 15px;
+            border: 1px solid #bfbfbf;
+            position: relative;
+            transition: all ease .2s;
+            cursor: pointer;
+        }
+
+        .order-form .steps .step.delivery .type .box .op.half {
+            width: 50%;
+        }
+
+        .order-form .steps .step.delivery .type .box .op .name{
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .order-form .steps .step.delivery .type .box .op .desc{
+            color: #606060;
+            font-size: 13px;
+        }
+
+        .order-form .steps .step.delivery .type .box .op:[data-type="courier"] {
+            width: calc(50% + 1px);
+            border-radius: 2px 0 0 2px
+        }
+
+        .order-form .steps .step.delivery .type .box .op[data-type="pickup"] {
+            border-radius: 0 2px 2px 0;
+            margin-left: -1px;
+        }
+
+        .order-form .steps .step.delivery .type .box .op:hover {
+            border-color: #fbd280;
+            box-shadow: inset 0 0 0 1px #fbd280;
+            z-index: 1;
+        }
+
+        .order-form .steps .step.delivery .type .box .op.active,
+        .order-form .steps .step.delivery .type .box .op.active:hover {
+            border-color: #0060c1;
+            box-shadow: inset 0 0 0 1px #0060c1;
+        }
+
+        .order-form .steps .step.delivery .type.invalid .op:first-child {
+            border-left-color: #ee4923;
+            border-top-color: #ee4923;
+        }
+
+        .order-form .steps .step.delivery .type.invalid .op:last-child {
+            border-top-color: #ee4923;
+            border-right-color: #ee4923;
+        }
+
+        .order-form .steps .step.delivery .type .info  {
+            background: #fbfbfb;
+            position: relative;
+            text-align: center;
+            border: 1px solid #969696;
+            border-top: none;
+            border-radius: 0 0 2px 2px;
+            clear: both;
+            display: none;
+            padding: 5px 10px;
+            font-size: 13px;
+        }
+
+        .order-form .delivery .map-wrap {
+            display: none;
+        }
+
+        .order-form .delivery .map-wrap,
+        .order-form .delivery .map {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 10;
+        }
+
+        .order-form .delivery .map-close {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            margin-left: -63px;
+            width: 125px;
+            height: 37px;
+            line-height: 37px;
+            text-align: center;
+            border-radius: 2px;
+            background: #ffffff;
+            border: 1px solid #7a7a7a;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            z-index: 20;
+            text-transform: none;
+            color: #333333;
+            padding: 0;
+        }
+
+        .order-form .delivery .map-close:hover {
+            border-color: #0060c1;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4), inset 0 0 0 1px #0060c1;
+        }
+
+        .order-form .post.form,
+        .order-form .courier.form,
+        .order-form .pickup.form {
+            display: none;
+        }
+
+        .order-form .address.form .dl-element {
+            border-radius: 2px;
+            border: 1px solid #bfbfbf;
+            height: 48px;
+        }
+
+        .order-form .address.form .invalid .dl-element {
+            border-color: #ee4923;
+        }
+
+        .order-form .address.form .dl-element input,
+        .order-form .address.form .dl-element select {
+            height: 46px;
+            padding: 0 14px;
+            border: none;
+            width: 100%;
+        }
+
+        .order-form .address.form .dl-element select option {
+            background: #ffffff;
+        }
+
+        .order-form .address.form .dl-element select option[value=""] {
+            color: #757575;
+        }
+
+        .order-form .address.form .dl-element .pt {
+            display: block;
+            float: left;
+            position: relative;
+        }
+
+        .order-form .address.form .dl-element .city,
+        .order-form .address.form .dl-element .index,
+        .order-form .address.form .dl-element .date,
+        .order-form .address.form .dl-element .street {
+            width: 50%;
+        }
+
+        .order-form .address.form .dl-element .date input {
+            position: relative;
+            z-index: 100000;
+        }
+
+        .order-form .address.form .dl-element .house,
+        .order-form .address.form .dl-element .building,
+        .order-form .address.form .dl-element .flat {
+            width: 16.6666%;
+        }
+
+        .order-form .address.form .dl-element .from,
+        .order-form .address.form .dl-element .to {
+            width: 45%;
+            position: relative;
+        }
+
+        .order-form .address.form .dl-element .pt:before {
+            content: '';
+            height: 30px;
+            width: 1px;
+            background: #b3b3b3;
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+
+        .order-form .address.form .dl-element .pt:first-child:before {
+            display: none;
+        }
+
+        .order-form .confirm .wrap {
+            padding-top: 10px;
+        }
+
+        .order-form .confirm .notice {
+            text-align: center;
+            font-size: 15px;
+            width: 230px;
+            margin: 0 auto 30px auto;
+            font-weight: 600;
+        }
+
+        .order-form .confirm .label {
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .order-form .confirm .sms-resend {
+            font-size: 13px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .order-form .confirm .sms-resend .counter span {
+            font-weight: 600;
+        }
+
+        .order-form .confirm .sms-resend .btn {
+            height: 30px;
+            line-height: 30px;
+            text-transform: none;
+            width: 165px;
+            padding: 0;
+        }
+
+        .order-form .confirm .sms-resend .resend {
+            display: none;
+        }
+
+        .order-form .confirm .sms-resend .skip {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .order-form .confirm .sms-resend .skip .tr {
+            margin-bottom: 8px;
+        }
+
+        .order-form .confirm .sms-resend .skip .tr span {
+            font-style: italic;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .order-form .confirm .sms-resend .skip .tr span {
+            font-style: italic;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .order-form .confirm .sms-resend .skip .nx {
+            display: none;
+        }
+
+        .order-form .confirm input {
+            width: 165px;
+            letter-spacing: 7px;
+            font-size: 18px;
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+            height: 50px;
+        }
+
+        .order-form .confirm.error .sms-code {
+            border-color: #ee4923;
+        }
+
+        .order-form .confirm .sms-error {
+            position: relative;
+            top: -1px;
+            display: none;
+            width: 165px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 2px 10px;
+            background: #ee4923;
+            color: #fff;
+            border-radius: 0 0 2px 2px;
+            font-size: 13px;
+        }
+
+        .order-form .confirm.error .sms-error {
+            display: block;
+        }
+
+        .order-form .pickup.form {
+            display: none;
+        }
+
+        .order-form .pickup.form .map-open {
+            font-weight: 700;
+            height: 48px;
+            padding: 15px 10px;
+            text-align: center;
+            border: 1px solid #bfbfbf;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all ease .2s;
+        }
+
+        .order-form .pickup.form .map-open:hover {
+            border-color: #fbd280;
+            box-shadow: inset 0 0 0 1px #fbd280;
+            z-index: 1;
+        }
+
+        .order-form .pickup.form .map-open.chosen {
+            padding: 8px 10px;
+            overflow: hidden;
+        }
+
+        .order-form .pickup.form .invalid .map-open {
+            border-color: #ee4923;
+        }
+
+        .order-form .pickup.form .notice {
+            display: none;
+            text-align: center;
+        }
+
+        .order-form .pickup.form .notice .row-1 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .order-form .pickup.form .notice .row-2 {
+            font-size: 14px;
+            color: #4e4e4e;
+        }
+
+        .order-form .finish .title {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .order-form .finish .wrap {
+            width: auto;
+            max-width: 650px;
+            margin: 0 auto 15px auto;
+        }
+
+        .order-form .finish .order-info {
+            background: #f7f6f6;
+            border-radius: 2px;
+            padding: 14px 18px;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+
+        .order-form .finish .order-info .row {
+            margin-bottom: 4px;
+            position: relative;
+            border-bottom: 1px dotted #9e9d9d;
+        }
+
+        .order-form .finish .order-info .row .val,
+        .order-form .finish .order-info .row .key {
+            background: #f7f6f6;
+            display: inline-block;
+            position: relative;
+            bottom: -1px;
+        }
+
+        .order-form .finish .order-info .row .key {
+            padding-right: 5px;
+        }
+
+        .order-form .finish .order-info .row .val {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 85px;
+            padding-left: 5px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .order-form .finish .order-info .delivery {
+            margin-top: 18px;
+        }
+
+        .order-form .finish .order-info .delivery .title {
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            text-align: center;
+        }
+
+        .order-form .finish .order-info .delivery .address {
+            min-height: 100px;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+
+        .order-form .finish .order-info .delivery .nt {
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .order-form .finish .order-info .opts {
+            position: relative;
+            margin-top: 14px;
+        }
+
+        .order-form .finish .order-info .opts a {
+            transition: all ease .2s;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .order-form .finish .order-info .opts a:hover {
+            color: #0060c1;
+        }
+
+        .order-form .finish .order-info .opts .print {
+            position: absolute;
+            right: 20px;
+        }
+
+        .order-form .finish .notice {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .order-form .finish .btn {
+            display: block;
+            width: 180px;
+            margin: 0 auto;
+        }
+
+        .order-form .finish .payment .item b {
+            display: block;
+            font-size: 15px;
+        }
+
+        .order-form .finish .payment .item span {
+            display: block;
+            color: #616161;
+        }
+
+        .order-form .finish .controls {
+            text-align: center;
+        }
+
+        .order-form .finish .controls .close {
+            display: inline-block;
+            float: none;
+            margin: 0;
+        }
+
+        .order-form .progress {
+            width: 700px;
+            height: 40px;
+        }
+
+        .order-form .progress .step {
+            display: block;
+            position: relative;
+            width: 33.3333%;
+            float: left;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        .order-form .progress .step:after {
+            content: '';
+            height: 29px;
+            width: 29px;
+            position: absolute;
+            right: -14px;
+            top: 5px;
+            transform: rotate(45deg);
+            z-index: 2;
+        }
+
+        .order-form .progress .step:last-child:after {
+            display: none;
+        }
+
+        .order-form .progress .step,
+        .order-form .progress .step:after {
+            background: #ededed;
+        }
+
+        .order-form .progress .step:after {
+            border-top: 1px solid #c9c8c8;
+            border-right: 1px solid #c9c8c8;
+        }
+
+        .order-form .progress .step.past,
+        .order-form .progress .step.past:after {
+            background: #393939;
+            color: #ffffff;
+            border: none;
+        }
+
+        .order-form .progress .step.active,
+        .order-form .progress .step.active:after {
+            background: #0060c1;
+            color: #ffffff;
+            border: none;
+        }
+
+        @media all and (max-width: 700px) {
+            .order-form .progress {
+                width: 300px;
+            }
+
+            .order-form .progress .step {
+                display: none;
+                width: 100%;
+            }
+
+            .order-form .progress .step:after {
+                display: none;
+            }
+
+            .order-form .progress .step.active {
+                display: block;
+                background: #333;
+            }
+
+            .order-form .controls,
+            .order-form .steps .wrap {
+                width: 270px;
+            }
+
+            .order-form .pickup.form .notice .row-1 {
+                font-size: 13px;
+            }
+
+            .order-form .point-des .row {
+                margin-bottom: 0;
+            }
+            .order-form .finish .order-info {
+                width: auto;
+                border: 2px solid #333;
+                background: #ffffff;
+            }
+
+            .order-form .finish .order-info .delivery .address {
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            .order-form .courier.form .dl-element input,
+            .order-form .courier.form .dl-element select {
+                padding: 0 8px;
+            }
+
+            .order-form .steps .step .row.route {
+                display: none;
+            }
+
+            .order-form .delivery .map-close {
+                top: 5px;
+                bottom: auto;
+                height: 34px;
+                line-height: 34px;
+            }
+
+            .order-form .steps .step {
+                padding: 10px 0;
+            }
+        }
+    </style>
+</div>

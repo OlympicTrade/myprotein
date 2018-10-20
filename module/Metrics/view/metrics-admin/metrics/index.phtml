@@ -1,0 +1,110 @@
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="sales">Продажи</div>
+            <div class="tab" data-tab="adwords">Реклама</div>
+            <div class="tab" data-tab="visits">Посещаемость</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="sales">
+				<?php echo $this->adminPeriodsMetrics($metrics, 'sales'); ?>
+			</div>
+            <div class="tab" data-tab="adwords">
+				<?php echo $this->adminPeriodsMetrics($metrics, 'adwords'); ?>
+			</div>
+            <div class="tab" data-tab="visits">
+				<?php echo $this->adminPeriodsMetrics($metrics, 'visits'); ?>
+			</div>
+        </div>
+	</div>
+</div>
+
+<div class="panel balance-chart">
+</div>
+
+<style>
+	.prod-stats {
+		padding-right: 14px;
+	}
+
+    .prod-stats h2 a {
+        font-size: 13px;
+        margin-left: 10px;
+    }
+
+    .balance-chart td:last-child {
+        text-align: right;
+    }
+</style>
+
+<?php /*
+<?php
+$fields = $statistic['fields'];
+$graphs = $fields['graph'];
+
+$labelsStr = '';
+
+$result = array();
+foreach($graphs[0]['data'] as $row) {
+    $result[] = $row;
+    if(is_string($fields['labels']['field'])) {
+        $labelsStr .= '"' . str_replace('"', '\"', $row[$fields['labels']['field']]) . '", ';
+    }
+}
+$graphs[0]['data'] = $result;
+
+$datasetStr = '';
+foreach($graphs as $graph) {
+    $dataSrt = '';
+    foreach($graph['data'] as $val) {
+        $dataSrt  .= call_user_func_array($graph['filter'], array($val)) . ', ';
+    }
+
+    $datasetStr .=
+        '{
+            name: "' . $graph['name'] . '",
+            data: [' . $dataSrt . ']
+        },';
+}
+?>
+
+<script src="/engine/js//chart/highcharts.js"></script>
+<script src="/engine/js//chart/exporting.js"></script>
+<script>
+    var box = $('.statistic-chart');
+
+    $('.filter select, .filter input', box).on('change keyup', function() {
+        $(this).closest('form').submit();
+    });
+
+    $('.chart', box).highcharts({
+        chart: {
+            type: 'areaspline'
+        },
+        title: {
+            text: ''
+        },
+        xAxis: {
+            categories: [<?php echo $labelsStr ?>],
+        },
+        yAxis: {
+            title: {
+                text: ''
+            },
+        },
+        tooltip: {
+            shared: true,
+            valueSuffix: '<?php echo ' ' . $fields['labels']['units'] ?>'
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            areaspline: {
+                fillOpacity: 0.5
+            }
+        },
+        series: [<?php echo $datasetStr ?>]
+    });
+</script>
+*/ ?>

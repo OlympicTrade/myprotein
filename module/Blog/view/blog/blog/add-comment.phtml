@@ -1,0 +1,40 @@
+<div class="popup-box popup-product-review">
+    <div class="header">
+        <div class="title">Комментарий</div>
+        <div class="desc"><?php echo $article->get('name') ?></div>
+    </div>
+    <div class="body">
+        <form class="std-form js-article-comments-form" action="<?php echo $this->url('blogAddComment') ?>" method="post">
+            <div class="form-box">
+                <input type="hidden" value="<?php echo $article->getId() ?>" name="article_id">
+                <input type="hidden" value="<?php echo $parent ?>" name="parent">
+                <div class="row">
+                    <input name="name" class="std-input" placeholder="Представьтесь">
+                </div>
+                <div class="row">
+                    <textarea name="comment" class="std-textarea" placeholder="Комментарий"></textarea>
+                </div>
+                <div class="row" style="text-align: center;">
+                    <input type="submit" class="btn" value="Отправить комментарий">
+                </div>
+            </div>
+            <div class="success-box">
+                <div class="sb-title">Спасибо</div>
+                <div class="sb-desc">Ваш комментарий отправлен на модерацию</div>
+                <span class="btn" data-fancybox-close>Закрыть</span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var form = $('.js-article-comments-form');
+
+    form.formSubmit({
+        success: function(resp, form){
+            $('.form-box', form).fadeOut(200, function(){
+                $('.success-box', form).fadeIn(200);
+            });
+        }
+    });
+</script>

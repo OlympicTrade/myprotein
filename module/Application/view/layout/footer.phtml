@@ -1,0 +1,27 @@
+</div>
+<div class="block" id="footer">
+    <div class="wrapper">
+        <a href="/" class="logo"></a>
+
+        <ul class="menu">
+            <li><a href="/about/">О продукции</a></li>
+            <li><a href="/delivery/">Олата и доставка</a></li>
+            <li><a href="/return-policy/">Политика возврата</a></li>
+            <li><a href="/contacts/">Контакты и реквизиты</a></li>
+        </ul>
+
+        <ul class="contacts">
+            <li class="row"><a href="<?php echo $this->link($contacts->get('phone_1')) ?>"><i class="fas fa-phone"></i> <?php echo $contacts->get('phone_1') ?></a></li>
+            <li class="row"><a href="<?php echo $this->link($contacts->get('email')) ?>"><i class="far fa-envelope"></i> <?php echo $contacts->get('email') ?></a></li>
+            <?php /*<li class="row"><a href="<?php echo $contacts->get('vkontakte') ?>"><i class="fab fa-vk"></i> myprotein_buy</a></li>*/ ?>
+        </ul>
+
+        <div class="clear"></div>
+    </div>
+</div>
+<?php
+echo $this->settings->get('html_body')
+?>
+<noscript><div><img src="https://mc.yandex.ru/watch/47855381" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+</body>
+</html>

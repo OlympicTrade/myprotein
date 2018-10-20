@@ -1,0 +1,59 @@
+<?php
+$this->generateMeta(true);
+
+$this->headLink()
+    ->prependStylesheet('/mobile/css/compress2.css')
+    ->prependStylesheet('//use.fontawesome.com/releases/v5.4.1/css/all.css');
+
+$this->headScript()
+    ->prependFile('/mobile/js/compress2.js')
+    ->prependFile('/js/counters.js')
+    ->prependFile('https://www.googletagmanager.com/gtag/js?id=UA-121245947-1')
+
+    //->prependFile('/engine/js/jquery/jquery-ui.js')
+    //->prependFile('/engine/js/jquery/jquery.js')
+
+    ->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js')
+    ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php echo $this->headTitle() . "\n";
+    echo $this->headMeta();
+    echo $this->headLink();
+    echo $this->headScript();
+    echo $this->settings->get('html_head')
+    ?>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KB83CWB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<div id="fog"></div>
+<div id="header">
+    <a href="/" class="item logo"></a>
+    <div class="item menu" data-box="menu"><i class="fas fa-bars"></i></div>
+    <div class="item search" data-box="search"><i class="fas fa-search"></i></div>
+    <a href="/cart/" class="item cart">
+        <div class="counter"></div>
+    </a>
+    <div class="box menu">
+        <ul>
+            <li class="spec"><a href="/order/order-status/" class="popup">Что с моим заказом?</a></li>
+            <li class="spec"><a href="/delivery/">Доставка и точки выдачи</a></li>
+            <li class="spec"><a href="/about/">О бренде Myprotein</a></li>
+            <?php echo $this->catalogMenu(['ul' => false, 'sub' => false]) ?>
+            <li class="spec"><a href="/blog/">Блог</a></li>
+        </ul>
+    </div>
+
+    <div class="box search">
+        <form>
+            <input name="query" placeholder="Поиск" class="std-input query">
+            <button type="submit" class="sbm"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+</div>
+
+<div id="container">

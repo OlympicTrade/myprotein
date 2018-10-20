@@ -1,0 +1,30 @@
+<div class="block">
+    <?php
+    $html = '<div class="tabs product-tabs">';
+
+    $html .=
+        '<div class="tabs-header">';
+    foreach($tabs as $tab) {
+        $url = '/goods/' . $product->get('url') . '/' . ($tab['url'] ? $tab['url'] . '/' : '');
+        $html .=
+            '<a class="tab' . ($tab['html'] ? ' active' : '') . '" href="' . $url . '" data-load="' . $url . '">' . $tab['header'] . '</a>';
+    }
+    $html .=
+        '</div>'
+        .'<div class="clear"></div>';
+
+    $html .=
+        '<div class="tabs-body">';
+    foreach($tabs as $tab) {
+        $html .=
+            '<div class="tab">' . $tab['html'] . '</div>';
+    }
+    $html .=
+        '</div>';
+
+    $html .=
+        '</div>';
+
+    echo $html;
+    ?>
+</div>

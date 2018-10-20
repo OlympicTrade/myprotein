@@ -1,0 +1,85 @@
+<?php if(!$isAjax) { ?>
+<div class="block">
+    <div class="wrapper">
+<?php } ?>
+<div class="popup-box popup-registration">
+    <div class="header">
+        <div class="title">Регистрация</div>
+    </div>
+    <div class="body std-form">
+        <?php
+        $form
+            ->setAttribute('action', $this->url('user', array('action' => 'registration')))
+            ->setAttribute('class', 'std-form js-registration-form')
+            ->setAttribute('id', 'registration-form')
+            ->setAttribute('method', 'post');
+
+        $form->get('email')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'E-mail (логин)');
+
+        $form->get('password_repeat')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'Еще раз');
+
+        $form->get('password')
+            ->setAttribute('class', 'std-input')
+            ->setAttribute('placeholder', 'Пароль');
+        ?>
+
+        <?php echo $this->form()->openTag($form); ?>
+
+        <div class="form-box">
+            <div class="form-errors"></div>
+
+            <?php echo $this->formCollection($form) ?>
+
+            <div class="row-btns">
+                <input type="submit" value="Зарегистрироваться" class="btn">
+            </div>
+        </div>
+
+        <div class="success-box">
+            <div class="sb-title">Форма принята</div>
+            <div class="sb-desc">Подтвердите свою почту чтобы завершить регистрацию</div>
+        </div>
+
+        <?php echo $this->form()->closeTag($form); ?>
+    </div>
+
+    <script>
+        var form = $('#registration-form');
+        form.formSubmit({
+            success: function(resp, form){
+                $('.form-box', form).fadeOut(200, function(){
+                    $('.success-box', form).fadeIn(200);
+                });
+            }
+        });
+    </script>
+
+    <style>
+        .popup-registration {
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .popup-registration .row-btns {
+            text-align: center;
+        }
+
+        .popup-registration .title {
+            text-align: center;
+        }
+
+        .popup-registration .row-btns .btn {
+            width: 100%;
+        }
+    </style>
+</div>
+        <?php if(!$isAjax) { ?>
+    </div>
+</div>
+<?php } ?>
+
+

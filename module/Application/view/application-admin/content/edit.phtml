@@ -1,0 +1,135 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('section') ?>"></i>
+    <?php echo $this->header ?>
+</h1>
+
+<?php $form = $this->editForm ?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="general">Основное</div>
+            <div class="tab" data-tab="background">Фото/Видео</div>
+            <div class="tab" data-tab="text">Текст</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+                <?php
+                echo $this->formElement($form->get('depend'));
+                echo $this->AdminFormRow($form->get('type'));
+                echo $this->AdminFormRow($form->get('title'));
+                echo $this->AdminFormRow($form->get('sort'));
+                ?>
+            </div>
+            <div class="tab" data-tab="background">
+                <?php
+                echo $this->AdminFormRow($form->get('video'));
+                echo $this->AdminFormRow($form->get('image-image'));
+                ?>
+            </div>
+            <div class="tab" data-tab="text">
+                <?php
+                echo $this->AdminFormRow($form->get('text'));
+                ?>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            var form = $('.edit-form');
+
+            var tabBg = $('.tabs-header [data-tab="background"]', form);
+            var tabTx = $('.tabs-header [data-tab="text"]', form);
+
+            var bgSelect   = $('[name="bg_type"]', form).closest('.row');
+            var inputImage = $('.image-form', form).closest('.row');
+            var inputVideo = $('[name="video"]', form).closest('.row');
+
+            $('select[name="type"]', '.edit-form').on('change', function() {
+                tabBg.css('display', 'block');
+                tabTx.css('display', 'block');
+
+                bgSelect.css('display', 'block');
+                inputVideo.css('display', 'block');
+                inputImage.css('display', 'block');
+
+                switch (parseInt($(this).val())) {
+                    case 1:
+                        tabBg.css('display', 'none');
+                        tabTx.css('display', 'none');
+                        break;
+                    case 2:
+                        tabBg.css('display', 'none');
+                        break;
+                    case 3:
+                        tabTx.css('display', 'none');
+                        break;
+                    default:
+                        tabBg.css('display', 'none');
+                }
+            }).trigger('change');
+
+            $('select[name="bg_type"]', '.edit-form').on('change', function() {
+                inputVideo.css('display', 'block');
+                inputImage.css('display', 'block');
+
+                switch (parseInt($(this).val())) {
+                    case 1:
+                        inputVideo.css('display', 'none');
+                        break;
+                    case 2:
+                        inputImage.css('display', 'none');
+                        break;
+                }
+            }).trigger('change');
+        });
+    </script>
+
+    <div class="btn-box">
+        <?php
+        if($_GET['route'] && $_GET['parent']) {
+            $backLink = $this->url($_GET['route'], array('action' => 'edit'), array('query' => array('id' => $_GET['parent'])));
+        ?>
+        <a href="<?php echo $backLink ?>#edit-tabs=content" class="btn btn-gray">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </a>
+        <?php } ?>
+
+        <?php if($this->model->getId()) { ?>
+        <a class="btn btn-red btn-remove-ck" href="#popup-delete">
+            <i class="fas fa-times"></i>
+            Удалить
+        </a>
+        <?php } ?>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>
+
+<script>
+$(function(){
+    var form = $('.edit-form');
+
+    $('input[name="type"]').on('click', function(){
+        form.find('.menu-type').css('display', 'none');
+        form.find('.menu-type[data-type="' + $(this).val() + '"]').css('display', 'block');
+    });
+
+    $('input[name="type"]:checked').trigger('click');
+
+    $('select[name="page_id"]', form).on('change', function() {
+        $('input[name="name"]', form).val($(this).find('option[value="' + $(this).val() + '"]').text().replace('— ', ''));
+    });
+});
+</script>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove" data-id="<?php echo $this->model->getId() ?>"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>

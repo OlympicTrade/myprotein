@@ -1,0 +1,105 @@
+<div class="popup-box popup-regions">
+    <div class="header">
+        <div class="title">Ваш регион: <?php echo $region->get('name') ?></div>
+    </div>
+    <div class="notice">
+        От выбора регина зависит стоимость и скорость доставки.
+    </div>
+    <div class="body">
+        <div class="regions">
+            <?php foreach($regions as $region) { ?>
+                <div class="row" data-val="<?php echo $region->getId() ?>"><?php echo $region->get('name') ?></div>
+            <?php } ?>
+        </div>
+        <div class="btns clear">
+            <span data-fancybox-close class="btn">Закрыть</span>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            var box = $('.popup-regions');
+            $('.row', box).on('click', function() {
+                $.cookie('region', $(this).data('val'), {expires: 365, path: "/"});
+
+                <?php if($reload) { ?>
+                location.reload();
+                <?php } else { ?>
+                $('.region-name').text($(this).text());
+                $.fancybox.close();
+                <?php } ?>
+            });
+        });
+    </script>
+
+    <style>
+        .popup-regions {
+            width: 600px;
+        }
+
+        .popup-regions .notice {
+            text-align: center;
+            font-size: 16px;
+            background: #eeeeee;
+            padding: 10px;
+            margin-bottom: 18px;
+        }
+
+        .popup-regions .regions {
+            max-height: 500px;
+            overflow-y: scroll;
+        }
+
+        .popup-regions .row {
+            position: relative;
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-left: 12px;
+            cursor: pointer;
+            width: 50%;
+            float: left;
+        }
+
+        .popup-regions .row:hover {
+            color: #ee7923;
+        }
+
+        .popup-regions .row:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 7px;
+            height: 4px;
+            width: 4px;
+            border-radius: 2px;
+            background: #fbd280;
+        }
+
+        .popup-regions .btn {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        @media all and (max-width: 700px) {
+            .popup-regions .row {
+                width: 100%;
+                float: none;
+            }
+
+            .popup-regions .regions {
+                max-height: 350px;
+            }
+
+
+            .popup-regions .regions::-webkit-scrollbar {
+                -webkit-appearance: none;
+                width: 7px;
+            }
+            .popup-regions .regions::-webkit-scrollbar-thumb {
+                border-radius: 4px;
+                background-color: rgba(0,0,0,.5);
+                -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+            }
+        }
+    </style>
+</div>

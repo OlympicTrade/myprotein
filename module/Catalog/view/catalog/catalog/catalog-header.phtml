@@ -1,0 +1,47 @@
+<?php
+$sort = array(
+    'popular'  => array('name' => 'популярности', 'direct' => 'down'),
+    'price'    => array('name' => 'цене', 'direct' => 'up'),
+    'discount' => array('name' => 'скидке', 'direct' => 'down'),
+);
+
+$html =
+    '<div class="sort">'
+    .'<div class="label">Сортировать по:</div>'
+    .'<div class="list">';
+
+$getSort = isset($_GET['sort']) ? $_GET['sort'] : 'popular';
+$getDirect = isset($_GET['direct']) ? $_GET['direct'] : 'down';
+
+foreach ($sort as $field => $opts) {
+    $url = '/catalog/' . (isset($category) ? $category->getUrl() : '') . '?sort=' . $field;
+    $name = $opts['name'];
+    $class = 'item';
+
+    if($getSort == $field) {
+        $class .= ' active';
+
+        if($getDirect == 'up') {
+            $url .= '&direct=down';
+            $name .= ' <i class="fas fas-chevron-up"></i>';
+        } else {
+            $url .= '&direct=up';
+            $name .= ' <i class="fas fas-chevron-down"></i>';
+        }
+    } else {
+        $url .= '&direct=' . $opts['direct'];
+    }
+
+    $html .= '<a href="' . $url . '" class="' . $class . '">' . $name . '</a>';
+}
+
+$html .=
+    '</div>'
+    .'</div>';
+
+if(isset($category)) {
+    $header = $category->get('header') ? $category->get('header') : $category->get('name');
+}
+?>
+
+<?php echo $this->header(['html' => $html, 'header' => $header]) ?>

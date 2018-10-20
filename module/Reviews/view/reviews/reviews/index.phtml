@@ -1,0 +1,28 @@
+<div class="content">
+    <div class="block header-block">
+        <div class="breadcrumbs">
+            <?php echo $this->breadcrumbs($breadcrumbs, array('delimiter' => ' → ', 'showLast' => false)) ?>
+        </div>
+
+        <h1><?php echo $this->header ?></h1>
+
+        <div class="info">
+            <a href="javascript:window.print();" class="print"><span>Распечатать</span></a>
+        </div>
+    </div>
+
+    <div class="reviews-list">
+        <div class="block desc">
+            <?php echo $this->textBlock($page->get('text')) ?>
+        </div>
+
+        <div class="block add-review">
+            <a href="/reviews/add-review/" class="btn js-add-review popup">Оставить отзыв</a>
+        </div>
+
+        <div class="list">
+            <?php echo $this->reviewsList($reviews) ?>
+        </div>
+    </div>
+</div>
+<div class="sidebar"></div>

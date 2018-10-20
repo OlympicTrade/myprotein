@@ -1,0 +1,353 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->header ?>
+</h1>
+
+<?php
+$form = $this->editForm;
+$product = $this->model;
+?>
+<?php echo $this->form()->openTag($form) ?>
+<div class="panel">
+    <?php $url = '/goods/' . $product->get('url') . '/'; ?>
+    <a href="<?php echo $url ?>" target="_blank">Показать на сайте</a>
+
+    <?php
+    $brand = $product->getPlugin('brand');
+    if($brand->load()) {
+    $url = $this->url('adminBrands', array('action' => 'edit')) . '?id=' . $brand->getId(); ?>
+    | <a href="<?php echo $url ?>">Производитель</a>
+    <?php } ?>
+
+    <?php
+    $catalog = $product->getPlugin('catalog');
+    if($catalog->load()) {
+        $url = $this->url('adminCatalog', array('action' => 'edit')) . '?id=' . $catalog->getId(); ?>
+        | <a href="<?php echo $url ?>">Категория</a>
+    <?php } ?>
+
+    | <a href="/admin/catalog/orders/list/?product_id=<?php echo $product->getId() ?>">Заказы</a>
+    | <a href="/admin/catalog/supplies/list/?product_id=<?php echo $product->getId() ?>#supplies-list">Закупки</a>
+    | <a href="/admin/catalog/products/statistic/?id=<?php echo $product->getId() ?>">Статистика</a>
+
+    <span class="btn sync-stocks">Синхронизировать склад</span>
+</div>
+
+<div class="edit-form std-form">
+    <div class="tabs tabs-class" data-name="edit-tabs">
+        <div class="tabs-header">
+            <div class="tab" data-tab="general">Основное</div>
+            <div class="tab" data-tab="props">Характеристики</div>
+            <div class="tab" data-tab="links">Связи</div>
+            <div class="tab" data-tab="price">Цены</div>
+            <div class="tab" data-tab="stock">Склад</div>
+            <div class="tab" data-tab="tabs">Вкладки</div>
+            <div class="tab" data-tab="photo">Фото</div>
+            <div class="tab" data-tab="seo">SEO</div>
+            <div class="tab" data-tab="text">Описание</div>
+        </div>
+        <div class="tabs-body">
+            <div class="tab" data-tab="general">
+
+                <?php $url = '/goods/' . $product->get('url') . '/'; ?>
+                <div class="row">
+                    <a href="/catalog/parser/reviews/?id=<?php echo $product->getId() ?>" target="_blank">Загрузить отзывы</a>
+                    <a href="/admin/catalog/reviews/list/">Перейти к проверке</a>
+                </div>
+
+                <?php
+                echo $this->AdminFormRow($form->get('image-image'));
+                echo $this->AdminFormRow($form->get('name'));
+                echo $this->AdminFormRow($form->get('preview'));
+                echo $this->AdminFormRow($form->get('vegan'));
+                echo $this->AdminFormRow($form->get('url'));
+                echo $this->AdminFormRow($form->get('mp_url'));
+                echo $this->AdminFormRow($form->get('ya_market'));
+                echo $this->AdminFormRow($form->get('go_merchant'));
+                echo $this->AdminFormRow($form->get('catalog_id'));
+                echo $this->AdminFormRow($form->get('brand_id'));
+                //echo $this->AdminFormRow($form->get('parent'));
+                ?>
+            </div>
+            <div class="tab" data-tab="props">
+                <?php echo $this->formRow($form->get('features-collection')); ?>
+                <?php echo $this->formRow($form->get('composition-collection')); ?>
+            </div>
+            <div class="tab" data-tab="price">
+                <?php echo $this->formRow($form->get('margin')); ?>
+                <?php echo $this->formRow($form->get('discount')); ?>
+                <?php echo $this->formRow($form->get('prop_name_1')); ?>
+                <?php echo $this->formRow($form->get('prop_name_2')); ?>
+                <?php echo $this->formRow($form->get('size-collection')); ?>
+                <?php echo $this->formRow($form->get('taste-collection')); ?>
+            </div>
+            <div class="tab" data-tab="links">
+                <?php echo $this->AdminFormRow($form->get('recommended-collection')); ?>
+                <?php echo $this->AdminFormRow($form->get('articles-collection')); ?>
+            </div>
+            <div class="tab" data-tab="stock">
+                <?php
+                $sizeList = $product->getPlugin('size');
+                $tasteList = $product->getPlugin('taste');
+
+                $stockArr = [];
+                foreach($stock as $item) {
+                    $stockArr[$item['taste_id'] . '-' . $item['size_id']] = $item['count'];
+                }
+
+                $sizeArr = array();
+                foreach($product->getPlugin('size') as $size) {
+                    $sizeArr[] = [
+                        'id'   => $size->getId(),
+                        'name' => $size->get('name'),
+                    ];
+                }
+
+                $tasteArr = [];
+                foreach($product->getPlugin('taste') as $taste) {
+                    $tasteArr[] = [
+                        'id'   => $taste->getId(),
+                        'name' => $taste->get('name'),
+                    ];
+                }
+                ?>
+
+                <h2 class="separator">Товара на складе</h2>
+                <table class="std-table2 stock-table stock-real">
+                    <?php
+                    for($i = 0; $i <= count($tasteArr); $i++) {
+                        echo '<tr>';
+                        for($j = 0; $j <= count($sizeArr); $j++) {
+                            if($i == 0 && $j == 0) {
+                                echo '<td></td>';
+                            } elseif($j == 0) {
+                                echo '<td>' . $tasteArr[$i - 1]['name'] . '</td>';
+                            } elseif($i == 0) {
+                                echo '<td>' . $sizeArr[$j - 1]['name'] . '</td>';
+                            } else {
+                                $key = $tasteArr[$i - 1]['id'] . '-' . $sizeArr[$j - 1]['id'];
+                                $val = isset($stockArr[$key]) ? $stockArr[$key] : 0;
+                                echo '<td class="count"><input data-taste="' . $tasteArr[$i - 1]['id'] . '" data-size="' . $sizeArr[$j - 1]['id'] . '" value="' . $val . '"></td>';
+                            }
+                        }
+                        echo '</tr>';
+                    }
+                    ?>
+                </table>
+
+                <?php
+                $stockArr = [];
+                foreach($stockLimit as $item) {
+                    $stockArr[$item['taste_id'] . '-' . $item['size_id']] = $item['count'];
+                }
+                ?>
+
+                <h2 class="separator">Товара нужно</h2>
+                
+                <?php echo $this->AdminFormRow($form->get('sort')); ?>
+
+                <table class="std-table2 stock-table stock-limit">
+                    <?php
+                    for($i = 0; $i <= count($tasteArr); $i++) {
+                        echo '<tr>';
+                        for($j = 0; $j <= count($sizeArr); $j++) {
+                            if($i == 0 && $j == 0) {
+                                echo '<td></td>';
+                            } elseif($j == 0) {
+                                echo '<td>' . $tasteArr[$i - 1]['name'] . '</td>';
+                            } elseif($i == 0) {
+                                echo '<td>' . $sizeArr[$j - 1]['name'] . '</td>';
+                            } else {
+                                $key = $tasteArr[$i - 1]['id'] . '-' . $sizeArr[$j - 1]['id'];
+                                $val = isset($stockArr[$key]) ? $stockArr[$key] : 0;
+                                echo '<td class="count"><input data-taste="' . $tasteArr[$i - 1]['id'] . '" data-size="' . $sizeArr[$j - 1]['id'] . '" value="' . $val . '"></td>';
+                            }
+                        }
+                        echo '</tr>';
+                    }
+                    ?>
+                </table>
+
+                <script>
+                    var srtTimer;
+                    $('.stock-real input').on('keyup', function() {
+                        var input = $(this);
+                        clearTimeout(srtTimer);
+                        srtTimer = setTimeout(function() {
+                            $.ajax({
+                                url: '/admin/catalog/products/stock-update/',
+                                data: {
+                                    product_id: <?php echo $product->getId() ?>,
+                                    size_id: input.data('size'),
+                                    taste_id: input.data('taste'),
+                                    count: input.val()
+                                },
+                                method: 'post'
+                            });
+                        }, 400);
+                    });
+
+                    var sltTimer;
+                    $('.stock-limit input').on('keyup', function() {
+                        var input = $(this);
+                        sltTimer = setTimeout(function() {
+                            $.ajax({
+                                url: '/admin/catalog/products/stock-limit-update/',
+                                data: {
+                                    product_id: <?php echo $product->getId() ?>,
+                                    size_id: input.data('size'),
+                                    taste_id: input.data('taste'),
+                                    count: input.val()
+                                },
+                                method: 'post'
+                            });
+                        }, 400);
+                    });
+                </script>
+
+                <style>
+                    .stock-table {
+                        width: auto;
+                    }
+
+                    .stock-table td {
+                        width: 200px;
+                    }
+
+                    .stock-table .count {
+                        padding: 0;
+                    }
+
+                    .stock-table .count input {
+                        width: 100%;
+                        height: 26px;
+                        border: none;
+                        padding: 0 10px;
+                    }
+                </style>
+            </div>
+            <div class="tab" data-tab="tabs">
+                <div class="separator">Вкладка видео</div>
+                <?php
+                echo $this->formRow($form->get('video'));
+                ?>
+                <div class="separator">Вкладка 1</div>
+                <?php
+                echo $this->formRow($form->get('tab1_title'));
+                echo $this->formRow($form->get('tab1_description'));
+                echo $this->formRow($form->get('tab1_url'));
+                echo $this->formRow($form->get('tab1_header'));
+                echo $this->formRow($form->get('tab1_text'));
+                ?>
+                <div class="separator">Вкладка 2</div>
+                <?php
+                echo $this->formRow($form->get('tab2_title'));
+                echo $this->formRow($form->get('tab2_description'));
+                echo $this->formRow($form->get('tab2_url'));
+                echo $this->formRow($form->get('tab2_header'));
+                echo $this->formRow($form->get('tab2_text'));
+                ?>
+                <div class="separator">Вкладка 3</div>
+                <?php
+                echo $this->formRow($form->get('tab3_title'));
+                echo $this->formRow($form->get('tab3_description'));
+                echo $this->formRow($form->get('tab3_url'));
+                echo $this->formRow($form->get('tab3_header'));
+                echo $this->formRow($form->get('tab3_text'));
+                ?>
+            </div>
+            <div class="tab" data-tab="photo">
+                <?php echo $this->formRow($form->get('images-images')); ?>
+            </div>
+            <div class="tab" data-tab="seo">
+                <?php
+                echo $this->AdminFormRow($form->get('title'));
+                echo $this->AdminFormRow($form->get('keywords'));
+                echo $this->AdminFormRow($form->get('description'));
+                ?>
+            </div>
+            <div class="tab" data-tab="text">
+                <?php echo $this->formRow($form->get('text')); ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <span class="btn btn-gray" onclick="history.back()">
+            <i class="fas fa-reply"></i>
+            Вернутся
+        </span>
+        <?php if($this->model->getId()) { ?>
+            <a class="btn btn-red btn-remove-ck" href="#popup-delete">
+                <i class="fas fa-times"></i>
+                Удалить
+            </a>
+        <?php } ?>
+        <a class="btn btn-blue btn-submit" href="">
+            <i class="fas fa-check"></i>
+            Сохранить
+        </a>
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag() ?>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove" data-id="<?php echo $this->model->getId() ?>"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>
+
+<script>
+$(function() {
+    var form = $('#edit-form');
+
+    $('[name="title"], [name="tab1_title"], [name="tab2_title"], [name="tab3_title"], [name="description"], [name="tab1_description"], [name="tab2_description"], [name="tab3_description"]', form).each(function () {
+        var input = $(this);
+        var counter = $('<span class="desc-counter"></span>');
+        counter.insertAfter(input);
+
+        input.on('keyup', function () {
+            counter.text($(this).val().length);
+        }).trigger('keyup');
+    });
+
+    $('.sync-stocks', form).on('click', function() {
+        var btn = $(this);
+        var id = <?php echo $this->model->getId() ?>;
+
+        if(id == 0) {
+            alert('Товар еще не создан');
+            return;
+        }
+
+        btn.text('Синхронизация...');
+        $.ajax({
+            url: '/admin/catalog/supplies/sync-stocks/',
+            data: {ids: [id]},
+            method: 'post',
+            success: function(resp) {
+                btn.text('Синхронизировать склады');
+                alert(resp.msg);
+            }
+        });
+    });
+});
+</script>
+
+<style>
+    #edit-form .desc-counter {
+        display: inline-block;
+        padding: 4px 0 0 10px;
+    }
+
+    #edit-form .panel {
+        position: relative;
+    }
+
+    #edit-form .sync-stocks {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+    }
+</style>

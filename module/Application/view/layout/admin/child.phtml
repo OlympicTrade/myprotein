@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->meta->title) ?>
+
+        <?php
+        echo $this->headLink()
+            ->appendAlternate(array('rel' => 'shortcut icon', 'href' => '/engine/images/favicon.png'));
+
+        $this->headLink()
+            ->prependStylesheet('/engine/css/main.css')
+            ->prependStylesheet('/engine/css/elements.css')
+            ->prependStylesheet('/engine/css/grid.css')
+            ->prependStylesheet('/engine/css/jquery/fancybox/style.css')
+            ->prependStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css')
+            ->prependStylesheet('/engine/css/reset.css');
+        ?>
+
+        <?php
+        $this->headScript()
+            ->prependFile('/engine/js/main.js')
+            ->prependFile('/engine/js/libs/aptero.js')
+            ->prependFile('/engine/js/libs/messages.js')
+            ->prependFile('/engine/js/jquery/inputmask.js')
+            ->prependFile('/engine/js/jquery/fancybox.js')
+
+            ->prependFile('/engine/js/jquery/jquery-ui.js')
+            ->prependFile('/engine/js/jquery/jquery.js')
+
+            //->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js')
+            //->prependFile('//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
+        ?>
+
+        <?php echo $this->headLink() ?>
+        <?php echo $this->headScript() ?>
+    </head>
+    <body>
+        <?php echo $this->adminMessenger($this->messages); ?>
+        <div id="top-bar">
+            <?php /*<a href="<?php echo $this->url('admin') ?>" class="logo"></a>*/ ?>
+            <div class="header">
+                <?php echo $this->header ?>
+            </div>
+            <ul class="menu">
+                <li><a href="<?php echo $this->url('adminUser', array('action' => 'logout')) ?>"><i class="fas fa-power-off"></i></a></li>
+            </ul>
+        </div>
+
+        <aside id="sidebar">
+            <?php echo $this->adminMenuWidget(); ?>
+        </aside>
+
+        <div id="wrapper">
+            <div id="content">
+                <?php echo $this->content; ?>
+            </div>
+        </div>
+
+        <div class="site-settings hide">
+            <input type="hidden" value="<?php echo strtolower($this->engine['module']) ?>" class="module">
+            <input type="hidden" value="<?php echo strtolower($this->engine['section']) ?>" class="section">
+        </div>
+    </body>
+</html>

@@ -1,0 +1,40 @@
+<h1>
+    <i class="fas module-icon-<?php echo $this->engine->module->get('module') ?>"></i>
+    <?php echo $this->engine->module->get('name') ?>
+
+    <?php
+    $addUrl = $this->url('admin', array(
+        'module' => $this->engine->module->get('module'),
+        'section' => $this->engine->module->get('section'),
+        'action' => 'edit'
+    ));
+
+    $settingsUrl = $this->url('admin', array(
+        'module' => $this->engine->module->get('module'),
+        'section' => $this->engine->module->get('section'),
+        'action' => 'settings'
+    ));
+    ?>
+    <a href="<?php echo $settingsUrl ?>" class="module-config"><i class="fas fa-cog"></i></a>
+</h1>
+
+<div class="panel">
+    <div class="filters">
+        <?php $form = $this->filterForm ?>
+        <?php echo $this->form()->openTag($form) ?>
+        <div class="filter search">
+            <?php echo $this->formElement($form->get('search')) ?>
+            <span class="btn btn-blue btn-submit">Применить</span>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+        <div class="clear"></div>
+    </div>
+    <?php echo $this->adminTableList($this->fields, $this->tableData); ?>
+</div>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>

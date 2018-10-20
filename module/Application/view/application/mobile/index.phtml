@@ -1,0 +1,76 @@
+<?php
+$color1 = $discount->get('color');
+$color2 = $color1 == '000000' ? 'ffffff' : '000000';
+$btnStyle = 'style="background-color: #' . $color1 . '; color: #' . $color2 . '"';
+?>
+
+<a href="/catalog/?sort=discount&direct=down" class="main-slider" style="background-image: url(<?php echo $discount->getPlugin('image')->getImage('m') ?>)">
+    <div class="box <?php echo $discount->get('shape') ?>" style="background-color: #<?php echo $discount->get('background') ?>; color: #<?php echo $color1 ?>">
+        <div class="inner" style="border-color: #<?php echo $discount->get('border') ?>;">
+            <?php //<div class="header r1">скидки</div> ?>
+            <div class="header r2"><?php echo $discount->get('name') ?></div>
+            <div class="discount">
+                <span class="bf">до</span>
+                <span class="percent"><?php echo $discount->get('discount') ?></span>
+                <span class="af">%</span>
+            </div>
+
+            <div class="counter">
+                <div class="tm days" <?php echo $btnStyle ?>></div>
+                <div class="tm hours" <?php echo $btnStyle ?>></div>
+                <div class="tm min" <?php echo $btnStyle ?>></div>
+                <div class="tm sec" <?php echo $btnStyle ?>></div>
+            </div>
+        </div>
+    </div>
+</a>
+
+<script type="text/javascript">
+    var counter = $('.main-slider .counter');
+    var date = '<?php echo str_replace('-', '/', $discount->get('date_to')); ?>';
+
+    $('.days', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-d</div> дней'));
+    });
+
+    $('.hours', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-H</div> часов'));
+    });
+
+    $('.min', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-M</div> минут'));
+    });
+
+    $('.sec', counter).countdown(date, function(event) {
+        $(this).html(event.strftime('<div>%-S</div> сек'));
+    });
+</script>
+
+
+<div class="main-page">
+    <div class="menu">
+        <a href="/about/" class="item brand">О бренде Myprotein</a>
+        <a href="/delivery/" class="item delivery">Доставка и точки выдачи</a>
+        <a href="/order/order-status/" class="item order popup">Что с моим заказом?</a>
+    </div>
+    <div class="header">Каталог</div>
+    <div class="catalog">
+        <?php echo $this->catalogMenu(['sub' => false]) ?>
+    </div>
+    <a href="/blog/" class="header">Блог</a>
+    <div class="blog">
+        <?php
+        foreach ($articles as $article) {
+            echo
+                '<a href="' . $article->getUrl() . '" class="article">'
+                    . '<img src="' . $article->getPlugin('image')->getImage('vs') . '">'
+                    . '<div class="name">' . $article->get('name') . '</div>'
+                . '</a>';
+        }
+        ?>
+    </div>
+
+</div>
+
+<div class="widget catalog main">
+</div>

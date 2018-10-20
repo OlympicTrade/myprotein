@@ -1,0 +1,36 @@
+<div class="block">
+    <div class="wrapper">
+        <h1 class="athletes-title">Спортсмены <span>Myprotein</span></h1>
+
+        <div class="athletes-desc">
+            Преставителями Myprotein являються 250 спорстменов из 28 стран мира.  Это самые разныхе напрвления в спорте, от бега
+            и футбола до бокса и пауерлифтинга.  Среди этих людей есть олимпийские чемпионы и чемпионы мира, такие как Макс
+            Уитлок, Ханна Ингленд и даже целые спортивные команды международного уровня.
+        </div>
+
+        <div class="athletes-list">
+            <?php
+            $html = '';
+
+            foreach ($athletes as $athlete) {
+                $url = '/athletes/' . $athlete->get('url') . '/';
+
+                $html .=
+                    '<div class="item">'
+                        .'<a href="' . $url . '" class="pic" rel="group">'
+                            .'<img src="' . $athlete->getPlugin('image')->getImage('m') . '" alt="' . $athlete->get('full_name') . '">'
+                        .'</a>'
+                        .'<a href="' . $url . '" class="name popup">'
+                            . $athlete->get('name')
+                            .'<div>' . $athlete->get('surname') . '</div>'
+                        .'</a>'
+                        .'<div class="sub">' . $athlete->get('sport') . '</div>'
+                    .'</div>';
+            }
+
+            echo $html;
+            ?>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>

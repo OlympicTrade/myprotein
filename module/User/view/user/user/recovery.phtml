@@ -1,0 +1,43 @@
+<?php echo $this->doctype(); ?>
+<?php
+$escaper = new Zend\Escaper\Escaper('utf-8');
+?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Авторизация</title>
+
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic&subset=latin,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'href' => $this->basePath() . '/images/favicon.ico'))
+            ->prependStylesheet($this->basePath() . '/css/login.css')
+            ->prependStylesheet($this->basePath() . '/css/elements.css')
+            ->prependStylesheet($this->basePath() . '/css/reset.css');
+        ?>
+
+        <?php
+        echo $this->headScript()->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js');
+        ?>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="login-box">
+                <div class="body">
+                    <div class="form-msg"><?php echo $this->formMsg ?></div>
+                    <form action="<?php echo $this->url('user', array('action' => 'recovery')) ?>" method="post">
+                        <div class="row">
+                            <input type="password" name="password" placeholder="Пароль" class="std-input">
+                        </div>
+                        <div class="row">
+                            <input type="password" name="password_repeat" placeholder="Еще раз" class="std-input">
+                        </div>
+                        <div class="row">
+                            <input type="submit" value="Сохранить" class="btn">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

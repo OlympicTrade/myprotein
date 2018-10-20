@@ -1,0 +1,108 @@
+<h1>
+    <i class="fas module-icon-<?php echo $module->get('section') ?>"></i>
+    <?php echo $module->get('name') ?>
+
+    <?php
+    $settingsUrl = $this->url('admin', [
+        'module' => $module->get('module'),
+        'section' => $module->get('section'),
+        'action' => 'settings'
+    ]);
+
+    $select = new \Zend\Form\Element\Select('action', [
+        'options' => [
+            ''          => '',
+            \CatalogAdmin\Model\Orders::STATUS_DELIVERY  => 'В доставку',
+            \CatalogAdmin\Model\Orders::STATUS_COMPLETE  => 'Завершить',
+            \CatalogAdmin\Model\Orders::STATUS_RETURN    => 'Возврат',
+        ]
+    ]);
+    ?>
+    <a href="<?php echo $settingsUrl ?>" class="module-config"><i class="fas fa-cog"></i></a>
+</h1>
+
+<div class="panel">
+    <div class="filters">
+        <div class="table-edit top">
+            <div class="row">
+                <span class="btn popup-form" href="/admin/catalog/orders/orders-controls/">В достаку</span>
+            </div>
+
+            <script>
+                //window.open('http://www.example.com?ReportID=1', '_blank');
+            </script>
+
+
+            <div class="row row-select">
+                <div class="label">Статус</div>
+                <?php echo $this->formElement($select); ?>
+            </div>
+
+            <span class="btn submit">Применить</span>
+        	<a class="btn btn-blue" href="/delivery/update-delivery/" target="_blank">Обвновить точки выдачи</a>
+
+            <div class="clear"></div>
+        </div>
+
+        <?php $form = $this->filterForm ?>
+        <?php echo $this->form()->openTag($form) ?>
+        <div class="filter search">
+            <?php echo $this->formElement($form->get('status')) ?>
+            <?php echo $this->formElement($form->get('search')) ?>
+            <span class="btn btn-blue btn-submit">Применить</span>
+        </div>
+
+        <?php echo $this->form()->closeTag(); ?>
+        <div class="clear"></div>
+    </div>
+    <?php echo $this->adminTableList($this->fields, $this->tableData); ?>
+
+    <script>
+        $(function() {
+            var module = $('.module', '.site-settings').val();
+            var section = $('.section', '.site-settings').val();
+
+            var list = $('.table-list');
+
+            $('.tb-header-cb', list).on('click', function () {
+                var cb = $(this);
+                if(cb.is(':checked')) {
+                    $('.tb-cb', list).prop('checked', true);
+                } else {
+                    $('.tb-cb', list).prop('checked', false);
+                }
+            });
+
+            var form = $('.table-edit');
+
+            $('.submit', form).on('click', function () {
+                var data = $.aptero.serializeArray(form);
+
+                var ids = [];
+                $('.tb-cb:checked', list).each(function () {
+                    ids.push($(this).val());
+                });
+                data.ids = ids;
+
+                $.ajax({
+                    url: '/admin/' + module + '/' + section + '/mass-update/',
+                    method: 'post',
+                    data: data,
+                    success: function (resp) {
+                        if(resp.error) {
+                            alert(resp.error);
+                        } else {
+                            //location.reload();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+
+<div id="popup-delete" style="display: none;">
+    <div style="text-align: center; margin-bottom: 10px;">Удалить запись?</div>
+    <a href="" class="btn btn-green btn-remove"><i class="fas fa-check"></i> Удалить</a>
+    <a href="" class="btn btn-red" onclick="$.fancybox.close();"><i class="fas fa-times"></i> Отмена</a>
+</div>
