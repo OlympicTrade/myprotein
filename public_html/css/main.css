@@ -2610,7 +2610,7 @@ h2.border {
 
 .cart-list .delivery-notice .icon:before {
     content: "\f0d1";
-	font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Free", sans-serif;
 }
 
 .cart-list .delivery-notice .text {
