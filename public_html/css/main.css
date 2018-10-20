@@ -10,7 +10,7 @@ a {
 	color: #333333;
 }
 
-i.fa-rub {
+i.fa-ruble-sign {
     font-size: 70%;
 }
 
@@ -225,8 +225,9 @@ i.fa-rub {
     position: absolute;
     right: 20px;
     top: 0;
-    font-family: "Font Awesome 5 Free", sans-serif;
     font-size: 19px;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     content: "\f0c9";
 }
 
@@ -2610,6 +2611,7 @@ h2.border {
 
 .cart-list .delivery-notice .icon:before {
     content: "\f0d1";
+    font-weight: 900;
     font-family: "Font Awesome 5 Free", sans-serif;
 }
 
