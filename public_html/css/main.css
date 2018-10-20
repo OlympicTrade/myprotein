@@ -225,7 +225,7 @@ i.fa-rub {
     position: absolute;
     right: 20px;
     top: 0;
-    font-family: "FontAwesome", sans-serif;
+    font-family: ""Font Awesome 5 Free"", sans-serif;
     font-size: 19px;
     content: "\f0c9";
 }
@@ -2610,7 +2610,7 @@ h2.border {
 
 .cart-list .delivery-notice .icon:before {
     content: "\f0d1";
-	font-family: FontAwesome;
+	font-family: "Font Awesome 5 Free";
 }
 
 .cart-list .delivery-notice .text {
