@@ -275,8 +275,7 @@
 }
 
 .stars div:before {
-    /*content: "\f006";*/
-    font-family: "Font Awesome 5 Free, sans-serif;
+    font-family: "Font Awesome 5 Free";
     color: #d2d2d2;
     font-weight: 900;
     content: "\f005";
