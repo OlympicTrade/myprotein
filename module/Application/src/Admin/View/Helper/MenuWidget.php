@@ -69,7 +69,7 @@ class MenuWidget extends AbstractHelper
             $html .=
                 '<li' . ($emClass ? ' class="' . $emClass . '"' : '') . '>'
                     .'<a href="' . $url . '">'
-                    .'<i class="icon far module-icon-' . $module->get('section') . '"></i>'
+                    .'<i class="icon fas module-icon-' . $module->get('section') . '"></i>'
                     . $module->get('name')
                     .($childrenCount ? '<i class="fas fa-angle-right arr"></i>' : '')
                     .'</a>'
