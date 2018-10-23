@@ -105,14 +105,14 @@ class PeriodsMetrics extends AbstractHelper
 			$html .=
                 $this->table('Источники', [
                     'Просмотры' 		 => 
-						 '<i class="fa fa-tv"></i> ' 	 . @str_pad((int) ($vd['views'] / $va['views'] * 100), 2, '0', 0) . '% | '
-						.'<i class="fa fa-mobile"></i> ' . @str_pad((int) ($vm['views'] / $va['views'] * 100), 2, '0', 0) . '%',
+						 '<i class="fas fa-tv"></i> ' 	 . @str_pad((int) ($vd['views'] / $va['views'] * 100), 2, '0', 0) . '% | '
+						.'<i class="fas fa-mobile"></i> ' . @str_pad((int) ($vm['views'] / $va['views'] * 100), 2, '0', 0) . '%',
                     'Сессии'   		 => 
-						 '<i class="fa fa-tv"></i> ' 	 . @str_pad((int) ($vd['sessions'] / $va['sessions'] * 100), 2, '0', 0) . '% | '
-						.'<i class="fa fa-mobile"></i> ' . @str_pad((int) ($vm['sessions'] / $va['sessions'] * 100), 2, '0', 0) . '%',
+						 '<i class="fas fa-tv"></i> ' 	 . @str_pad((int) ($vd['sessions'] / $va['sessions'] * 100), 2, '0', 0) . '% | '
+						.'<i class="fas fa-mobile"></i> ' . @str_pad((int) ($vm['sessions'] / $va['sessions'] * 100), 2, '0', 0) . '%',
                     'Посетители'      => 
-						 '<i class="fa fa-tv"></i> ' 	 . @str_pad((int) ($vd['clients'] / $va['clients'] * 100), 2, '0', 0) . '% | '
-						.'<i class="fa fa-mobile"></i> ' . @str_pad((int) ($vm['clients'] / $va['clients'] * 100), 2, '0', 0) . '%',
+						 '<i class="fas fa-tv"></i> ' 	 . @str_pad((int) ($vd['clients'] / $va['clients'] * 100), 2, '0', 0) . '% | '
+						.'<i class="fas fa-mobile"></i> ' . @str_pad((int) ($vm['clients'] / $va['clients'] * 100), 2, '0', 0) . '%',
                 ]);
             
             $html .=
@@ -162,17 +162,17 @@ class PeriodsMetrics extends AbstractHelper
 				.
                 $this->table('Источники', [
 					'Заказов' 		 => 
-						 '<i class="fa fa-tv"></i> ' 	 . @str_pad((int) ($bd['count'] / $ba['count'] * 100), 2, '0', 0) . '% | '
-						.'<i class="fa fa-mobile"></i> ' . @str_pad((int) ($bm['count'] / $ba['count'] * 100), 2, '0', 0) . '%',
+						 '<i class="fas fa-tv"></i> ' 	 . @str_pad((int) ($bd['count'] / $ba['count'] * 100), 2, '0', 0) . '% | '
+						.'<i class="fas fa-mobile"></i> ' . @str_pad((int) ($bm['count'] / $ba['count'] * 100), 2, '0', 0) . '%',
 					'Доход' 		 => 
-						 '<i class="fa fa-tv"></i> ' 	 . @str_pad((int) ($bd['income'] / $ba['income'] * 100), 2, '0', 0) . '% | '
-						.'<i class="fa fa-mobile"></i> ' . @str_pad((int) ($bm['income'] / $ba['income'] * 100), 2, '0', 0) . '%',
+						 '<i class="fas fa-tv"></i> ' 	 . @str_pad((int) ($bd['income'] / $ba['income'] * 100), 2, '0', 0) . '% | '
+						.'<i class="fas fa-mobile"></i> ' . @str_pad((int) ($bm['income'] / $ba['income'] * 100), 2, '0', 0) . '%',
 					'Сред. чек' 		 => 
-						 '<i class="fa fa-tv"></i> ' 	 . @str_pad((int) (($bd['income'] / $bd['count']) / ($ba['income'] / $ba['count']) * 100), 2, '0', 0) . '% | '
-						.'<i class="fa fa-mobile"></i> ' . @str_pad((int) (($bm['income'] / $bm['count']) / ($ba['income'] / $ba['count']) * 100), 2, '0', 0) . '%',
+						 '<i class="fas fa-tv"></i> ' 	 . @str_pad((int) (($bd['income'] / $bd['count']) / ($ba['income'] / $ba['count']) * 100), 2, '0', 0) . '% | '
+						.'<i class="fas fa-mobile"></i> ' . @str_pad((int) (($bm['income'] / $bm['count']) / ($ba['income'] / $ba['count']) * 100), 2, '0', 0) . '%',
 					'Чистая прибыль' 		 => 
-						 '<i class="fa fa-tv"></i> ' 	 . @str_pad((int) (($bd['profit'] - $bd['outgo']) / ($ba['profit'] - $ba['outgo']) * 100), 2, '0', 0) . '% | '
-						.'<i class="fa fa-mobile"></i> ' . @str_pad((int) (($bm['profit'] - $bm['outgo']) / ($ba['profit'] - $ba['outgo']) * 100), 2, '0', 0) . '%',
+						 '<i class="fas fa-tv"></i> ' 	 . @str_pad((int) (($bd['profit'] - $bd['outgo']) / ($ba['profit'] - $ba['outgo']) * 100), 2, '0', 0) . '% | '
+						.'<i class="fas fa-mobile"></i> ' . @str_pad((int) (($bm['profit'] - $bm['outgo']) / ($ba['profit'] - $ba['outgo']) * 100), 2, '0', 0) . '%',
 				]);
             
             

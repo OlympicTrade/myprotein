@@ -3115,11 +3115,23 @@ h2.border {
 
 .point-desc .gallery a {
     display: inline-block;
+}
+
+.point-desc .gallery.g-3 a {
     margin-right: 3%;
     width: 30.33333%;
 }
 
-.point-desc .gallery a:nth-child(3n) {
+.point-desc .gallery.g-3 a:nth-child(3n) {
+    margin-right: 0;
+}
+
+.point-desc .gallery.g-4 a {
+    margin-right: 2%;
+    width: 23.5%;
+}
+
+.point-desc .gallery.g-4 a:nth-child(4n) {
     margin-right: 0;
 }
 

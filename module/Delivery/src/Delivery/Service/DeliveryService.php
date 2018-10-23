@@ -123,16 +123,16 @@ class DeliveryService extends AbstractService
             if($images->count()) {
                 $html .=
                     '</div>'
-                    .'<div class="gallery popup-gallery">';
+                    .'<div class="gallery popup-gallery ' . ($images->count() < 4 ? 'g-3' : 'g-4') . '">';
 
-                $first = true;
+                $i = 0;
                 foreach ($images as $image) {
                     $html .=
-                        '<a href="' . $image->getImage('hr') . '" ' . ($first ? '' : 'style="display: none"') . '>'
+                        '<a href="' . $image->getImage('hr') . '" ' . ($i < 4 ? '' : 'style="display: none"') . '>'
                             .'<img src="' . $image->getImage('a') . '">'
                         .'</a>';
 
-                    //$first = false;
+                    $i++;
                 }
 
                 $html .=
