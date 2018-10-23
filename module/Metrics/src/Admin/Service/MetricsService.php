@@ -154,8 +154,8 @@ class MetricsService extends TableService
             $cSelect->where->lessThanOrEqualTo('mv.date', $filters['date_to']);
         }
 		
-        //$test = new Orders();
-        //$test->setSelect($select)->dump();die();
+        /*$test = new Orders();
+        $test->setSelect($select)->dump();die();*/
 		
         return $this->execute($select);
     }

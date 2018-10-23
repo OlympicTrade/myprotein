@@ -27,11 +27,13 @@
 		};
 		
         foreach($adwordsStatistic as $adwords) {
+            //var_dump($adwords);
             $profit = $adwords['income'] - $adwords['cost'];
-            $adwProfit += $profit;
-            $adwOutgo += $adwords['cost'];
-            $adwClients += $adwords['clients'];
-            $adwViews += $adwords['views'];
+            $adwProfit = $profit;
+            $adwOutgo = $adwords['cost'];
+            $adwClients = $adwords['clients'];
+            $adwViews = $adwords['views'];
+
             $html .=
                 '<div class="item">'
                     .'<a href="/admin/adwords/adwords/edit/?id=' . $adwords['id'] . '" class="name">'

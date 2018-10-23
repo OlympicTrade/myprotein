@@ -74,7 +74,6 @@ class MetricsService extends AbstractService
 			if(!empty($_COOKIE['utm'])) {
 				try {
 					$utmData = Json::decode($_COOKIE['utm']);
-					
 					if($utmData->campaign == $campaign && $utmData->source == $source) {
 						$cross = 1;
 					}

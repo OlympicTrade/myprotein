@@ -288,13 +288,17 @@ class OrdersService extends AbstractService
         $select
             ->from(['o' => 'orders'])
             ->columns(['b_price' => $bSelect])
-            ->join(['c' => 'orders_cart'], 'c.order_id = o.id', ['count' => new Expression('SUM(c.count)')])
+            ->join(['c' => 'orders_cart'], 'c.order_id = o.id', ['count' => new Expression('SUM(c.count)'), 'c_price' => 'price'])
             ->group('c.product_id')->group('c.size_id')->group('c.taste_id')
             ->where(['o.id' => $order->getId()]);
 
-        $outgo= 0;
+        $outgo = 0;
         foreach ($this->execute($select) as $row) {
-            $outgo += $row['b_price'] * $row['count'];
+            if($row['b_price']) {
+                $outgo += $row['b_price'] * $row['count'];
+            } else {
+                $outgo += ($row['c_price'] * 0.6) * $row['count'];
+            }
         }
 
         return (int) $outgo;
