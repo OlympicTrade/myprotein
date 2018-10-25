@@ -45,6 +45,13 @@ class Point extends Entity
 
             return $image;
         });
+
+        $this->addPlugin('city', function($model) {
+            $city = new City();
+            $city->setId($model->get('city_id'));
+
+            return $city;
+        });
     }
 
     /**
@@ -53,40 +60,9 @@ class Point extends Entity
      */
     public function getDeliveryDate()
     {
-        $dt = new \DateTime();
+        $delay = $this->getPlugin('city')->getDeliveryDelay(['type' => Delivery::TYPE_PICKUP]);
+        $dt = (new \DateTime())->modify('+' . $delay . ' days');
 
-        switch ($dt->format('N')) {
-            case 7:
-                $delay = 1;
-                break;
-            case 6:
-                $delay = 2;
-                break;
-            default:
-                $delay = ($dt->format('H') < 12) ? 0 : 1;
-                break;
-        }
-
-        $dt->modify('+' . ($this->get('delay') + $delay) . ' days');
-
-        /*$orderDate = \DateTime::createFromFormat('Y-m-d H:i:s', $order->get('time_create'));
-        $deliveryDate = $this->getDeliveryService()->getDeliveryDates(['orderDate' => $orderDate], 'pickup');
-
-        $daysStr = [
-            1   => 'в понедельник',
-            2   => 'во вторник',
-            3   => 'в среду',
-            4   => 'в четверг',
-            5   => 'в пятницу',
-            6   => 'в субботу',
-            7   => 'в воскресенье',
-        ];
-
-        $messages[] = 'Заказ будет доставлен ' . $daysStr[$deliveryDate->format('N')] . ' в 15:00. При поступлении на точку выдачи вы получите SMS сообщение. До этого момента заказ не счтаеться привезенным';
-
-        $point = new Pickup();
-        $point->setId($attrs->get('point'));*/
-
-        return $date;
+        return $dt;
     }
 }

@@ -102,21 +102,24 @@ class City extends Entity
 
     public function getDeliveryDelay($options = [])
     {
-		if(!empty($options['date'])) {
-			$dt = clone $options['date'];
-		} else {
-			$dt = new \DateTime();
-		}
+        if(!empty($options['date'])) {
+            $dt = clone $options['date'];
+        } else {
+            $dt = new \DateTime();
+        }
 
         switch ($dt->format('N')) {
-            case 7:
-                $delay = 1;
+            case 5:
+                $delay = 3;
                 break;
             case 6:
                 $delay = 2;
                 break;
+            case 7:
+                $delay = 1;
+                break;
             default:
-                $delay = ($dt->format('H') < 12) ? 0 : 1;
+                $delay = ($dt->format('H') < 13) ? 0 : 1;
                 break;
         }
 
