@@ -12,22 +12,6 @@ class City extends Entity
 {
     static public $maxDeliveryPrice = 700;
 
-    static public $indexPickupCities = [
-        '11219' /*Санкт-Петербург*/,
-        '10561' /*Петергоф*/,
-        '10886' /*Пушкин*/,
-        '7410' /*Всеволожск*/,
-        '9784' /*Всеволожск*/,
-    ];
-
-    static public $indexDeliveryCities = [
-        '11219' /*Санкт-Петербург*/,
-        '9784' /*Москва*/,
-        '10561' /*Петергоф*/,
-        '10886' /*Пушкин*/,
-        '7410' /*Всеволожск*/,
-    ];
-
     protected $mscId = '3381';
     protected $spbId = '4798';
 
@@ -129,10 +113,10 @@ class City extends Entity
                 $delay = 1;
                 break;
             case 6:
-                $delay = ($dt->format('H') < 11) ? 1 : 2;
+                $delay = 2;
                 break;
             default:
-                $delay = ($dt->format('H') < 13) ? 0 : 1;
+                $delay = ($dt->format('H') < 12) ? 0 : 1;
                 break;
         }
 

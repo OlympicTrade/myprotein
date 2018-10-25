@@ -53,8 +53,21 @@ class Point extends Entity
      */
     public function getDeliveryDate()
     {
-        $date = new \DateTime();
-        $date->modify('+' . $this->get('delay') . ' days');
+        $dt = new \DateTime();
+
+        switch ($dt->format('N')) {
+            case 7:
+                $delay = 1;
+                break;
+            case 6:
+                $delay = 2;
+                break;
+            default:
+                $delay = ($dt->format('H') < 12) ? 0 : 1;
+                break;
+        }
+
+        $dt->modify('+' . ($this->get('delay') + $delay) . ' days');
 
         /*$orderDate = \DateTime::createFromFormat('Y-m-d H:i:s', $order->get('time_create'));
         $deliveryDate = $this->getDeliveryService()->getDeliveryDates(['orderDate' => $orderDate], 'pickup');
