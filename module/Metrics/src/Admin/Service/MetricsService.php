@@ -233,7 +233,7 @@ class MetricsService extends TableService
 				'count'  => new Expression('COUNT(*)')
 			])
             ->where
-            ->in('o.status', [Orders::STATUS_PROCESSING, Orders::STATUS_COMPLETE, Orders::STATUS_DELIVERY]);
+            ->in('o.status', [Orders::STATUS_PROCESSING, Orders::STATUS_COLLECTED, Orders::STATUS_COMPLETE, Orders::STATUS_DELIVERY]);
 
         if(!empty($filters['date_from'])) {
             $select->where->greaterThanOrEqualTo('o.time_create', $filters['date_from']);
