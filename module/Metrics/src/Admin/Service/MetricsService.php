@@ -4,6 +4,7 @@ namespace MetricsAdmin\Service;
 use Aptero\Service\Admin\TableService;
 use Aptero\String\Date;
 use CatalogAdmin\Model\Orders;
+use Delivery\Model\City;
 use Zend\Db\Sql\Expression;
 
 class MetricsService extends TableService
@@ -107,6 +108,7 @@ class MetricsService extends TableService
 			$vSelect->where(['mv.adwords_id' => new Expression('ma.id')]);
 			$cSelect->where(['mv.adwords_id' => new Expression('ma.id')]);
 
+			//die($this->getSql()->buildSqlString($oSelect));
             $select
                 ->columns([
 					'id',
@@ -114,12 +116,13 @@ class MetricsService extends TableService
 					'campaign',
                     'cost'    => new Expression('SUM(cost)'),
                     'cross'   => new Expression('SUM(`cross`)'),
+                    //'income'  => new Expression('SUM(' . $oSelect . ')'),
                     'income'  => $oSelect,
                     'orders'  => $ocSelect,
                     'views'   => $vSelect,
                     'clients' => $cSelect,
 				])
-                ->group('ma.id');
+                ->group('ma.source')/*->group('ma.campaign')*/;
         } else {
 			$ocSelect->where->notEqualTo('o.adwords_id', 0);
             $oSelect->where->notEqualTo('o.adwords_id', 0);
@@ -153,9 +156,24 @@ class MetricsService extends TableService
             $vSelect->where->lessThanOrEqualTo('mv.date', $filters['date_to']);
             $cSelect->where->lessThanOrEqualTo('mv.date', $filters['date_to']);
         }
-		
-        /*$test = new Orders();
-        $test->setSelect($select)->dump();die();*/
+
+        switch ($filters['region']) {
+            case 'msk':
+                $oSelect->where(['city_id' => City::$mscId]);
+                $ocSelect->where(['city_id' => City::$mscId]);
+                break;
+            case 'spb':
+                $oSelect->where(['city_id' => City::$spbId]);
+                $ocSelect->where(['city_id' => City::$spbId]);
+                break;
+            case 'regions':
+                $oSelect->where->notIn('city_id', [City::$spbId, City::$mscId]);
+                $ocSelect->where->notIn('city_id', [City::$spbId, City::$mscId]);
+                break;
+            default:
+                break;
+
+        }
 		
         return $this->execute($select);
     }
@@ -180,16 +198,17 @@ class MetricsService extends TableService
         $select = $this->getSql()->select();
         $select
             ->from(['o' => 'orders'])
-            ->columns(['b_price' => $bSelect])
+            //->columns(['b_price' => $bSelect])
             ->join(['c' => 'orders_cart'], 'c.order_id = o.id', ['s_price' => 'price', 'count' => new Expression('COUNT(*)')])
             ->join(['p' => 'products'], 'c.product_id = p.id', ['name'])
             ->join(['pt' => 'products_taste'], 'c.taste_id = pt.id', ['taste' => 'name'], 'left')
             ->join(['ps' => 'products_size'], 'c.size_id = ps.id', ['size' => 'name'], 'left')
-            ->group('c.product_id')->group('c.size_id')->group('c.taste_id')
-            ->order('b_price * count ASC')
+            ->group('c.product_id')//->group('c.size_id')->group('c.taste_id')
+            //->order('b_price * count ASC')
+            ->order(new Expression('s_price * c.count DESC'))
             ->limit(10)
             ->where
-            ->in('o.status', [Orders::STATUS_PROCESSING, Orders::STATUS_COLLECTED, Orders::STATUS_COMPLETE, Orders::STATUS_DELIVERY]);
+                ->in('o.status', [Orders::STATUS_PROCESSING, Orders::STATUS_COLLECTED, Orders::STATUS_COMPLETE, Orders::STATUS_DELIVERY]);
 
         if(!empty($filters['date_from'])) {
             $select->where->greaterThanOrEqualTo('o.time_create', $filters['date_from']);

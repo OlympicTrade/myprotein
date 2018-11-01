@@ -29,11 +29,11 @@ class MetricsController extends AbstractActionController
             'form'      => $form,
         ]);
 
-        $this->viewHelper('headScript')
+        /*$this->viewHelper('headScript')
             ->appendFile('/engine/js/ckfinder/ckfinder.js')
             ->appendFile('/engine/js/jquery/spellchecker.js')
             ->appendFile('/engine/js/ckeditor/ckeditor.js')
-            ->appendFile('/engine/js/form.js');
+            ->appendFile('/engine/js/form.js');*/
 
         return $this->view;
     }

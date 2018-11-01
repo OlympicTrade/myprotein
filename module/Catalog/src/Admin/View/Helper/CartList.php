@@ -44,7 +44,7 @@ class CartList extends AbstractHelper
             $html .= $this->cartRow($row);
         }
 
-        $profit = $order->get('income') - $order->get('outgo') + $order->get('deliver_income') - $order->get('deliver_outgo');
+        $profit = $order->get('income') + $order->get('delivery_income') - $order->get('outgo') - $order->get('delivery_outgo');
 
         if ($this->options['type'] == 'full') {
             $html .=

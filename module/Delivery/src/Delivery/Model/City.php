@@ -12,8 +12,8 @@ class City extends Entity
 {
     static public $maxDeliveryPrice = 700;
 
-    protected $mscId = '3381';
-    protected $spbId = '4798';
+    static public $mscId = '499';
+    static public $spbId = '500';
 
     public function __construct()
     {

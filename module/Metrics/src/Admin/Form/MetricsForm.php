@@ -13,7 +13,7 @@ class MetricsForm extends Form
         parent::__construct('edit-form');
         $this->setAttribute('method', 'post');
 
-        $this->add(array(
+        /*$this->add(array(
             'name' => 'type',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
@@ -27,7 +27,7 @@ class MetricsForm extends Form
                 ),
                 'label' => 'Тип',
             ),
-        ));
+        ));*/
 
         $this->add(array(
             'name' => 'date_from',
@@ -51,7 +51,7 @@ class MetricsForm extends Form
             )
         ));
 
-        $this->add(array(
+        /*$this->add(array(
             'name' => 'interval',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
@@ -62,7 +62,21 @@ class MetricsForm extends Form
                 ),
                 'label' => 'Интервал',
             ),
-        ));
+        ));*/
+
+        $this->add([
+            'name' => 'region',
+            'type' => 'Zend\Form\Element\Select',
+            'options' => [
+                'options' => [
+                    'all'     => 'Любой',
+                    'spb'     => 'Санкт-Петербург',
+                    'msk'     => 'Москва',
+                    'regions' => 'Провинция',
+                ],
+                'label' => 'Регион',
+            ],
+        ]);
 
     }
 

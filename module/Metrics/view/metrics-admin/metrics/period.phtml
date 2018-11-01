@@ -1,29 +1,40 @@
 <div class="panel">
-	<?php /*
-	<form class="filter" action="" method="get">
-		<?php
-		//echo $this->AdminFormRow($form->get('type'));
-		echo $this->AdminFormRow($form->get('date_from'));
-		echo $this->AdminFormRow($form->get('date_to'));
-		//echo $this->AdminFormRow($form->get('interval'));
-		?>
-		<div class="clear"></div>
-	</form>
-	*/ ?>
-	
     <div class="adwords-stats">
+        <form class="filter" action="" method="get">
+            <?php
+            echo $this->AdminFormRow($form->get('region'));
+            echo $this->AdminFormRow($form->get('date_from'));
+            echo $this->AdminFormRow($form->get('date_to'));
+            ?>
+            <div class="clear"></div>
+        </form>
+        <div class="clear"></div>
+        <script>
+            $('.adwords-stats form select').on('change', function() {
+                $(this).closest('form').submit();
+            });
+        </script>
+
         <?php
         $html = '';
         $adwProfit = 0;
         $adwClients = 0;
         $adwViews = 0;
 		
-		$row = function($key, $val) {
-			return 
-			'<div class="row">'
-				.'<div class="key">' . $key . '</div>'
-				. $val
-			.'</div>';
+		$row = function($key, $val, $url = '') {
+		    if($url) {
+                return
+                    '<a href="' . $url . '" class="row">'
+                        .'<div class="key">' . $key . '</div>'
+                        . $val
+                    .'</a>';
+            } else {
+                return
+                    '<div class="row">'
+                        .'<div class="key">' . $key . '</div>'
+                        . $val
+                    .'</div>';
+            }
 		};
 		
         foreach($adwordsStatistic as $adwords) {
@@ -35,15 +46,15 @@
             $adwViews = $adwords['views'];
 
             $html .=
-                '<div class="item">'
-                    .'<a href="/admin/adwords/adwords/edit/?id=' . $adwords['id'] . '" class="name">'
-                        . $adwords['source'] . ' - ' . $adwords['company']
+                '<div class="statistic item">'
+                    .'<a href="/admin/metrics/adwords/edit/?id=' . $adwords['id'] . '" class="name">'
+                        . $adwords['source'] . ' - ' . $adwords['campaign']
                     .'</a>'
                     .'<div class="list">'
 						.$row('Посетителей', (int) $adwClients)
 						.$row('Просмотров', (int) $adwViews)
 						.$row('Перекрытие', (int) $adwords['cross'])
-						.$row('Заказов', (int) $adwords['orders'])
+						.$row('Заказов', (int) $adwords['orders'], '/admin/catalog/orders/list/?adwords_id=' . $adwords['id'])
 						.$row('Доход', (int) $adwords['income'])
 						.$row('Расход', (int) $adwords['cost'])
 						.$row('Прибыль', '(' . ((int) @($profit / $adwords['cost'] * 100)) . '%) ' . $profit)
@@ -61,7 +72,7 @@
         <div class="clear"></div>
     </div>
 	
-	<div class="statistic-chart">
+	<div class="statistic statistic-chart">
 		<?php
 		$balance = $balanceStatistic;
 		$totalProfit = $balance['profit'] - $adwOutgo;
@@ -86,7 +97,7 @@
 		?>
 	</div>
 	
-	<div class="statistic-chart">
+	<div class="statistic statistic-chart">
 		<?php
 		$products = [];
 		
@@ -101,16 +112,36 @@
 		echo $trow('Товар:', 'Прибыль');
 		
 		foreach ($products as $row) {
-			$prodProfit = (int) ($row['s_price'] - $row['b_price']) * $row['count'];
+			$prodProfit = (int) ($row['s_price']) * $row['count'];
 			echo $trow(
-				$this->subStr($row['name'], 33, '') . ' (' . $row['taste'] . ' - ' . $row['size'] . ') :',
-				'(' . round($prodProfit / $balance['income'] * 100) . '%) ' . $this->price($prodProfit)
+				$this->subStr($row['name'], 33, '')/* . ' (' . $row['taste'] . ' - ' . $row['size'] . ')'*/,
+				'(' . round($prodProfit / $balance['income'] * 100) . '%) ' . $row['s_price'] . ' * ' . $row['count'] . ' шт.'
+                //$this->price($prodProfit)
 			);
 		} ?>
 	</div>
 </div>
 
 <style>
+    .adwords-stats .filter {
+        margin-bottom: 30px;
+    }
+
+    .adwords-stats .filter .label {
+        display: inline-block;
+        line-height: 30px;
+        margin-right: 10px;
+    }
+
+    .adwords-stats .filter .row {
+        display: inline-block;
+        margin-right: 30px;
+    }
+
+    .adwords-stats .filter .row {
+
+    }
+
     .adwords-stats .item {
         width: 200px;
         border: 1px solid #7d7d7d;
@@ -129,7 +160,8 @@
         padding: 6px 10px;
     }
 
-    .adwords-stats .row {
+    .adwords-stats .statistic .row {
+        display: block;
         position: relative;
         margin: 0;
         padding: 4px 10px;
@@ -137,11 +169,11 @@
         text-align: right;
     }
 
-    .adwords-stats .row:nth-child(2n - 1) {
+    .adwords-stats .statistic .row:nth-child(2n - 1) {
         background: #e6e6e6;
     }
 
-    .adwords-stats .row .key {
+    .adwords-stats .statistic .row .key {
         position: absolute;
         left: 10px;
     }

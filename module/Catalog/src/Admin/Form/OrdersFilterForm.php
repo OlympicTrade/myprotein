@@ -22,6 +22,10 @@ class OrdersFilterForm extends Form
         ]);
 
         $this->add([
+            'name' => 'adwords_id',
+        ]);
+
+        $this->add([
             'name' => 'status',
             'type'  => 'Zend\Form\Element\Select',
             'options' => [

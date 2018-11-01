@@ -222,7 +222,6 @@ class DeliveryService extends AbstractService
         if(isset($options['callback'])) {
             array_walk($result, $options['callback']);
         }
-
         if($type !== null) {
             return $result[$type];
         }
