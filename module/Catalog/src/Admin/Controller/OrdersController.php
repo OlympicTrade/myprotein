@@ -86,7 +86,7 @@ class OrdersController extends AbstractActionController
                 if($row->isPaid()) {
                     $str .= ' <span class="green"><i class="fas fa-check-circle"></i></span>';
                 } elseif($row->get('paid')) {
-                    $str .= ' <span class="green"><i class="fas fa-warning"></i></span>';
+                    $str .= ' <span class="green"><i class="fas fa-exclamation-triangle"></i></span>';
                 }
 
                 return $str;
