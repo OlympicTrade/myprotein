@@ -281,7 +281,7 @@
                     method: 'post',
                     data: {id: $orderId.val()},
                     success: function(resp) {
-                        if(resp.email !== '' && resp.email !== undefined) {
+                        /*if(resp.email !== '' && resp.email !== undefined) {
                             window.gapi.load('surveyoptin', function () {
                                 window.gapi.surveyoptin.render(
                                     {
@@ -292,7 +292,7 @@
                                         estimated_delivery_date: resp.deliveryDate,
                                     });
                             });
-                        }
+                        }*/
 
                         gtag('event', 'purchase', resp);
 
