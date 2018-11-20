@@ -1,5 +1,9 @@
 var fn = {};
 
+function dd(data) {
+    console.log(data);
+}
+
 fn.loadCss = function(url) {
     $('head').append('<link rel="stylesheet" href="' + url + '" type="text/css">');
 };

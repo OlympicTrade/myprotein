@@ -29,6 +29,7 @@ class OrdersController extends AbstractActionController
             20 => 'gray',
             30 => 'red',
             35 => 'violet',
+            40 => 'cyan',
         ];
 
         $this->setFields([

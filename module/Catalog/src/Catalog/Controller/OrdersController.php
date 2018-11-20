@@ -1,20 +1,14 @@
 <?php
 namespace Catalog\Controller;
 
-use Application\Model\Region;
 use Application\Model\Settings;
 use Aptero\Mvc\Controller\AbstractActionController;
 
-use Catalog\Form\AddOrderForm;
-use Catalog\Form\DeliveryOrderForm;
-use Catalog\Form\FastOrderForm;
-use Catalog\Form\OrderForm;
 use Catalog\Form\OrderStep1Form;
 use Catalog\Form\OrderStep2Form;
 use Catalog\Form\ProductRequestForm;
 use Catalog\Model\Order;
 
-use Delivery\Model\Delivery;
 use User\Service\AuthService;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -24,7 +18,12 @@ class OrdersController extends AbstractActionController
     public function abandonedOrdersAction()
     {
         $this->getOrdersService()->checkOrders();
+        return $this->send404();
+    }
 
+    public function updateOrdersStatusAction()
+    {
+        $this->getOrdersService()->updateOrdersStatus();
         return $this->send404();
     }
 
@@ -261,10 +260,12 @@ class OrdersController extends AbstractActionController
     {
         $order = new Order();
         $order->setId($this->params()->fromPost('id'));
+        //$order->setId($this->params()->fromQuery('id'));
 
         if(!$order->load()) {
             return $this->send404();
         }
+
 
         $products = [];
         foreach ($order->getPlugin('cart') as $cartRow) {
@@ -282,8 +283,13 @@ class OrdersController extends AbstractActionController
             ];
         }
 
+        $attrs = $order->getPlugin('attrs');
+        $deliveryDt = \DateTime::createFromFormat('d.m.Y', $attrs->get('date'));
+
         $resp = [
             'orderId'         => $order->getId(),
+            'email'           => $attrs->get('email'),
+            'deliveryDate'    => $deliveryDt ? $deliveryDt->format('Y-m-d') : '',
             'transaction_id'  => $order->getId(),
             'affiliation' => Settings::getInstance()->get('site_name'),
             'currency' => 'RUB',
@@ -295,6 +301,8 @@ class OrdersController extends AbstractActionController
             ],
             'items' => $products,
         ];
+
+        //dd($resp);die();
 
         return new JsonModel($resp);
     }

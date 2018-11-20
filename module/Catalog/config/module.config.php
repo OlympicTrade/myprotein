@@ -636,6 +636,19 @@ return [
                     ],
                 ],
             ],
+            'updateOrdersStatus' => [
+                'type'    => 'segment',
+                'priority' => 500,
+                'options' => [
+                    'route'    => '/catalog/update-orders-status/',
+                    'defaults' => [
+                        'module'     => 'Catalog',
+                        'section'    => 'Orders',
+                        'controller' => 'Catalog\Controller\Orders',
+                        'action'     => 'update-orders-status',
+                    ],
+                ],
+            ],
             'productsPopularity' => [
                 'type'    => 'segment',
                 'priority' => 500,

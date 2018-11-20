@@ -797,7 +797,7 @@ span.wrap.red {
 
 a.wrap.blue,
 span.wrap.blue {
-    background: #3b91cd;
+    background: #4569ef;
 }
 
 a.wrap.orange,
@@ -823,6 +823,11 @@ span.wrap.brown {
 a.wrap.pink,
 span.wrap.pink {
     background: #cb56b2;
+}
+
+a.wrap.cyan,
+span.wrap.cyan {
+    background: #3d93cb;
 }
 
 .pagination {

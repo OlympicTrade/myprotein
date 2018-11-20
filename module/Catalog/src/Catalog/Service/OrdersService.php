@@ -3,6 +3,7 @@
 namespace Catalog\Service;
 
 use Aptero\Db\Entity\EntityFactory;
+use Aptero\Delivery\Glavpunkt;
 use Aptero\Service\AbstractService;
 use CallcenterAdmin\Model\Call;
 use Catalog\Model\Order;
@@ -426,6 +427,58 @@ class OrdersService extends AbstractService
         $order->getPlugin('attrs')->set('platform', $platform->getPlatform());
     }
 
+    public function updateOrdersStatus($orderIds = null)
+    {
+        $orders = Order::getEntityCollection();
+
+        $orders->select()
+            ->columns(['id', 'status'])
+            ->where
+                ->in('status', [Order::STATUS_DELIVERY, Order::STATUS_COLLECTED]);
+
+        $ids = [];
+        foreach ($orders as $order) {
+            $ids[] = $order->getPublicId();
+        }
+
+        if(!$ids) {
+            return;
+        }
+
+        $glavpunkt = new Glavpunkt();
+        $result = $glavpunkt->getOrderStatus($ids);
+
+        foreach ($result as $orderId => $status) {
+            $order = new Order();
+            $order->setPublicId($orderId);
+
+            switch ($status) {
+                case Glavpunkt::STATUS_TRANSFER:
+                    $order->set('status', Order::STATUS_DELIVERY);
+                    break;
+                case Glavpunkt::STATUS_DELIVERING:
+                    $order->set('status', Order::STATUS_DELIVERY);
+                    break;
+                case Glavpunkt::STATUS_WAITING:
+                    $order->set('status', Order::STATUS_WAITING);
+                    break;
+                case Glavpunkt::STATUS_COMPLETE:
+                    $order->set('status', Order::STATUS_COMPLETE);
+                    break;
+                case Glavpunkt::STATUS_RETURNED:
+                    $order->set('status', Order::STATUS_RETURN);
+                    break;
+                case Glavpunkt::STATUS_AW_RETURNED:
+                    $order->set('status', Order::STATUS_RETURN);
+                    break;
+                default:
+                    break;
+            }
+
+            $order->save();
+        }
+    }
+
     public function checkOrders($orderIds = null)
     {
         $orders = Order::getEntityCollection();
@@ -543,6 +596,14 @@ class OrdersService extends AbstractService
     protected function getDeliveryService()
     {
         return $this->getServiceManager()->get('Delivery\Service\DeliveryService');
+    }
+
+    /**
+     * @return \Delivery\Service\GlavpunktService
+     */
+    protected function getGlavpunktService()
+    {
+        return $this->getServiceManager()->get('Delivery\Service\GlavpunktService');
     }
 
     /**

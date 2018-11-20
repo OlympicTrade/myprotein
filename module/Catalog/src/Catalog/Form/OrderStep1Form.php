@@ -28,6 +28,11 @@ class OrderStep1Form extends Form
         ]);
 
         $this->add([
+            'name'  => 'attrs-email',
+            'type'  => 'Zend\Form\Element\Text',
+        ]);
+
+        $this->add([
             'name'  => 'attrs-name',
             'type'  => 'Zend\Form\Element\Text',
         ]);
@@ -50,6 +55,15 @@ class OrderStep1Form extends Form
         $inputFilter->add($factory->createInput([
             'name'     => 'phone',
             'required' => true,
+            'filters'  => [
+                ['name' => 'StringTrim'],
+                ['name' => 'StripTags'],
+            ],
+        ]));
+
+        $inputFilter->add($factory->createInput([
+            'name'     => 'attrs-email',
+            'required' => false,
             'filters'  => [
                 ['name' => 'StringTrim'],
                 ['name' => 'StripTags'],

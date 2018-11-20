@@ -26,6 +26,7 @@ class Orders extends Entity
     const STATUS_ABANDONED  = 25;
     const STATUS_PROBLEM    = 30;
     const STATUS_RETURN     = 35;
+    const STATUS_WAITING    = 40;
 
     const STATUS_PAID       = 1;
     const STATUS_UNPAID     = 0;
@@ -42,6 +43,7 @@ class Orders extends Entity
         self::STATUS_ABANDONED  => 'Не завершен',
         self::STATUS_PROBLEM    => 'Проблемы',
         self::STATUS_RETURN     => 'Возврат',
+        self::STATUS_WAITING    => 'В ПВЗ',
     ];
 
     static public $paidStatuses = [

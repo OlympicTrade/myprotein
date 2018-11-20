@@ -5,8 +5,6 @@ $('.orders-list .header').on('click', function() {
     var body = $('.body', order);
     var id = order.attr('data-id');
 
-    console.log(123123);
-
     if(!body.text()) {
         $.aptero.loadingHtml(body);
         body.load('/order/cart/' + id + '/', function() {

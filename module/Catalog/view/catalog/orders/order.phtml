@@ -19,9 +19,13 @@
                     <input class="std-input" type="text" name="phone" placeholder="Телефон">
                     <div class="error">Введите телефон</div>
                 </div>
+                <div class="row">
+                    <input class="std-input" type="text" name="attrs-email" placeholder="E-mail (необязательно)">
+                    <div class="error">Неверно введен e-mail</div>
+                </div>
                 <div class="notice">
                     Мы не рассылаем рекламу и не передаем данные третьим лицам.
-                    Телефон используется только для информмирования о статусе заказа.
+                    Телефон e-mail используется только для информмирования о статусе заказа.
                 </div>
             </div>
 
@@ -228,6 +232,7 @@
         </div>
     </div>
 
+    <script src="https://apis.google.com/js/platform.js"></script>
     <script>
         var box = $('.order-form');
         var progress = $('.progress', box);
@@ -274,6 +279,17 @@
                     method: 'post',
                     data: {id: $orderId.val()},
                     success: function(resp) {
+                        window.gapi.load('surveyoptin', function() {
+                            window.gapi.surveyoptin.render(
+                                {
+                                    merchant_id: 113887890,
+                                    order_id: resp.orderId,
+                                    email: resp.email,
+                                    delivery_country: 'RU',
+                                    estimated_delivery_date: resp.deliveryDate,
+                                });
+                        });
+
                         gtag('event', 'purchase', resp);
 
                         window.metrikaEc.push({ecommerce: {
@@ -436,7 +452,7 @@
 
             var counter = $('.sms-resend .counter', step3);
             var resend = $('.sms-resend .resend', step3);
-            var skip = $('.sms-resend .skip', step3);
+            //var skip = $('.sms-resend .skip', step3);
 
             var count = 8;
 
@@ -460,14 +476,24 @@
         function step1Validate() {
             var validate = true;
 
-            var name = $('[name="attrs-name"]', step1);
+            var name  = $('[name="attrs-name"]', step1);
+            var email = $('[name="attrs-email"]', step1);
+            var phone = $('[name="phone"]', step1);
+
             if(!name.val()) {
-                validate &= false; name.closest('.row').addClass('invalid');
+                validate &= false;
+                name.closest('.row').addClass('invalid');
             }
 
-            var phone = $('[name="phone"]', step1);
-            if(!phone.val() || phone.val().match(/\d/g).length != 11) {
-                validate &= false; phone.closest('.row').addClass('invalid');
+            if(!phone.val() || phone.val().match(/\d/g).length !== 11) {
+                validate &= false;
+                phone.closest('.row').addClass('invalid');
+            }
+
+            var emailRegExp = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if(email.val() !== '' && !emailRegExp.test(email.val())) {
+                validate &= false;
+                email.closest('.row').addClass('invalid');
             }
 
             initMap();
@@ -482,7 +508,8 @@
                 data: {
                     step:  1,
                     oid:   $orderId.val(),
-                    'attrs-name':  name.val(),
+                    'attrs-name': name.val(),
+                    'attrs-email': email.val(),
                     phone: phone.val()
                 },
                 success: function (resp) {
@@ -526,15 +553,22 @@
         function step1init() {
             var phone = $('[name="phone"]', step1);
             phone.inputmask('+7 (999) 999-99-99');
-
             phone.on('keyup', function () {
                 var str = phone.val().match(/\d/g);
-                if(str != null && str.length == 11) { phone.closest('.row').removeClass('invalid'); }
+                if(str != null && str.length === 11) { phone.closest('.row').removeClass('invalid'); }
             });
 
             var name = $('[name="attrs-name"]', step1);
             name.on('keyup', function () {
                 if(name.val()) { name.closest('.row').removeClass('invalid'); }
+            });
+
+            var email = $('[name="attrs-email"]', step1);
+            var emailRegExp = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            email.on('keyup', function () {
+                if(email.val() === '' || emailRegExp.test(email.val())) {
+                    email.closest('.row').removeClass('invalid');
+                }
             });
 
             $.cart.ecoomerceCart(function(cart) {
@@ -795,7 +829,8 @@
         }
 
         .order-form .steps .step.auth .std-input {
-            height: 48px;
+            height: 45px;
+            font-size: 15px;
         }
 
         .order-form .steps .step.auth .row-region {
@@ -829,7 +864,7 @@
         }
 
         .order-form .steps .step .row {
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .order-form .steps .step .point-desc .row {

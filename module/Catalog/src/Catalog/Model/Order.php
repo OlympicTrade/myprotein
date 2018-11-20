@@ -21,6 +21,7 @@ class Order extends Entity
     const STATUS_ABANDONED  = 25;
     const STATUS_PROBLEM    = 30;
     const STATUS_RETURN     = 35;
+    const STATUS_WAITING    = 40;
 
     const STATUS_PAID       = 1;
     const STATUS_UNPAID     = 0;
@@ -36,6 +37,7 @@ class Order extends Entity
         self::STATUS_ABANDONED  => 'Не завершен',
         self::STATUS_PROBLEM    => 'Проблемы',
         self::STATUS_RETURN     => 'Возврат',
+        self::STATUS_WAITING    => 'Ожидает на пункте',
     ];
 
     static public $paidStatuses = [
@@ -117,12 +119,15 @@ class Order extends Entity
 
     public function getPublicId()
     {
-        $dc = $this->get('delivery_company');
-        $id = $this->getId();
+        //$id = $id ?? $this->getId();
+        $id = '348-' . $this->getId();
 
-        //if($dc == Delivery::COMPANY_INDEX_EXPRESS) {
-            $id = '348-' . $id;
-        //}
+        return $id;
+    }
+
+    public function setPublicId($id)
+    {
+        $this->setId(substr($id, 4));
 
         return $id;
     }
