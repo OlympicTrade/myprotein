@@ -440,10 +440,15 @@ class ProductsService extends AbstractService
 
         if($filters['yandexYmlFull']) { //Для Яндекс Маркета
             $select
-            	//->where(['t.ya_market' => '1'])
+                //->where(['t.ya_market' => '1'])
                 ->join(['ps'  => 'products_stock'], 't.id = ps.product_id', ['stock' => 'count', 'stock_id' => 'id'], 'left')
                 ->join(['pss' => 'products_size'],  'pss.id = ps.size_id', [ 'size_id' => 'id', 'price_base' => 'price', 'size' => 'name'], 'left')
                 ->join(['pst' => 'products_taste'], 'pst.id = ps.taste_id', ['taste_id' => 'id', 'coefficient', 'taste' => 'name'], 'left');
+        }
+
+        if($filters['yandexYml']) { //Для Яндекс Маркета
+            $select
+                ->join(['ps'  => 'products_stock'], 't.id = ps.product_id', ['stock' => 'count', 'stock_id' => 'id'], 'left');
         }
 
         /*if(!empty($filters['taste_id'])) {

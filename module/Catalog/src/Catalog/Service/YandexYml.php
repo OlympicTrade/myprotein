@@ -108,8 +108,17 @@ class YandexYml extends AbstractService
         ];
 
         if(!$uploadOpts['products']['full']) {
+            $filter['yandexYml'] = true;
             $filter['minPrice'] = true;
             $select = $this->getProductsService()->getProductsSelect($filter);
+            $select->where
+                ->nest()
+                    ->greaterThan('ps.count', 0)
+                    /*->and
+                    ->greaterThan('pst.coefficient', 0)
+                    ->and
+                    ->greaterThan('pss.price', 0)*/
+                ->unnest();
         } else {
             $filter['yandexYmlFull'] = true;
             $filter['group'] = 'ps.id';
