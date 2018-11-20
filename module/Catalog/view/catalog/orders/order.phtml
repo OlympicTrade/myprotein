@@ -234,6 +234,8 @@
 
     <script src="https://apis.google.com/js/platform.js"></script>
     <script>
+        window.___gcfg = {lang: 'ru_RU'};
+
         var box = $('.order-form');
         var progress = $('.progress', box);
         var steps = $('.steps', box);
@@ -283,7 +285,7 @@
                             window.gapi.surveyoptin.render(
                                 {
                                     merchant_id: 113887890,
-                                    order_id: resp.orderId,
+                                    order_id: resp.orderPublicId,
                                     email: resp.email,
                                     delivery_country: 'RU',
                                     estimated_delivery_date: resp.deliveryDate,

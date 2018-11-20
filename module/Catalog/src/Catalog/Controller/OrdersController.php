@@ -288,6 +288,7 @@ class OrdersController extends AbstractActionController
 
         $resp = [
             'orderId'         => $order->getId(),
+            'orderPublicId'   => $order->getPublicId(),
             'email'           => $attrs->get('email'),
             'deliveryDate'    => $deliveryDt ? $deliveryDt->format('Y-m-d') : '',
             'transaction_id'  => $order->getId(),
