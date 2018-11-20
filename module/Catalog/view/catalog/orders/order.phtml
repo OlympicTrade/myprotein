@@ -281,16 +281,18 @@
                     method: 'post',
                     data: {id: $orderId.val()},
                     success: function(resp) {
-                        window.gapi.load('surveyoptin', function() {
-                            window.gapi.surveyoptin.render(
-                                {
-                                    merchant_id: 113887890,
-                                    order_id: resp.orderPublicId,
-                                    email: resp.email,
-                                    delivery_country: 'RU',
-                                    estimated_delivery_date: resp.deliveryDate,
-                                });
-                        });
+                        if(resp.email !== '' && resp.email !== undefined) {
+                            window.gapi.load('surveyoptin', function () {
+                                window.gapi.surveyoptin.render(
+                                    {
+                                        merchant_id: 113887890,
+                                        order_id: resp.orderPublicId,
+                                        email: resp.email,
+                                        delivery_country: 'RU',
+                                        estimated_delivery_date: resp.deliveryDate,
+                                    });
+                            });
+                        }
 
                         gtag('event', 'purchase', resp);
 
