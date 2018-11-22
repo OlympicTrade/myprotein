@@ -434,7 +434,7 @@ class OrdersService extends AbstractService
         $orders->select()
             ->columns(['id', 'status'])
             ->where
-                ->in('status', [Order::STATUS_DELIVERY, Order::STATUS_COLLECTED]);
+                ->in('status', [Order::STATUS_DELIVERY, Order::STATUS_COLLECTED, Order::STATUS_WAITING]);
 
         $ids = [];
         foreach ($orders as $order) {
