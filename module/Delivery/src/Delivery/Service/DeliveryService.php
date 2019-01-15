@@ -101,6 +101,7 @@ class DeliveryService extends AbstractService
                 '<div class="marker-box point-desc">';
 
             $images = $point->getPlugin('images');
+            $images->load();
 
             if($images->count()) {
                 $html .=
@@ -138,8 +139,6 @@ class DeliveryService extends AbstractService
                 $html .=
                     '</div>';
             }
-
-
 
             $html .=
                 '</div>';
