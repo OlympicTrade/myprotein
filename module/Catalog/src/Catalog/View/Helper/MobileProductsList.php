@@ -36,22 +36,32 @@ class MobileProductsList extends AbstractHelper
                 '<a href="' . $url . '" class="product pr-link" data-id="' . $product->getId() . '" data-list="' . $options['list'] . '">'
                     .'<div class="pic">'
                         .'<img src="' . $img . '" alt="' . $product->get('name') . '">'
-                        .($product->get('discount') ? '<div class="discount">-' . $product->get('discount') . '%</div>' : '')
+                        .($product->get('discount') ? '<div class="discount">-' . $product->get('discount') . ' <i class="fas fa-percentage"></i></div>' : '')
                     .'</div>'
                     .'<div class="info">'
                         .'<div class="name">' . $product->get('name') . '</div>'
-                        .'<div class="pr-info">'
+                        .'<div class="desc">' . $product->get('desc') . '</div>'
+                        /*.'<div class="pr-info">'
                             .$view->stars($product->get('stars'))
                             .'<div href="' . $url . 'reviews/#product-tabs" class="reviews">'
                                 . ($reviews ? '(' . $reviews . ')' : '')
                             .'</div>'
+                        .'</div>'*/
+                        .'<div class="order">'
+                            .'<div class="price-box">'
+                                .'<div class="price">от <span>' . $view->price($product->get('price')) . '</span> <i class="fas fa-ruble-sign"></i></div>'
+                                .($product->get('discount') ? '<div class="price_old">от <span>' . $view->price($product->get('price_old')) . '</span> <i class="fas fa-ruble-sign"></i></div>' : '')
+                            .'</div>'
+
+                            .($product->get('stock') ?
+                                '<span href="/order/cart-form/?pid=' . $product->getId() . '" class="btn to-cart popup">В корзину</span>'
+                                :
+                                '<span href="/order/cart-form/?pid=' . $product->getId() . '" class="btn c2 to-request popup">Предзаказ</span>'
+                            )
+
+                            //.($product->get('stock') ? '<div class="cart"><span href="/order/cart-form/?pid=1" class="btn red to-cart popup">В корзину</span></div>' : '<div class="stock not">нет в наличии</div>')
+                            //.($product->get('stock') ? '<div class="stock">в наличии</div>' : '<div class="stock not">нет в наличии</div>')
                         .'</div>'
-                    .'</div>'
-                    .'<div class="order">'
-                        .'<div class="price">от <span>' . $view->price($product->get('price')) . '</span> <i class="fas fa-ruble-sign"></i></div>'
-                        .($product->get('discount') ? '<div class="price_old">от <span>' . $view->price($product->get('price_old')) . '</span> <i class="fas fa-ruble-sign"></i></div>' : '')
-                        .($product->get('stock') ? '<div class="cart"><span href="/order/cart-form/?pid=1" class="btn red to-cart popup">В корзину</span></div>' : '<div class="stock not">нет в наличии</div>')
-                        //.($product->get('stock') ? '<div class="stock">в наличии</div>' : '<div class="stock not">нет в наличии</div>')
                     .'</div>'
                 .'</a>';
 

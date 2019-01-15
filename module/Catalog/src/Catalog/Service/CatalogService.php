@@ -9,6 +9,7 @@ use Aptero\String\Search;
 use Aptero\String\Translit;
 use Catalog\Model\Brands;
 use Catalog\Model\Catalog;
+use Catalog\Model\CatalogTypes;
 use Catalog\Model\Product;
 use Catalog\Model\Products;
 use Zend\Db\Sql\Expression;
@@ -96,7 +97,7 @@ class CatalogService extends AbstractService
 
     public function getCategoryCrumbs($category)
     {
-        $crumbs = array();
+        $crumbs = [];
         $parent = $category;
 
         do {
@@ -127,15 +128,27 @@ class CatalogService extends AbstractService
         return $catalog;
     }
 
-    public function getCategory($filter = array())
+    public function getCategory($filter = [])
     {
         $catalog = new Catalog();
         $catalog->setSelect($this->getCatalogSelect($filter));
 
-        return $catalog;
+        return $catalog->load();
     }
 
-    public function getCatalogSelect($filter = array())
+    public function getTypeByUrl($categoryId, $subUrlTag)
+    {
+        $type = new CatalogTypes();
+        $type->select()
+            ->where([
+                'depend' => $categoryId,
+                'url'    => $subUrlTag,
+            ]);
+
+        return $type->load();
+    }
+
+    public function getCatalogSelect($filter = [])
     {
         $select = $this->getSql()->select()
             ->from(array('t' => 'catalog'), array('id', 'name', 'url_path', 'text'));

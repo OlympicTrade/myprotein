@@ -4,7 +4,9 @@ namespace CatalogAdmin\Form;
 use Aptero\Form\Admin\Form;
 
 use BlogAdmin\Model\Article;
+use CatalogAdmin\Model\CatalogTypes;
 use CatalogAdmin\Model\Products;
+use Zend\Db\Sql\Expression;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 
@@ -33,6 +35,7 @@ class ProductsEditForm extends Form
             'product' => $model,
         ]);
 
+        $this->get('types-collection')->setOption('model', $model->getPlugin('types'));
         $this->get('size-collection')->setOption('model', $model->getPlugin('size'));
         $this->get('features-collection')->setOption('model', $model->getPlugin('features'));
         $this->get('taste-collection')->setOption('model', $model->getPlugin('taste'));
@@ -68,6 +71,26 @@ class ProductsEditForm extends Form
             ),
         ));
 
+        $types = CatalogTypes::getEntityCollection();
+        $types->select()
+            ->columns(['id', 'name' => new Expression('CONCAT(c.name, " - ", t.name)')])
+            ->join(['c' => 'catalog'], 't.depend = c.id', [])
+            ->order('c.name, t.name');
+
+        $this->add([
+            'name' => 'types-collection',
+            'type'  => 'Aptero\Form\Element\Admin\Collection',
+            'options' => [
+                'options'      => [
+                    'type_id' => [
+                        'label'   => 'Категории',
+                        'width'   => 200,
+                        'options' => $types
+                    ],
+                ]
+            ],
+        ]);
+
         $this->add(array(
             'name' => 'articles-collection',
             'type'  => 'Aptero\Form\Element\Admin\Collection',
@@ -102,6 +125,14 @@ class ProductsEditForm extends Form
             'type'  => 'Zend\Form\Element\Text',
             'options' => array(
                 'label' => 'Название',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'tags',
+            'type'  => 'Zend\Form\Element\Text',
+            'options' => array(
+                'label' => 'Теги',
             ),
         ));
 
@@ -196,7 +227,15 @@ class ProductsEditForm extends Form
             'name' => 'preview',
             'type'  => 'Zend\Form\Element\Textarea',
             'options' => array(
-                'label' => 'Краткое описание'
+                'label' => 'Описание под название в карточке'
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'desc',
+            'type'  => 'Zend\Form\Element\Textarea',
+            'options' => array(
+                'label' => 'Описание под название в списке'
             ),
         ));
 
@@ -208,39 +247,39 @@ class ProductsEditForm extends Form
             ),
         ));
 
+
         $form = $this;
         $addTabs = function($prefix) use ($form) {
             $this->addMeta($prefix);
-
-            $form->add(array(
+            $form->add([
                 'name' => $prefix . 'url',
                 'type'  => 'Zend\Form\Element\Text',
-                'options' => array(
+                'options' => [
                     'label' => 'URL'
-                ),
-            ));
+                ],
+            ]);
 
-            $form->add(array(
+            $form->add([
                 'name' => $prefix . 'header',
                 'type'  => 'Zend\Form\Element\Text',
-                'options' => array(
+                'options' => [
                     'label' => 'Заголовок'
-                ),
-            ));
+                ],
+            ]);
 
-            $form->add(array(
+            $form->add([
                 'name' => $prefix . 'text',
                 'type'  => 'Zend\Form\Element\Textarea',
-                'attributes'=>array(
+                'attributes'=> [
                     'class' => 'editor',
                     'id'    => 'page-text'
-                ),
-            ));
+                ],
+            ]);
         };
 
-        $addTabs('tab1_');
-        $addTabs('tab2_');
-        $addTabs('tab3_');
+        $addTabs('attrs-tab1_');
+        $addTabs('attrs-tab2_');
+        $addTabs('attrs-tab3_');
 
         $this->add(array(
             'name' => 'keywords',

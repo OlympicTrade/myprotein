@@ -14,21 +14,31 @@ class Catalog extends EntityHierarchy
         $this->setTable('catalog');
 
         $this->addProperties(array(
-            'parent'      => array(),
-            'name'        => array(),
-            'url'         => array(),
-            'url_path'    => array(),
-            'text'        => array(),
-            'header'      => array(),
-            'title'       => array(),
-            'description' => array(),
-            'keywords'    => array(),
-            'ya_market_id'    => array(),
-            'go_market_id'    => array(),
+            'parent'      => [],
+            'name'        => [],
+            'url'         => [],
+            'url_path'    => [],
+            'text'        => [],
+            'header'      => [],
+            'title'       => [],
+            'description' => [],
+            'keywords'    => [],
+            'ya_market_id'    => [],
+            'go_market_id'    => [],
         ));
 
         $this->addPropertyFilterOut('header', function($model, $header) {
             return $header ? $header : $model->get('name');
+        });
+
+        $this->addPlugin('types', function($model) {
+            $types = CatalogTypes::getEntityCollection();
+            $types->select()
+                ->columns(['id', 'name', 'short_name', 'url', 'depend'])
+                ->order('sort')
+                ->where(['depend' => $model->getId()]);
+
+            return $types;
         });
 
         $this->addPlugin('products', function($category) {
@@ -108,7 +118,7 @@ class Catalog extends EntityHierarchy
         $brands->select()
             ->columns(array('id', 'name', 'url'))
             ->quantifier('DISTINCT')
-            ->join(array('p' => 'products'), 'p.brand_id = t.id', array())
+            ->join(array('p' => 'products'), 'p.brand_id = t.id', [])
             ->where(array('p.catalog_id' => $this->getCatalogIds()))
             ->where(array('p.active' => 1))
             ->where->greaterThanOrEqualTo('price', 1);
@@ -119,5 +129,14 @@ class Catalog extends EntityHierarchy
     public function getUrl()
     {
         return '/catalog/' . $this->get('url_path') . '/';
+    }
+
+    public static function getEntityCollection()
+    {
+        $catalog = parent::getEntityCollection();
+
+        $catalog->select()->where(array('active' => 1));
+
+        return $catalog;
     }
 }

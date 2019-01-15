@@ -14,6 +14,7 @@ class Products extends Entity
 
         $this->addProperties([
             'parent'        => [],
+            'desc'          => [],
             'name'          => [],
             'preview'       => [],
             'url'           => [],
@@ -30,24 +31,7 @@ class Products extends Entity
             'go_merchant'   => [],
             'olympic_id'    => [],
 
-            'tab1_title'    => [],
-            'tab1_description' => [],
-            'tab1_url'      => [],
-            'tab1_header'   => [],
-            'tab1_text'     => [],
-
-            'tab2_title'    => [],
-            'tab2_description' => [],
-            'tab2_url'      => [],
-            'tab2_header'   => [],
-            'tab2_text'     => [],
-
-            'tab3_title'    => [],
-            'tab3_description' => [],
-            'tab3_url'      => [],
-            'tab3_header'   => [],
-            'tab3_text'     => [],
-
+            'tags'          => [],
             'color'         => [],
             'price'         => [],
             'price_opt'     => [],
@@ -65,6 +49,32 @@ class Products extends Entity
             'price_base' => ['virtual' => true],
             'coefficient' => ['virtual' => true],
         ]);
+
+        /*$this->addPlugin('tags', function($model) {
+            $item = new Entity();
+            $item->setTable('products_tags');
+            $item->addProperties(array(
+                'depend'    => [],
+                'name'      => [],
+            ));
+            $catalog = $item->getCollection()->getPlugin();
+            $catalog->setParentId($model->getId());
+
+            return $catalog;
+        });*/
+
+        $this->addPlugin('types', function($model) {
+            $item = new Entity();
+            $item->setTable('products_types');
+            $item->addProperties(array(
+                'depend'    => [],
+                'type_id'   => [],
+            ));
+            $catalog = $item->getCollection()->getPlugin();
+            $catalog->setParentId($model->getId());
+
+            return $catalog;
+        });
 
         $this->addPropertyFilterOut('price', function ($model) {
             $price = $model->get('price_base') * $model->get('coefficient');

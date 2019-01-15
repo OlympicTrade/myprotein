@@ -9,10 +9,8 @@ use CallcenterAdmin\Model\Call;
 use Catalog\Model\Order;
 use CatalogAdmin\Model\Orders;
 use Delivery\Model\Delivery;
-use Zend\Json\Json;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
-use Zend\View\View;
 
 class OrdersController extends AbstractActionController
 {
@@ -33,12 +31,12 @@ class OrdersController extends AbstractActionController
         ];
 
         $this->setFields([
-        'cb' => [
+        /*'cb' => [
             'name'      => '',
             'type'      => TableService::CHECKBOX,
             'field'     => 'id',
             'width'     => '3'
-        ],
+        ],*/
         'id' => [
             'name'      => 'id',
             'type'      => TableService::FIELD_TYPE_TEXT,
@@ -52,7 +50,7 @@ class OrdersController extends AbstractActionController
             'name'      => 'Имя',
             'type'      => TableService::FIELD_TYPE_TEXT,
             'field'     => 'attrs-name',
-            'width'     => '15',
+            'width'     => '18',
             'sort'      => [
                 'enabled'   => false
             ],

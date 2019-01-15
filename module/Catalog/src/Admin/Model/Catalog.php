@@ -45,6 +45,12 @@ class Catalog extends EntityHierarchy
             return $image;
         });
 
+        $this->addPlugin('types', function($model) {
+            $props = new CatalogTypes();
+            $catalog = $props->getCollection()->getPlugin()->setParentId($model->getId());
+            return $catalog;
+        });
+
         //URL
         $this->getEventManager()->attach(array(Entity::EVENT_PRE_INSERT, Entity::EVENT_PRE_UPDATE), function ($event) {
             $model = $event->getTarget();

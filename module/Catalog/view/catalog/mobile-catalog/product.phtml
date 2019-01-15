@@ -13,8 +13,8 @@ if($inStock) {
 
 $images = $product->getPlugin('images')->load();
 ?>
+<div class="block">
 <div class="product-view">
-    <div class="block">
         <div class="images<?php echo $images->count() ? ' gl' : '' ?>">
             <?php
             $html = '<div class="thumbs">';
@@ -49,10 +49,9 @@ $images = $product->getPlugin('images')->load();
                 <div class="discount">-<?php echo $product->get('discount') ?>%</div>
             <?php } ?>
         </div>
-    </div>
 
     <div class="info">
-        <div class="block price-box">
+        <div class="price-box">
             <span class="price"><span><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i></span>
             <?php if($product->get('discount')) { ?>
                 <span class="price-old"><span><?php echo $this->price($product->get('price_old')) ?></span> <i class="fas fa-ruble-sign"></i></span>
@@ -100,17 +99,19 @@ $images = $product->getPlugin('images')->load();
             </div>
         </div>
 
-        <div class="block btns in-stock"<?php echo $inStockSt ?>>
+        <div class="btns in-stock"<?php echo $inStockSt ?>>
             <a href="/cart/" class="btn to-cart js-cart-add">В корзину</a>
         </div>
 
-        <div class="block btns not-in-stock"<?php echo $notInStockSt ?>>
+        <div class="btns not-in-stock"<?php echo $notInStockSt ?>>
             <span class="btn js-product-request">Оставить заявку</span>
         </div>
 
         <?php include('product-tabs.phtml') ?>
     </div>
 </div>
+</div>
+
 
 <?php
 $jsonLd = array(
@@ -142,12 +143,12 @@ if($product->get('stars')) {
 <script type="application/ld+json">
 <?php echo \Zend\Json\Json::encode((object) $jsonLd); ?>
 </script>
-
-<script>/*
+<?php /*
+<script>
     window.metrikaEc.push({'ecommerce': {
         'detail': {
             'products': [{
-                'id': 	 	<?php echo $product->getId() ?>,
+                'id': <?php echo $product->getId() ?>,
                 'name' : 	'<?php echo $product->get('name') ?>',
                 'price': 	<?php echo $product->get('price') ?>
             }]
@@ -161,5 +162,6 @@ if($product->get('stars')) {
         brand:      '<?php echo $product->getPlugin('brand')->get('name') ?>',
     });
     ga('ec:setAction', 'detail');
-    ga('send', 'event', 'detail');*/
+    ga('send', 'event', 'detail');
 </script>
+*/ ?>

@@ -134,13 +134,14 @@ class ProductTabs extends AbstractHelper
 
     protected function renderTab($product, $tab)
     {
-        return $this->getView()->textBlock($product->get($tab . 'text'));
+        return $this->getView()->textBlock($product->getPlugin('attrs')->get($tab . 'text'));
     }
 
     protected function renderDesc($product)
     {
         $html =
-            '<div class="col-l std-text">'
+            '<div class="cols">'
+            .'<div class="col-l std-text">'
                 .$product->get('text')
             .'</div>'
             .'<div class="col-r">';
@@ -173,7 +174,8 @@ class ProductTabs extends AbstractHelper
                 '</div>';
         }
         $html .=
-            '</div>';
+            '</div>'
+            .'</div>';
 
         return $html;
     }

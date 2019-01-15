@@ -105,8 +105,6 @@ class ProductsService extends AbstractService
 
         $products = Product::getEntityCollection();
         $products->setSelect($this->getProductsSelect($filters));
-		
-		//$products->dump();die();
 
         return $products->getPaginator($page, $itemsPerPage);
     }
@@ -191,7 +189,7 @@ class ProductsService extends AbstractService
      * @param array $filters
      * @param array $extend
      * @return \Aptero\Db\Entity\EntityCollection
-     * @throws \Aptero\Db\Exception\RuntimeException
+     * @throws \Exception
      */
     public function getProducts($filters = [], $extend = [])
     {
@@ -213,7 +211,7 @@ class ProductsService extends AbstractService
      * @param $filters
      * @param array $extend
      * @return Product
-     * @throws \Aptero\Db\Exception\RuntimeException
+     * @throws \Exception
      */
     public function getProduct($filters, $extend = [])
     {
@@ -234,10 +232,10 @@ class ProductsService extends AbstractService
     {
         $product = new Product();
 
-        $product->addProperties(array(
+        $product->addProperties([
             'size_id'     => [],
             'taste_id'    => [],
-        ));
+        ]);
 
         $filters['join'] = [
             'brands',
@@ -249,14 +247,9 @@ class ProductsService extends AbstractService
         
         $filters['columns'] = [
         	'id', 'brand_id', 'catalog_id', 'name', 'preview', 'url', 'mp_url', 'text', 'video', 'title', 'description', 'discount',
-            'tab1_title', 'tab1_description', 'tab1_keywords', 'tab1_url', 'tab1_header', 'tab1_text',
-            'tab2_title', 'tab2_description', 'tab2_keywords', 'tab2_url', 'tab2_header', 'tab2_text',
-            'tab3_title', 'tab3_description', 'tab3_keywords', 'tab3_url', 'tab3_header', 'tab3_text',
     	];
-        
 
         $select = $this->getProductsSelect($filters);
-        
 
         $product->setSelect($select);
 
@@ -285,17 +278,16 @@ class ProductsService extends AbstractService
         $select =
             $this->getSql()->select()
             ->from(['o' => 'orders'])
-            ->columns(['id', 'count' => new Expression('count(DISTINCT o.id)')])
+            ->columns(['count' => new Expression('count(DISTINCT o.id)')])
             ->join(['c' => 'orders_cart'], 'c.order_id = o.id', [])
-            ->join(['p' => 'products'], 'c.product_id = p.id', ['id'])
+            ->join(['p' => 'products'], 'c.product_id = p.id', ['product_id' => 'id'])
             ->group('p.id')
             ->order('count DESC');
 
         $dt = new \DateTime();
 
         $select->where
-            ->lessThanOrEqualTo('o.time_create', $dt->format('Y-m-d'))
-            ->greaterThanOrEqualTo('o.time_create', $dt->modify('-2 months')->format('Y-m-d'));
+            ->greaterThanOrEqualTo('o.time_create', $dt->modify('-6 months')->format('Y-m-d'));
 
         $result = $this->execute($select);
 
@@ -304,7 +296,7 @@ class ProductsService extends AbstractService
                 $this->getSql()->update()
                 ->table('products')
                 ->set(['popularity' => $row['count']])
-                ->where(['id' => $row['id']]);
+                ->where(['id' => $row['product_id']]);
 
             $this->execute($update);
         }
@@ -377,6 +369,11 @@ class ProductsService extends AbstractService
         return $product->fetchAll($select);
     }
 
+    public function updateProductsPopularity()
+    {
+
+    }
+
     public function getProductsCategories($filters)
     {
         $product = new Product();
@@ -394,7 +391,7 @@ class ProductsService extends AbstractService
             'group'     => 't.id',
             'minPrice'  => true,
             'join'      => [],
-            'columns'   => ['id', 'catalog_id', 'brand_id', 'name', 'discount', 'url'],
+            'columns'   => ['id', 'catalog_id', 'brand_id', 'name', 'desc', 'discount', 'url'],
         ], $filters);
 
         $columns = $filters['columns'];
@@ -503,8 +500,18 @@ class ProductsService extends AbstractService
             $select->where(['event' => $filters['event']]);
         }
 
-        if(!empty($filters['catalog'])) {
+        /*if(!empty($filters['catalog'])) {
             $select->where(['catalog_id' => $filters['catalog']]);
+        }*/
+
+        if(!empty($filters['type'])) {
+            $select
+                ->join(['pty' => 'products_types'], 't.id = pty.depend', [], 'left')
+                ->where(['pty.type_id' => $filters['type']]);
+        } elseif(!empty($filters['catalog'])) {
+            $select
+                ->join(['pct' => 'catalog_types'], new Expression('pct.depend IN (' . implode(',', $filters['catalog']) . ')'), [])
+                ->join(['pty' => 'products_types'], new Expression('pct.id = pty.type_id AND pty.depend = t.id'), []);
         }
 
         if($filters['price']) {
@@ -538,17 +545,13 @@ class ProductsService extends AbstractService
 
             switch($filters['sort']) {
                 case 'discount':
-                    $select->order('discount DESC');
+                    $select->order('price_base ' . ($filters['direct'] == 'up' ? 'ASC' : 'DESC'));
                     break;
-                case 'price_up':
-                    $select->order('price_base ASC');
-                    break;
-                case 'price_down':
-                    $select->order('price_base DESC');
+                case 'price':
+                    $select->order('price_base ' . ($filters['direct'] == 'up' ? 'ASC' : 'DESC'));
                     break;
                 case 'popularity':
-                    $select
-                        ->order('popularity DESC');
+                    $select->order('popularity ' . ($filters['direct'] == 'up' ? 'ASC' : 'DESC'));
                     break;
                 case 'rand':
                     $select->order(new Expression('RAND()'));

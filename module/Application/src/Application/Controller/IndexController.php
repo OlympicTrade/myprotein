@@ -9,28 +9,66 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        $this->generate();
+        $view = $this->generate();
 
-        $contacts = $this->layout()->getVariable('contacts');
+        //$contacts = $this->layout()->getVariable('contacts');
 
         $productsService = $this->getProductsService();
 
-        $products = $productsService->getProducts(array(
+        $products1 = $productsService->getProducts(array(
             'sort'      => 'popular',
             'join'      => ['reviews', 'image'],
-            'limit'     => 6
         ));
+        $products1->select()
+            ->offset(1)->limit(4);
+
+        $products2 = $productsService->getProducts(array(
+            'sort'      => 'popular',
+            'join'      => ['reviews', 'image'],
+        ));
+        $products2->select()->limit(1);
+
+        $products3 = $productsService->getProducts(array(
+            'sort'      => 'popular',
+            'join'      => ['reviews', 'image'],
+        ));
+        $products3->select()
+            ->offset(5)->limit(1);
+
+        $products4 = $productsService->getProducts(array(
+            'sort'      => 'popular',
+            'join'      => ['reviews', 'image'],
+        ));
+        $products4->select()
+            ->offset(9)->limit(4);
+
+        $products5 = $productsService->getProducts(array(
+            'sort'      => 'popular',
+            'join'      => ['reviews', 'image'],
+        ));
+        $products5->select()
+            ->offset(13)->limit(1);
+
+        $products6 = $productsService->getProducts(array(
+            'sort'      => 'popular',
+            'join'      => ['reviews', 'image'],
+        ));
+        $products6->select()
+            ->offset(14)->limit(4);
 
         $articles = $this->getBlogService()->getArticles(['limit' => 3]);
+        //$discount = $this->getDiscountsService()->getActiveDiscount();
 
-        $discount = $this->getDiscountsService()->getActiveDiscount();
+        $view->setVariables([
+            'products1'     => $products1,
+            'products2'     => $products2,
+            'products3'     => $products3,
+            'products4'     => $products4,
+            'products5'     => $products5,
+            'products6'     => $products6,
+        ]);
 
-        return array(
-            'products'      => $products,
-            'contacts'      => $contacts,
-            'articles'      => $articles,
-            'discount'      => $discount,
-        );
+        return $view;
     }
 
     public function regionsAction()

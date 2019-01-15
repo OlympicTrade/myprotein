@@ -1,6 +1,7 @@
 <?php
 
 $modules = array(
+    'Zf2Whoops',
     'Application',
     'User',
     'Events',

@@ -457,19 +457,6 @@ return [
                     ],
                 ],
             ],
-            /*'catalogFastOrder' => [
-                'type'    => 'segment',
-                'priority' => 500,
-                'options' => [
-                    'route'    => '/order/fast-order/',
-                    'defaults' => [
-                        'module'     => 'Catalog',
-                        'section'    => 'Orders',
-                        'controller' => 'Catalog\Controller\Orders',
-                        'action'     => 'fast-order',
-                    ],
-                ],
-            ],*/
             'catalogRecoProduct' => [
                 'type'    => 'segment',
                 'priority' => 600,
@@ -649,16 +636,16 @@ return [
                     ],
                 ],
             ],
-            'productsPopularity' => [
+            'updatePopularity' => [
                 'type'    => 'segment',
                 'priority' => 500,
                 'options' => [
-                    'route'    => '/catalog/products-popularity/',
+                    'route'    => '/catalog/update-popularity/',
                     'defaults' => [
                         'module'     => 'Catalog',
                         'section'    => 'Catalog',
                         'controller' => 'Catalog\Controller\Catalog',
-                        'action'     => 'products-popularity',
+                        'action'     => 'update-popularity',
                     ],
                 ],
             ],
@@ -793,7 +780,7 @@ return [
             ],
             'adminOrders' => [
                 'type'    => 'segment',
-                'priority' => 600,
+                'priority' => 700,
                 'options' => [
                     'route'    => '/admin/catalog/orders[/:action][/:id]/',
                     'constraints' => [

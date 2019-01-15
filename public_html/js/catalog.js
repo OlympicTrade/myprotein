@@ -15,6 +15,7 @@ function orderForm() {
             opts : {
                 closeClickOutside : false,
                 closeBtn: false,
+                smallBtn : false,
                 closeTpl: '',
                 afterLoad: function(e) {
                     initElements(box);
@@ -101,7 +102,7 @@ function productsList() {
 }
 
 function productView(box) {
-    $('.product-tabs', box).tabs({
+    $('.product-tabs .tabs').tabs({
         historyMode: true,
         disablePushState: false
     });
@@ -112,21 +113,23 @@ function productView(box) {
     });
 
     var product = $('.product', box);
-    var pic = $('.images .pic', product);
-    var img = $('img', pic);
-    var thumbs = $('.thumb', product);
+    var images  = $('.images', product);
+    var pic     = $('.pic', images);
+    var thumbs  = $('.thumb', images);
 
     thumbs.on('click', function () {
         var el = $(this);
         var img = $('img', pic);
 
         el.addClass('active').siblings().removeClass('active');
-        pic.data('size', el.data('size'))
-            .data('taste', el.data('taste'))
+        pic
+            .attr('href', el.attr('href'))
+            .attr('data-size', el.data('size'))
+            .attr('data-taste', el.data('taste'))
             .removeClass('hide');
 
-        img.attr('src', el.attr('href'))
-            .data('zoom-image', el.data('zoom'));
+        img.attr('src', el.data('m'))
+            .data('hr', el.attr('href'));
 
         return false;
     });
@@ -147,7 +150,7 @@ function productView(box) {
         toCart: function () {
             $('.to-cart', product).addClass('in-cart').removeClass('to-cart').text('В корзине');
         },
-        typeChange: function () {
+        typeChange: function (size_id, taste_id) {
             $('.in-cart', product).addClass('to-cart').removeClass('in-cart').text('В корзину');
 
             thumbs.each(function () {
@@ -156,18 +159,22 @@ function productView(box) {
                 var th_taste_id = thumb.data('taste');
 
                 if((th_size_id && th_size_id != size_id) || (th_taste_id && th_taste_id != taste_id)) {
-                    thumb.addClass('hide');
+                    thumb.addClass('hide')
+                        .attr('rel', null);
                 } else {
-                    thumb.removeClass('hide');
+                    thumb.removeClass('hide')
+                        .attr('rel', 'product-gl');
                 }
             });
 
-            if((pic.data('taste') && pic.data('taste') != taste_id) || (pic.data('size') && pic.data('size') != size_id)) {
-                pic.addClass('hide');
+            if(!$('.thumb.active').length || $('.thumb.active.hide', images).length) {
+                $('.thumb:not(.hide)', images).eq(0).trigger('click');
             }
 
-            if(pic.hasClass('hide')) {
-                $('.thumb:not(.hide)', product).eq(0).trigger('click');
+            if($('.thumb:not(.hide)', images).length > 1) {
+                $('.thumbs', images).removeClass('hide');
+            } else {
+                $('.thumbs', images).addClass('hide');
             }
         }
     });
@@ -226,14 +233,15 @@ function toCartForm(box, options) {
     });
 
     tasteSelect.on('change', function() {
-        options.typeChange();
-
+        options.typeChange(sizeSelect.val(), tasteSelect.val());
         updatePrice();
     });
 
     countSelect.on('change', function() {
         updatePrice();
     });
+
+    tasteSelect.trigger('change');
 
     $.ajax({
         url: '/catalog/get-product-stock/',

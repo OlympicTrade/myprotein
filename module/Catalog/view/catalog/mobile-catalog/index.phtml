@@ -3,9 +3,21 @@
     <h1><?php echo $header ?></h1>
 </a>
 
-<div class="widget catalog">
-	<?php echo $this->catalogMenu(['sub' => false]) ?>
+<div class="block">
+    <?php
+    $html =
+        '<div class="catalog-list">';
+
+    foreach (\Catalog\Model\Catalog::getEntityCollection() as $category) {
+        $html .=
+            '<a href="' . $category->getUrl() . '">' . $category->get('name') . '</a>';
+    }
+
+    $html .=
+        '</div>';
+
+    echo $html;
+    ?>
+
+    <?php echo $this->mobileProductsList($products, ['list' => 'list']) ?>
 </div>
-
-
-<?php echo $this->mobileProductsList($products, ['list' => 'list']) ?>

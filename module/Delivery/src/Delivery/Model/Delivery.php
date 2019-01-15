@@ -39,7 +39,7 @@ class Delivery extends Entity
     ];
 
     /**
-     * @return Delivery
+     * @return City
      */
     public function getCity()
     {

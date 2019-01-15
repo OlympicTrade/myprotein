@@ -32,7 +32,6 @@ class MenuWidget extends AbstractHelper
         $curSection = strtolower($view->engine['section']);
 
         foreach($this->modules as $module) {
-
             if(!$module->get('admin')) {
                 continue;
             }
@@ -82,4 +81,3 @@ class MenuWidget extends AbstractHelper
         return $html;
     }
 }
-?>

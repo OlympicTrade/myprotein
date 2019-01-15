@@ -24,6 +24,7 @@ class Product extends Entity
         $this->addProperties(array(
             'parent'            => [],
             'name'              => [],
+            'desc'              => [],
             'preview'           => [],
             'url'               => [],
             'mp_url'            => [],
@@ -37,27 +38,6 @@ class Product extends Entity
             'title'             => [],
             'description'       => [],
             'keywords'          => [],
-
-            'tab1_title'        => [],
-            'tab1_description'  => [],
-            'tab1_keywords'     => [],
-            'tab1_url'          => [],
-            'tab1_header'       => [],
-            'tab1_text'         => [],
-
-            'tab2_title'        => [],
-            'tab2_description'  => [],
-            'tab2_keywords'     => [],
-            'tab2_url'          => [],
-            'tab2_header'       => [],
-            'tab2_text'         => [],
-
-            'tab3_title'        => [],
-            'tab3_description'  => [],
-            'tab3_keywords'     => [],
-            'tab3_url'          => [],
-            'tab3_header'       => [],
-            'tab3_text'         => [],
 
             'price'             => ['virtual' => true],
             'price_old'         => ['virtual' => true],
@@ -276,13 +256,18 @@ class Product extends Entity
             $image->setFolder('products');
             $image->addResolutions(array(
                 's' => array(
-                    'width'  => 250,
-                    'height' => 250,
+                    'width'  => 280,
+                    'height' => 280,
                     'crop'   => true,
                 ),
                 'm' => array(
-                    'width'  => 400,
-                    'height' => 400,
+                    'width'  => 380,
+                    'height' => 445,
+                    'crop'   => true,
+                ),
+                't' => array(
+                    'width'  => 380,
+                    'height' => 445,
                     'crop'   => true,
                 ),
                 'hr' => array(
@@ -298,6 +283,7 @@ class Product extends Entity
             $image = new ProductImages();
             $image->setTable('products_gallery');
             $image->setFolder('products_gallery');
+            $image->select()->order('sort');
             $image->addResolutions(array(
                 's' => array(
                     'width'  => 250,
@@ -305,8 +291,8 @@ class Product extends Entity
                     'crop'   => false,
                 ),
                 'm' => array(
-                    'width'  => 400,
-                    'height' => 400,
+                    'width'  => 380,
+                    'height' => 445,
                     'crop'   => true,
                 ),
                 'hr' => array(

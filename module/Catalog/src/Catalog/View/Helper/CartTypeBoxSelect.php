@@ -62,15 +62,17 @@ class CartTypeBoxSelect extends AbstractHelper
             $html .=
                     '<input type="hidden" name="' . $name . '" value="' . $defVal . '">'
                 .'</div>';
-        } elseif($optsLen > 20) {
+        } elseif($optsLen > 30) {
             $html .=
-                '<select class="std-select" name="' . $name . '">';
+                '<div class="select-group">'
+                .'<select class="std-select" name="' . $name . '">';
             foreach($options as $key => $val) {
                 $html .=
                     '<option value="' . $key . '"' . ($cVal == $key ? ' selected' : '') . '>' . $val . '</option>';;
             }
             $html .=
-                '</select>';
+                '</select>'
+                .'</div>';
         } else {
             $html .=
                 '<div class="select-group">';

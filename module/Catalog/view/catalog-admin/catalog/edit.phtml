@@ -31,6 +31,7 @@ $catalog = $this->model;
     <div class="tabs tabs-class" data-name="edit-tabs">
         <div class="tabs-header">
             <div class="tab" data-tab="general">Основное</div>
+            <div class="tab" data-tab="subcategories">Подкатегории</div>
             <div class="tab" data-tab="seo">SEO</div>
             <div class="tab" data-tab="content">Описание</div>
         </div>
@@ -43,6 +44,11 @@ $catalog = $this->model;
                 echo $this->AdminFormRow($form->get('active'));
                 echo $this->AdminFormRow($form->get('url'));
                 echo $this->AdminFormRow($form->get('parent'));
+                ?>
+            </div>
+            <div class="tab" data-tab="subcategories">
+                <?php
+                echo $this->AdminFormRow($form->get('types-collection'));
                 ?>
             </div>
             <div class="tab" data-tab="seo">

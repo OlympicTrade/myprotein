@@ -16,11 +16,31 @@ class MobileCatalogController extends AbstractMobileActionController
 
         $catalogService = $this->getCatalogService();
 
-        if($url) {
+        /*if($url) {
             $category = $catalogService->getCategory(array('url' => $url))->load();
 
             if($category) {
                 return $this->categoryAction($category);
+            }
+
+            return $this->send404();
+        }*/
+        if($url) {
+            $category = $catalogService->getCategory(['url' => $url]);
+
+            if($category) {
+                return $this->categoryAction($category);
+            }
+
+            $subUrl = substr($url, strrpos($url, '/') + 1);
+            $categoryUrl = substr($url, 0, strrpos($url, '/'));
+
+            if(!$category = $catalogService->getCategory(['url' => $categoryUrl])) {
+                return $this->send404();
+            }
+
+            if($type = $catalogService->getTypeByUrl($category->getId(), $subUrl)) {
+                return $this->categoryAction($category, ['type' => $type]);
             }
 
             return $this->send404();
@@ -45,7 +65,7 @@ class MobileCatalogController extends AbstractMobileActionController
         ));
     }
 
-    public function categoryAction($category)
+    /*public function categoryAction($category, $options = [])
     {
         $catalogService = $this->getCatalogService();
 
@@ -54,11 +74,6 @@ class MobileCatalogController extends AbstractMobileActionController
         $this->addBreadcrumbs($catalogService->getCategoryCrumbs($category));
 
         $this->generateMeta($category, array('{CATALOG_NAME}', '{CATALOG_NAME_L}'), array($category->get('name'), mb_strtolower($category->get('name'))));
-
-        /*$parent = $category;
-        while($parent = $parent->getParent()) {
-            $meta->keywords .= ', ' . $parent->get('name');
-        }*/
 
         $category->clearSelect();
         $category->select()->where(array('active' => 1));
@@ -81,6 +96,73 @@ class MobileCatalogController extends AbstractMobileActionController
             'page'     => $page,
             'bLink'    => $bLink,
         ));
+    }*/
+
+    public function categoryAction($category, $options = [])
+    {
+        $catalogService = $this->getCatalogService();
+
+        $type  = $options['type'] ?? null;
+
+        if($type) {
+            $this->generateMeta($type, ['{CATALOG_NAME}', '{CATALOG_NAME_L}'], [$category->get('name'), mb_strtolower($category->get('name'))]);
+        } else {
+            $this->generateMeta($category, ['{CATALOG_NAME}', '{CATALOG_NAME_L}'], [$category->get('name'), mb_strtolower($category->get('name'))]);
+        }
+
+        $meta = $this->layout()->getVariable('meta');
+        $meta->title = $meta->title ? $meta->title : $category->get('header');
+
+        $parent = $category;
+        while($parent = $parent->getParent()) {
+            $meta->keywords .= ', ' . $parent->get('name');
+        }
+
+        if($type) {
+            $url = $type->getUrl();
+        } else {
+            $url = $category->getUrl();
+        }
+
+        $this->layout()->setVariable('canonical', $url);
+        $this->addBreadcrumbs($catalogService->getCategoryCrumbs($category));
+
+        if($type) {
+            $header = $type->get('name');
+            $this->addBreadcrumbs([['url' => $url, 'name' => $type->get('name')]]);
+        } else {
+            $header = $category->get('name');
+        }
+
+        $view = new ViewModel();
+        $view->setTemplate('catalog/mobile-catalog/category');
+
+        //Products
+        $categoryIds = $catalogService->getCatalogIds($category);
+        $page = $this->params()->fromQuery('page', 1);
+        $productsService = $this->getProductsService();
+
+        $filters = $this->params()->fromQuery();
+
+        if($type) {
+            $filters['type'] = $type->getId();
+        }
+
+        if(!isset($filters['sort'])) {
+            $filters['sort'] = 'popularity';
+        }
+
+        $filters['catalog'] = $categoryIds;
+
+        $products = $productsService->getPaginator($page, $filters);
+
+        return $view->setVariables([
+            'header'        => $header,
+            'category'      => $category,
+            'products'      => $products,
+            'page'          => $page,
+            'type'          => $type,
+        ]);
     }
 
     public function yandexMarkerAction()

@@ -8,38 +8,31 @@
             </div>
         </div>
         <div class="content">
-            <?php
-            if($category->get('parent') == 0) {
-                $topCategory = $category;
-            } else {
-                $topCategory = $category->getParent();
-            }
-
-            $sub = $topCategory->getChildren();
-
-            if($sub->count()) {
-                $url = (new \Zend\Uri\Uri($_SERVER['REQUEST_URI']))->getPath();
-
-                $html = '<div class="sub-categories">';
-                $html .= '<a href="' . $topCategory->getUrl() . '" ' . ($url == $topCategory->getUrl() ? ' class="active"' : '') . '>Все товары</a>';
-                foreach ($sub as $row) {
-                    $html .= '<a href="' . $row->getUrl() . '" ' . ($url == $row->getUrl() ? ' class="active"' : '') . '>' . $row->get('name') . '</a>';
-                }
-                $html .= '</div>';
-                echo $html;
-            }
-            ?>
-            
-            <?php echo $this->productsList($products, ['list' => 'List']) ?>
+            <div class="products-list col-4">
+                <?php echo $this->productsList($products, ['list' => 'List', 'cols' => 4]) ?>
+            </div>
         </div>
         <div class="clear"></div>
     </div>
 </div>
 
 <?php if($category->get('text')) { ?>
-<div class="block category-text std-text">
-    <div class="wrapper container">
-        <?php echo $category->get('text') ?>
+<div class="block category-text">
+    <div class="wrapper-narrow">
+        <div class="std-text">
+            <?php echo $category->get('text') ?>
+        </div>
+        <span class="show-all">Читать полностью...</span>
     </div>
+
+    <script>
+        $(function () {
+            var box = $('.category-text');
+
+            $('.show-all', box).on('click', function() {
+                box.toggleClass('open');
+            });
+        });
+    </script>
 </div>
 <?php } ?>

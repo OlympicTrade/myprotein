@@ -47,7 +47,9 @@ class CatalogMenu extends AbstractHelper
             $sub = $this->catalogSub($category);
             $class = '';
 
-            if($_SERVER['REQUEST_URI'] == $category->getUrl()) {
+            $url = (new \Zend\Uri\Uri($_SERVER['REQUEST_URI']))->getPath();
+
+            if($url == $category->getUrl()) {
                 $class .= 'active';
                 $result['active'] = true;
             } elseif($sub['active']) {
@@ -69,7 +71,42 @@ class CatalogMenu extends AbstractHelper
 
     protected function catalogSub(Catalog $parent)
     {
-        $catalog = $parent->getChildren();
+        $types = $parent->getPlugin('types');
+
+        $result = [
+            'html'   => '',
+            'active' => false
+        ];
+
+        if(!$types->count() || !$this->options['sub']) {
+            return $result;
+        }
+
+        $html = '<ul class="sub">';
+
+        $url = (new Uri($_SERVER['REQUEST_URI']))->getPath();
+
+        foreach($types as $type) {
+            if($url == $type->getUrl()) {
+                $class = ' class="active"';
+                $result['active'] = true;
+            } else {
+                $class = '';
+            }
+
+            $html .=
+                '<li' . $class . '>'
+                    .'<a href="' . $type->getUrl() . '">' . $type->get('name') . '</a>'
+                .'</li>';
+        }
+
+        $html .= '</ul>';
+
+        $result['html'] = $html;
+
+        return $result;
+
+        /*$catalog = $parent->getChildren();
 
         $result = [
             'html'   => '',
@@ -109,6 +146,6 @@ class CatalogMenu extends AbstractHelper
 
         $result['html'] = $html;
 
-        return $result;
+        return $result;*/
     }
 }

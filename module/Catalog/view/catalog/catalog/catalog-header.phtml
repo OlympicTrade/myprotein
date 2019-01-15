@@ -14,7 +14,7 @@ $getSort = isset($_GET['sort']) ? $_GET['sort'] : 'popular';
 $getDirect = isset($_GET['direct']) ? $_GET['direct'] : 'down';
 
 foreach ($sort as $field => $opts) {
-    $url = '/catalog/' . (isset($category) ? $category->getUrl() : '') . '?sort=' . $field;
+    $url = (isset($category) ? $category->getUrl() : '') . '?sort=' . $field;
     $name = $opts['name'];
     $class = 'item';
 

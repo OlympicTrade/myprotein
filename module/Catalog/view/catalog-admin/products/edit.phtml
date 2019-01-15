@@ -58,6 +58,8 @@ $product = $this->model;
                 <?php
                 echo $this->AdminFormRow($form->get('image-image'));
                 echo $this->AdminFormRow($form->get('name'));
+                echo $this->AdminFormRow($form->get('tags'));
+                echo $this->AdminFormRow($form->get('desc'));
                 echo $this->AdminFormRow($form->get('preview'));
                 echo $this->AdminFormRow($form->get('vegan'));
                 echo $this->AdminFormRow($form->get('url'));
@@ -82,6 +84,7 @@ $product = $this->model;
                 <?php echo $this->formRow($form->get('taste-collection')); ?>
             </div>
             <div class="tab" data-tab="links">
+                <?php echo $this->AdminFormRow($form->get('types-collection')); ?>
                 <?php echo $this->AdminFormRow($form->get('recommended-collection')); ?>
                 <?php echo $this->AdminFormRow($form->get('articles-collection')); ?>
             </div>
@@ -233,27 +236,27 @@ $product = $this->model;
                 ?>
                 <div class="separator">Вкладка 1</div>
                 <?php
-                echo $this->formRow($form->get('tab1_title'));
-                echo $this->formRow($form->get('tab1_description'));
-                echo $this->formRow($form->get('tab1_url'));
-                echo $this->formRow($form->get('tab1_header'));
-                echo $this->formRow($form->get('tab1_text'));
+                echo $this->formRow($form->get('attrs-tab1_title'));
+                echo $this->formRow($form->get('attrs-tab1_description'));
+                echo $this->formRow($form->get('attrs-tab1_url'));
+                echo $this->formRow($form->get('attrs-tab1_header'));
+                echo $this->formRow($form->get('attrs-tab1_text'));
                 ?>
                 <div class="separator">Вкладка 2</div>
                 <?php
-                echo $this->formRow($form->get('tab2_title'));
-                echo $this->formRow($form->get('tab2_description'));
-                echo $this->formRow($form->get('tab2_url'));
-                echo $this->formRow($form->get('tab2_header'));
-                echo $this->formRow($form->get('tab2_text'));
+                echo $this->formRow($form->get('attrs-tab2_title'));
+                echo $this->formRow($form->get('attrs-tab2_description'));
+                echo $this->formRow($form->get('attrs-tab2_url'));
+                echo $this->formRow($form->get('attrs-tab2_header'));
+                echo $this->formRow($form->get('attrs-tab2_text'));
                 ?>
                 <div class="separator">Вкладка 3</div>
                 <?php
-                echo $this->formRow($form->get('tab3_title'));
-                echo $this->formRow($form->get('tab3_description'));
-                echo $this->formRow($form->get('tab3_url'));
-                echo $this->formRow($form->get('tab3_header'));
-                echo $this->formRow($form->get('tab3_text'));
+                echo $this->formRow($form->get('attrs-tab3_title'));
+                echo $this->formRow($form->get('attrs-tab3_description'));
+                echo $this->formRow($form->get('attrs-tab3_url'));
+                echo $this->formRow($form->get('attrs-tab3_header'));
+                echo $this->formRow($form->get('attrs-tab3_text'));
                 ?>
             </div>
             <div class="tab" data-tab="photo">

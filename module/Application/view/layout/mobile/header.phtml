@@ -2,11 +2,11 @@
 $this->generateMeta(true);
 
 $this->headLink()
-    ->prependStylesheet('/mobile/css/compress2.css')
+    ->prependStylesheet(\Aptero\Compressor\Compressor::getPublicLink('css', 'mobile'))
     ->prependStylesheet('//use.fontawesome.com/releases/v5.4.1/css/all.css');
 
 $this->headScript()
-    ->prependFile('/mobile/js/compress2.js')
+    ->prependFile(\Aptero\Compressor\Compressor::getPublicLink('js', 'mobile'))
     ->prependFile('/js/counters.js')
     ->prependFile('https://www.googletagmanager.com/gtag/js?id=UA-121245947-1')
 
@@ -19,25 +19,60 @@ $this->headScript()
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php echo $this->headTitle() . "\n";
-    echo $this->headMeta();
-    echo $this->headLink();
-    echo $this->headScript();
-    echo $this->settings->get('html_head')
-    ?>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <?php
+        echo $this->headTitle() . "\n";
+        echo $this->headMeta()  . "\n";
+        echo $this->headLink()  . "\n";
+        echo $this->headScript()  . "\n";
+        echo $this->settings->get('html_head')
+        ?>
+    </head>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KB83CWB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="fog"></div>
 <div id="header">
     <a href="/" class="item logo"></a>
-    <div class="item menu" data-box="menu"><i class="fas fa-bars"></i></div>
-    <div class="item search" data-box="search"><i class="fas fa-search"></i></div>
     <a href="/cart/" class="item cart">
         <div class="counter"></div>
     </a>
+    <div class="nav">
+        <div class="trigger">
+            <div class="icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="outer">
+            <div class="shadow"></div>
+            <div class="box">
+                <div class="search" >
+                    <input class="query" placeholder="Поиск">
+                </div>
+
+                <ul class="menu">
+                    <?php
+                    $сatalog = \Catalog\Model\Catalog::getEntityCollection();
+                    echo $this->mobileCatalogMenu(['ul' => false, 'catalog' => $сatalog]);
+                    ?>
+                </ul>
+
+                <div class="contacts">
+                    <div class="row">
+                        <a href="<?php echo $this->link($contacts->get('email')) ?>"><i class="far fa-envelope"></i> <?php echo $contacts->get('email') ?></a>
+                    </div>
+                    <div class="row">
+                        <a href="<?php echo $this->link($contacts->get('phone_1')) ?>"><i class="fa fa-phone"></i> <?php echo $contacts->get('phone_1') ?></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php /*
     <div class="box menu">
         <ul>
             <li class="spec"><a href="/order/order-status/" class="popup">Что с моим заказом?</a></li>
@@ -54,6 +89,7 @@ $this->headScript()
             <button type="submit" class="sbm"><i class="fas fa-search"></i></button>
         </form>
     </div>
+ */ ?>
 </div>
 
 <div id="container">

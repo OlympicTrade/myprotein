@@ -9,6 +9,9 @@ class Module implements AutoloaderProviderInterface
     public function getServiceConfig()
     {
         return array(
+            'invokables' => array(
+                'Discounts\Service\DiscountsService' => 'Discounts\Service\DiscountsService',
+            ),
             'initializers' => array(
                 function ($instance, $sm) {
                     if ($instance instanceof \Zend\ServiceManager\ServiceLocatorAwareInterface) {

@@ -16,6 +16,7 @@ class Module implements AutoloaderProviderInterface
                 'ProductItem'           => 'Catalog\View\Helper\ProductItem',
                 'ProductsList'          => 'Catalog\View\Helper\ProductsList',
                 'CatalogMenu'           => 'Catalog\View\Helper\CatalogMenu',
+                'MobileCatalogMenu'     => 'Catalog\View\Helper\MobileCatalogMenu',
                 'CartList'              => 'Catalog\View\Helper\CartList',
                 'OrderInfo'             => 'Catalog\View\Helper\OrderInfo',
                 'OrdersList'            => 'Catalog\View\Helper\OrdersList',
@@ -54,6 +55,14 @@ class Module implements AutoloaderProviderInterface
                 'CatalogAdmin\Model\Size'         => 'CatalogAdmin\Model\Size',
                 'CatalogAdmin\Model\Taste'        => 'CatalogAdmin\Model\Taste',
                 'CatalogAdmin\Model\Catalog'      => 'CatalogAdmin\Model\Catalog',
+                'CatalogAdmin\Service\OrdersService'   => 'CatalogAdmin\Service\OrdersService',
+                'CatalogAdmin\Service\BrandsService'   => 'CatalogAdmin\Service\BrandsService',
+                'CatalogAdmin\Service\CatalogService'  => 'CatalogAdmin\Service\CatalogService',
+                'CatalogAdmin\Service\ProductsService' => 'CatalogAdmin\Service\ProductsService',
+                'CatalogAdmin\Service\ReviewsService'  => 'CatalogAdmin\Service\ReviewsService',
+                'CatalogAdmin\Service\SuppliesService' => 'CatalogAdmin\Service\SuppliesService',
+                'CatalogAdmin\Service\RequestsService' => 'CatalogAdmin\Service\RequestsService',
+                'CatalogAdmin\Service\StocksService'   => 'CatalogAdmin\Service\StocksService',
             ),
             'initializers' => array(
                 function ($instance, $sm) {

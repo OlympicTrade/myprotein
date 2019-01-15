@@ -15,6 +15,7 @@ function orderForm() {
                 margin: [0, 0],
                 closeClickOutside : false,
                 closeBtn: false,
+                smallBtn : false,
                 closeTpl: '',
                 afterLoad: function(e) {
                     initElements(box);

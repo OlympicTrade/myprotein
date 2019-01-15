@@ -1,0 +1,457 @@
+:root {
+    --color1: #43c09f;
+    --color2: #2861cd;
+    --color3: #8717e4;
+    --txt1: #000000;
+    --txt2: #777777;
+    --border1: #dddddd;
+    --border2: #bfbfbf;
+}
+
+.btn {
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.2s;
+    font-size: 13px;
+    text-align: center;
+    text-decoration: none;
+	border: none;
+    color: #ffffff;
+    background: #0060c1;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    border-radius: 99px;
+}
+
+.btn:hover {
+    background: #0062e6;
+}
+
+.btn.c2 {
+    background: #43c09f;
+}
+
+.btn.c2:hover {
+    background: #3a9e80;
+}
+
+.btn.c3 {
+    background: #aaaaaa;
+}
+
+.btn.c3 :hover {
+    background: #8b8b8b;
+}
+
+.btn.gray {
+    background: #7b7b7c;
+}
+
+.btn.gray:hover {
+    background: #4d4d4e;
+}
+
+.btn.s {
+    height: 30px;
+    line-height: 30px;
+    padding: 0 18px;
+    font-size: 13px;
+}
+
+.btn.m {
+    height: 35px;
+    line-height: 35px;
+    padding: 0 20px;
+    font-size: 15px;
+}
+
+.btn.b {
+    height: 65px;
+    line-height: 65px;
+    padding: 0 37px;
+    font-size: 25px;
+}
+
+.std-input,
+.std-select,
+.std-textarea {
+    border: 1px solid #cecece;
+    padding: 0 15px;
+    height: 40px;
+    font-size: 16px;
+    color: #575757;
+    width: 100%;
+    font-family: "Proxima Nova", sans-serif;
+}
+
+.std-select {
+    cursor: pointer;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    background: url(../images/select-arr.png) 100% 50% repeat-y;
+    transition: all ease .2s;
+}
+
+.std-input.m,
+.std-select.m {
+    height: 35px;
+    font-size: 15px;
+}
+.std-select.m {
+    background-position: 102% 50%;
+}
+
+.std-input.s,
+.std-select.s {
+    height: 30px;
+}
+
+.std-select:hover {
+    box-shadow: 0 0 7px rgba(23, 162, 217, 0.7);
+}
+
+.std-select option.green {
+    color: #000000;
+}
+
+.std-select option.red {
+    color: #b6b6b6;
+}
+
+.std-textarea {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    height: 90px;
+}
+
+.std-counter {
+    position: relative;
+    height: 42px;
+    border: 1px solid var(--border2);
+    font-size: 17px;
+    font-weight: 400;
+    padding: 0 29px;
+    background: #ffffff;
+}
+
+.std-counter .decr,
+.std-counter .incr {
+    position: absolute;
+    top: 0;
+    height: 40px;
+    width: 29px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all ease .2s;
+}
+
+.std-counter .decr:hover,
+.std-counter .incr:hover {
+    background: #e9e9e9;
+}
+
+.std-counter .decr:active,
+.std-counter .incr:active {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.std-counter .decr {
+    left: 0;
+    border-right: 1px solid var(--border2);
+}
+
+.std-counter .incr {
+    right: 0;
+    border-left: 1px solid var(--border2);
+}
+
+.std-counter .incr:before,
+.std-counter .decr:before {
+    font-weight: 900;
+    font-family: "Font Awesome 5 Free", sans-serif;
+}
+
+.std-counter .decr:before {
+    content: "\f068";
+}
+
+.std-counter .incr:before {
+    content: "\f067";
+}
+
+.std-counter input {
+    height: 38px;
+    width: 100%;
+    border: none;
+    text-align: center;
+    padding: 0 10px;
+    font-size: 16px;
+    color: #575757;
+}
+
+.std-counter.s {
+    height: 30px;
+    padding: 0 29px;
+}
+
+.std-counter.s input {
+    padding: 0 5px;
+}
+
+.std-counter.s input,
+.std-counter.s .decr,
+.std-counter.s .incr {
+    height: 28px;
+    font-size: 14px;
+}
+
+.std-counter.s .decr,
+.std-counter.s .incr {
+    width: 29px;
+    line-height: 28px;
+    font-size: 13px;
+}
+
+.std-counter.m {
+    height: 35px;
+    padding: 0 34px;
+}
+
+.std-counter.m input {
+    padding: 0 5px;
+}
+
+.std-counter.m input,
+.std-counter.m .decr,
+.std-counter.m .incr {
+    height: 33px;
+    font-size: 15px;
+}
+
+.std-counter.m .decr,
+.std-counter.m .incr {
+    width: 34px;
+    line-height: 33px;
+    font-size: 13px;
+}
+
+
+.select-group {
+}
+
+.select-group span {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 15px;
+    margin-right: 9px;
+    border: 1px solid #e1e1e1;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 300;
+    transition: all ease .2s;
+    cursor: pointer;
+}
+
+.select-group span:last-child {
+    margin-right: 0;
+}
+
+.select-group span:hover {
+    border-color: #8e8e8e;
+}
+
+.select-group span.selected {
+    color: #ffffff;
+    background: var(--color2);
+    border-color: var(--color2);
+}
+
+.select-group.color {
+    padding-top: 8px;
+}
+
+.select-group.color span {
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    border: none;
+    margin-right: 14px;
+    padding: 0;
+}
+
+.select-group.color span.active {
+    box-shadow: 0 0 0 2px #bbbbbb;
+    border: 2px solid #fff;
+}
+
+.stars {
+    display: inline-block;
+}
+
+.stars :before {
+    font-family: "Font Awesome 5 Free";
+    color: #d2d2d2;
+    font-weight: 900;
+    content: "\f005";
+}
+
+.stars .half:before,
+.stars .full:before {
+    color: #ffc600;
+}
+
+.stars .half:before {
+    content: "\f089";
+}
+
+.stars .full:before {
+    content: "\f005";
+}
+
+.std-form {
+
+}
+
+.std-form .row .label {
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.std-form .row {
+    margin-bottom: 14px;
+}
+
+.std-form .error {
+    background: #ea6666;
+    padding: 0 10px;
+    color: #ffffff;
+    font-size: 13px;
+    text-align: left;
+}
+
+.std-form .form-errors .error {
+    margin-bottom: 10px;
+}
+
+.success-box {
+    display: none;
+    margin: 35px 0;
+    text-align: center;
+}
+
+.success-box .sb-title {
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 13px;
+}
+
+.success-box .sb-desc {
+    font-size: 16px;
+    margin-bottom: 25px;
+    color: #727272;
+}
+
+.success-box .sb-btns {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.std-input.datepicker {
+    background-image: url(../images/calendar-i.png);
+    background-position: 90% -37px;
+    background-repeat: no-repeat;
+}
+
+.std-input.datepicker:focus {
+    background-position: 90% 23px;
+}
+
+
+
+.ui-datepicker {
+    background: #FFFFFF;
+    padding: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.31);
+    display: none;
+}
+
+.ui-datepicker th {
+    display: none;
+}
+
+.ui-datepicker td {
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.ui-datepicker td a {
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    display: block;
+}
+
+.ui-datepicker td:hover{
+    background: #dcdcdc;
+}
+
+.ui-datepicker td.ui-datepicker-unselectable,
+.ui-datepicker td.ui-datepicker-unselectable:hover {
+    background: none;
+    color: #a6a6a6;
+}
+
+.ui-datepicker td.ui-datepicker-current-day a,
+.ui-datepicker td.ui-datepicker-current-day:hover a {
+    background: #0060c1;
+    color: #ffffff;
+}
+
+.ui-datepicker-header {
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 17px;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.ui-datepicker-prev,
+.ui-datepicker-next {
+    position: absolute;
+    top: 3px;
+    background: url(../images/calendar-arrs.png) no-repeat;
+    width: 9px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.ui-datepicker-prev {
+    left: 10px;
+}
+
+.ui-datepicker-next {
+    right: 10px;
+    background-position: -9px 0;
+}
+
+.ui-datepicker-prev:hover {
+    background-position: 0 -14px;
+}
+
+.ui-datepicker-next:hover {
+    background-position: -9px -14px;
+}

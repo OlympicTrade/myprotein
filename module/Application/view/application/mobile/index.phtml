@@ -1,4 +1,4 @@
-<?php
+<?php /*
 $color1 = $discount->get('color');
 $color2 = $color1 == '000000' ? 'ffffff' : '000000';
 $btnStyle = 'style="background-color: #' . $color1 . '; color: #' . $color2 . '"';
@@ -73,4 +73,48 @@ $btnStyle = 'style="background-color: #' . $color1 . '; color: #' . $color2 . '"
 </div>
 
 <div class="widget catalog main">
+</div>
+ */ ?>
+
+<a href="" class="main-block-1">
+    <div class="box">
+        <div class="logo">MYPROTEIN</div>
+        <div class="desc">
+            Спортивное питание<br>из Великобритани
+        </div>
+        <div class="btn">Открыть каталог</div>
+    </div>
+</a>
+<div class="block">
+    <div class="main-block-2">
+        <div class="box">
+            <a href="/about/" class="item">
+                О бренде Myprotein
+            </a>
+            <a href="/delivery/" class="item">
+                Доставки и точки выдачи
+            </a>
+        </div>
+    </div>
+
+    <div class="main-block-3">
+        <?php
+        $html =
+            '<div class="catalog-list">';
+
+        foreach (\Catalog\Model\Catalog::getEntityCollection() as $category) {
+            $html .=
+                '<a href="' . $category->getUrl() . '">' . $category->get('name') . '</a>';
+        }
+
+        $html .=
+            '</div>';
+
+        echo $html;
+        ?>
+    </div>
+
+    <h2 class="header">Хиты продаж</h2>
+
+    <?php echo $this->mobileProductsList($products) ?>
 </div>

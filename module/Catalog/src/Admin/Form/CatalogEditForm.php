@@ -22,6 +22,7 @@ class CatalogEditForm extends Form
             'model' => $model->getPlugin('image'),
         ));
 
+        $this->get('types-collection')->setOption('model', $model->getPlugin('types'));
         /*$this->get('props-props')->setOptions(array(
             'model' => $model->getPlugin('props'),
         ));*/
@@ -130,6 +131,22 @@ class CatalogEditForm extends Form
                 'label' => 'Показать на сайте',
             ),
         ));
+
+        $this->add([
+            'name' => 'types-collection',
+            'type'  => 'Aptero\Form\Element\Admin\Collection',
+            'options' => [
+                'options'  => [
+                    'name'        => ['label' => 'Заголовок', 'width' => 150],
+                    'short_name'  => ['label' => 'Название', 'width' => 100],
+                    'ya_cat_name' => ['label' => 'Янд. маркет', 'width' => 100],
+                    'url'         => ['label' => 'Url', 'width' => 100],
+                    'title'       => ['label' => 'Title', 'width' => 300],
+                    'description' => ['label' => 'Description', 'width' => 300],
+                    'sort'        => ['label' => 'Порядок', 'width' => 30],
+                ]
+            ],
+        ]);
     }
 
     public function setFilters()

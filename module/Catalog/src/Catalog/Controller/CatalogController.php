@@ -18,6 +18,12 @@ class CatalogController extends AbstractActionController
         return $this->send404();
     }
 
+    public function updatePopularityAction()
+    {
+        $this->getProductsService()->updateProductsStatistic();
+        return $this->send404();
+    }
+
     public function indexAction()
     {
         $this->generate('/catalog/', false);
@@ -27,10 +33,21 @@ class CatalogController extends AbstractActionController
         $catalogService = $this->getCatalogService();
 
         if($url) {
-            $category = $catalogService->getCategory(['url' => $url])->load();
+            $category = $catalogService->getCategory(['url' => $url]);
 
             if($category) {
                 return $this->categoryAction($category);
+            }
+
+            $subUrl = substr($url, strrpos($url, '/') + 1);
+            $categoryUrl = substr($url, 0, strrpos($url, '/'));
+
+            if(!$category = $catalogService->getCategory(['url' => $categoryUrl])) {
+                return $this->send404();
+            }
+
+            if($type = $catalogService->getTypeByUrl($category->getId(), $subUrl)) {
+                return $this->categoryAction($category, ['type' => $type]);
             }
 
             return $this->send404();
@@ -86,50 +103,82 @@ class CatalogController extends AbstractActionController
         die($html);
     }
 
-    public function categoryAction($category)
+    public function categoryAction($category, $options = [])
     {
         $catalogService = $this->getCatalogService();
 
-        $url = $this->url()->fromRoute('catalog', ['url' => $category->getUrl()]);
-        $this->layout()->setVariable('canonical', $url);
-        $this->addBreadcrumbs($catalogService->getCategoryCrumbs($category));
+        $type  = $options['type'] ?? null;
 
-        $this->generateMeta($category, ['{CATALOG_NAME}', '{CATALOG_NAME_L}'], [$category->get('name'), mb_strtolower($category->get('name'))]);
+        if($type) {
+            $this->generateMeta($type, ['{CATALOG_NAME}', '{CATALOG_NAME_L}'], [$category->get('name'), mb_strtolower($category->get('name'))]);
+        } else {
+            $this->generateMeta($category, ['{CATALOG_NAME}', '{CATALOG_NAME_L}'], [$category->get('name'), mb_strtolower($category->get('name'))]);
+        }
+
         $meta = $this->layout()->getVariable('meta');
         $meta->title = $meta->title ? $meta->title : $category->get('header');
-        $defaultKeywords = $meta->keywords;
-        $meta->keywords = $category->get('header') . '';
 
         $parent = $category;
         while($parent = $parent->getParent()) {
             $meta->keywords .= ', ' . $parent->get('name');
         }
 
-        $meta->keywords .= $defaultKeywords;
+        if($type) {
+            $url = $type->getUrl();
+        } else {
+            $url = $category->getUrl();
+        }
 
-        $this->layout()->setVariable('meta', $meta);
+        $this->layout()->setVariable('canonical', $url);
+        $this->addBreadcrumbs($catalogService->getCategoryCrumbs($category));
 
-        $categoryIds = $catalogService->getCatalogIds($category);
+        if($type) {
+            $header = $type->get('name');
+            $this->addBreadcrumbs([['url' => $url, 'name' => $type->get('name')]]);
+        } else {
+            $header = $category->get('name');
+        }
 
         $view = new ViewModel();
         $view->setTemplate('catalog/catalog/category');
 
+        //Products
+        $categoryIds = $catalogService->getCatalogIds($category);
         $page = $this->params()->fromQuery('page', 1);
         $productsService = $this->getProductsService();
 
         $filters = $this->params()->fromQuery();
+
+        if($type) {
+            $filters['type'] = $type->getId();
+        }
+
+        if(!isset($filters['sort'])) {
+            $filters['sort'] = 'popularity';
+        }
+
         $filters['catalog'] = $categoryIds;
+
         $products = $productsService->getPaginator($page, $filters);
 
-        $this->layout()->setVariable('hideCatalog', true);
-
         return $view->setVariables([
-            'header'   => $category->get('name'),
-            'category' => $category,
-            'products' => $products,
-            'page'     => $page,
-            'breadcrumbs'     => $this->getBreadcrumbs(),
+            'header'        => $header,
+            'category'      => $category,
+            'products'      => $products,
+            'page'          => $page,
+            'breadcrumbs'   => $this->getBreadcrumbs(),
         ]);
+    }
+
+    public function productsFilters($options)
+    {
+        $filters = $this->params()->fromQuery();
+
+        if(!isset($filters['sort'])) {
+            $filters['sort'] = 'popularity';
+        }
+
+        return $filters;
     }
 
     public function yandexMarkerAction()
@@ -311,12 +360,6 @@ class CatalogController extends AbstractActionController
         return new JsonModel($products);
     }
 
-    public function productsPopularityAction()
-    {
-        $this->getProductsService()->updateProductsStatistic();
-        return $this->send404();
-    }
-    
     public function productAction()
     {
         $this->generate('/catalog/', false);
@@ -354,23 +397,34 @@ class CatalogController extends AbstractActionController
         
         $tabs[] = [
             'tab'    => 'default',
-            'header' => 'Описание',
+            'header' => '<i class="far fa-file-alt"></i> Описание',
             'url'    => '',
         ];
 
+        $attrs = $product->getPlugin('attrs');
+
         for($i = 1; $i <= 3; $i++) {
             $tab = 'tab' . $i;
-            if(!$product->get($tab . '_url')) { continue; }
+            if(!$attrs->get($tab . '_url')) { continue; }
+            $header = $attrs->get($tab . '_header');
+
+            switch ($header) {
+                case 'Ингредиенты': $header = '<i class="fas fa-flask"></i> ' . $header; break;
+                case 'Как принимать': $header = '<i class="fas fa-utensils"></i> ' . $header; break;
+                //case '': $header = ' ' . $header; break;
+                default: break;
+            }
+
             $tabs[] = [
                 'tab'    => $tab,
-                'header' => $product->get($tab . '_header'),
-                'url'    => $product->get($tab . '_url'),
+                'header' => $header,
+                'url'    => $attrs->get($tab . '_url'),
             ];
         }
 
         $tabs[] = [
             'tab'    => 'reviews',
-            'header' => 'Отзывы' . ($product->get('reviews') ? ' <span>(' . $product->get('reviews') . ')</span>' : ''),
+            'header' => '<i class="far fa-comment-alt"></i> Отзывы' . ($product->get('reviews') ? ' <span>(' . $product->get('reviews') . ')</span>' : ''),
             'url'    => 'reviews',
         ];
 
@@ -426,23 +480,20 @@ class CatalogController extends AbstractActionController
                         break;
                     case 'tab1':
                         $meta = $this->generateMeta(null, $metaSearch, $metaReplace, array(
-                            'title'       => $product->get('tab1_title'),
-                            'description' => $product->get('tab1_description'),
-                            'keywords'    => $product->get('tab1_keywords'),
+                            'title'       => $attrs->get('tab1_title'),
+                            'description' => $attrs->get('tab1_description'),
                         ));
                         break;
                     case 'tab2':
                         $meta = $this->generateMeta(null, $metaSearch, $metaReplace, array(
-                            'title'       => $product->get('tab2_title'),
-                            'description' => $product->get('tab2_description'),
-                            'keywords'    => $product->get('tab2_keywords'),
+                            'title'       => $attrs->get('tab2_title'),
+                            'description' => $attrs->get('tab2_description'),
                         ));
                         break;
                     case 'tab3':
                         $meta = $this->generateMeta(null, $metaSearch, $metaReplace, array(
-                            'title'       => $product->get('tab3_title'),
-                            'description' => $product->get('tab3_description'),
-                            'keywords'    => $product->get('tab3_keywords'),
+                            'title'       => $attrs->get('tab3_title'),
+                            'description' => $attrs->get('tab3_description'),
                         ));
                         break;
                     default:
@@ -464,6 +515,7 @@ class CatalogController extends AbstractActionController
                 continue;
             }
         }
+
 
         if(!$meta) {
             $this->send404();
@@ -488,7 +540,7 @@ class CatalogController extends AbstractActionController
         $urlCatalog = $this->url()->fromRoute('catalog', array('url' => $category->get('url')));
 
         $this->addBreadcrumbs($this->getCatalogService()->getCategoryCrumbs($category));
-        $this->addBreadcrumbs([['url' => $urlCatalog, 'name' => $category->get('name')]]);
+        $this->addBreadcrumbs([['url' => $urlCatalog, 'name' => $product->get('name')]]);
 
         $view = new ViewModel();
 

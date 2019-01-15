@@ -85,18 +85,20 @@ class Module
             PUBLIC_DIR . '/fonts/fonts.css',
             PUBLIC_DIR . '/css/libs/reset.css',
             PUBLIC_DIR . '/css/libs/owlcarousel.css',
-            PUBLIC_DIR . '/css/libs/fancybox.css',
+            PUBLIC_DIR . '/css/libs/fancybox/fancybox.css',
             PUBLIC_DIR . '/css/libs/lightgallery.css',
             PUBLIC_DIR . '/css/libs/grid.css',
-            PUBLIC_DIR . '/css/elements.css',
-            PUBLIC_DIR . '/css/main.css',
-        ],  PUBLIC_DIR . '/css/compress2.css');
+            PUBLIC_DIR . '/css/elements.scss',
+            PUBLIC_DIR . '/css/main.scss',
+        ], 'css');
 
         $jsDesktop = [
             0  => PUBLIC_DIR . '/js/config.js',
             5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
             15 => PUBLIC_DIR . '/js/chat.js',
+            17 => PUBLIC_DIR . '/js/libs/youtube-bg.js',
             20 => PUBLIC_DIR . '/js/libs/fancybox/fancybox.js',
+            21 => PUBLIC_DIR . '/js/libs/fancybox/thumbs.js',
             23 => PUBLIC_DIR . '/js/libs/lightgallery/lightgallery.js',
             24 => PUBLIC_DIR . '/js/libs/lightgallery/thumbnail.js',
             25 => PUBLIC_DIR . '/js/libs/history.js',
@@ -117,24 +119,25 @@ class Module
             unset($jsDesktop[15]);
         }
 
-        $compressor->compress($jsDesktop,  PUBLIC_DIR . '/js/compress2.js');
+        $compressor->compress($jsDesktop, 'js');
 
         //Mobile
         $compressor->compress([
             PUBLIC_DIR . '/mobile/css/libs/reset.css',
             PUBLIC_DIR . '/mobile/css/libs/owlslider.css',
-            PUBLIC_DIR . '/mobile/css/libs/fancybox.css',
+            PUBLIC_DIR . '/css/libs/fancybox/fancybox.css',
             PUBLIC_DIR . '/css/libs/lightgallery.css',
             PUBLIC_DIR . '/mobile/css/libs/grid.css',
-            PUBLIC_DIR . '/mobile/css/elements.css',
-            PUBLIC_DIR . '/mobile/css/main.css',
-        ],  PUBLIC_DIR . '/mobile/css/compress2.css');
+            PUBLIC_DIR . '/mobile/css/elements.scss',
+            PUBLIC_DIR . '/mobile/css/main.scss',
+        ], 'css', 'mobile');
 
         $jsMobile = [
             0  => PUBLIC_DIR . '/mobile/js/config.js',
             5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
             15 => PUBLIC_DIR . '/js/chat.js',
             20 => PUBLIC_DIR . '/js/libs/fancybox/fancybox.js',
+            21 => PUBLIC_DIR . '/js/libs/fancybox/thumbs.js',
             23 => PUBLIC_DIR . '/js/libs/lightgallery/lightgallery.js',
             24 => PUBLIC_DIR . '/js/libs/lightgallery/thumbnail.js',
             25 => PUBLIC_DIR . '/js/libs/history.js',
@@ -145,6 +148,7 @@ class Module
             50 => PUBLIC_DIR . '/js/libs/cart.js',
             55 => PUBLIC_DIR . '/js/libs/form-validator.js',
             65 => PUBLIC_DIR . '/js/libs/counter.js',
+            67 => PUBLIC_DIR . '/mobile/js/libs/touchwipe.js',
             70 => PUBLIC_DIR . '/mobile/js/main.js',
             75 => PUBLIC_DIR . '/mobile/js/catalog.js',
         ];
@@ -154,7 +158,7 @@ class Module
             unset($jsMobile[15]);
         }
 
-        $compressor->compress($jsMobile,  PUBLIC_DIR . '/mobile/js/compress2.js');
+        $compressor->compress($jsMobile, 'js', 'mobile');
     }
 
     public function mvcPreDispatch(MvcEvent $mvcEvent)
@@ -170,18 +174,20 @@ class Module
 
     public function errorDispatcherAdmin(MvcEvent $mvcEvent)
     {
-        $viewManager = $mvcEvent->getApplication()->getServiceManager()->get('ViewManager');
+        /** @var \Zend\Mvc\View\Http\ViewManager $viewManager */
+        $viewManager = $mvcEvent->getApplication()->getServiceManager()->get('HttpViewManager');
 
-        $notFoundStrategy = $viewManager->getRouteNotFoundStrategy();
+
+        /*$notFoundStrategy = $viewManager->getRouteNotFoundStrategy();
         $notFoundStrategy->setNotFoundTemplate('error/admin/not-found');
 
         $exceptionStrategy = $viewManager->getExceptionStrategy();
-        $exceptionStrategy->setExceptionTemplate('error/admin/exception');
+        $exceptionStrategy->setExceptionTemplate('error/admin/exception');*/
     }
 
     public function errorDispatcher(MvcEvent $mvcEvent)
     {
-        $viewManager = $mvcEvent->getApplication()->getServiceManager()->get('ViewManager');
+        /*$viewManager = $mvcEvent->getApplication()->getServiceManager()->get('ViewManager');
 
         $mvcEvent->getViewModel()->setTemplate('layout/error-layout');
 
@@ -189,7 +195,7 @@ class Module
         $notFoundStrategy->setNotFoundTemplate('error/not-found');
 
         $exceptionStrategy = $viewManager->getExceptionStrategy();
-        $exceptionStrategy->setExceptionTemplate('error/exception');
+        $exceptionStrategy->setExceptionTemplate('error/exception');*/
     }
 
     public function initMail(MvcEvent $mvcEvent)
@@ -268,6 +274,7 @@ class Module
                 'AdminMenuWidget'       => 'ApplicationAdmin\View\Helper\MenuWidget',
                 'AdminFormCollection'   => 'Aptero\Form\View\Helper\Admin\Collection',
                 'AdminFormProductImages'=> 'Aptero\Form\View\Helper\Admin\ProductImages',
+                'AdminFormTreeSelect'   => 'Aptero\Form\View\Helper\FormTreeSelect',
 
                 'ContentRender'         => 'Application\View\Helper\ContentRender',
                 'GenerateMeta'          => 'Application\View\Helper\GenerateMeta',

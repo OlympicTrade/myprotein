@@ -4,11 +4,13 @@
     <div class="wrapper container">
         <div class="sidebar">
             <div class="widget catalog">
-                <?php echo $this->catalogMenu(['sub' => false]) ?>
+                <?php echo $this->catalogMenu() ?>
             </div>
         </div>
         <div class="content">
-            <?php echo $this->productsList($products, ['list' => 'list']) ?>
+            <div class="products-list col-4">
+                <?php echo $this->productsList($products, ['list' => 'List', 'cols' => 4]) ?>
+            </div>
         </div>
         <div class="clear"></div>
     </div>

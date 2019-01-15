@@ -1,18 +1,18 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
-    "license": "BSD-3-Clause",
-    "keywords": [
-        "framework",
-        "zf2"
-    ],
-    "homepage": "http://framework.zend.com/",
+    "autoload": {
+        "psr-4": {
+            "Aptero\\": "local/Aptero/",
+            "SocialAuther\\": "local/SocialAuther/"
+        }
+    },
+
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=7.0",
         "zendframework/zendframework": "2.*",
-        "zendframework/skeleton-application": "dev-master"
+        "ghislainf/zf2-whoops": "dev-master",
+        "nixsolutions/yandex-php-library": "dev-master",
+        "phpoffice/phpspreadsheet": "dev-master",
+        "matthiasmullie/minify":"*",
+        "leafo/scssphp": "*"
     }
 }
-
-
-

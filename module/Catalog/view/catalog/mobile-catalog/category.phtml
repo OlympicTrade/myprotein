@@ -1,6 +1,27 @@
-<a class="block-header" href="/catalog/<?php //echo $bLink ?>">
+<a class="block-header" href="<?php echo $type ? $category->getUrl() : '/catalog/' ?>">
     <div class="back"></div>
     <h1><?php echo $header ?></h1>
 </a>
 
-<?php echo $this->mobileProductsList($products, ['list' => 'list']) ?>
+<div class="block">
+    <?php
+    if(!$type) {
+        $html =
+            '<div class="catalog-list">';
+
+        $types = $category->getPlugin('types');
+
+        foreach ($types as $type) {
+            $html .=
+                '<a href="' . $type->getUrl() . '">' . $type->get('name') . '</a>';
+        }
+
+        $html .=
+            '</div>';
+
+        echo $html;
+    }
+    ?>
+
+    <?php echo $this->mobileProductsList($products, ['list' => 'list']) ?>
+</div>

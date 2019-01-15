@@ -103,7 +103,84 @@ function initElements(box) {
 }
 
 function initPopups() {
-    $('body').on('click', '.popup', function() {
+    $('body').on('click', '.popup, .popup-img', function() {
+        var el = $(this);
+        var type = el.hasClass('popup-img') ? 'image' : 'ajax';
+
+        if(el.hasClass('popup-img')) {
+            var imgs = [];
+
+            if(el.attr('rel')) {
+                var repeats = [];
+
+                $('a[rel="' + el.attr('rel') + '"]').each(function() {
+                    var url = $(this).attr('href');
+                    if($.inArray(url, repeats) >= 0) return;
+
+                    repeats.push(url);
+
+                    imgs.push({
+                        src:  url,
+                        type: 'image',
+                        afterLoad: function(e, slide) {
+                            slide.$slide.on('click', function(e) {
+                                if($(e.target).hasClass('fancybox-slide')) {
+                                    $.fancybox.close()
+                                }
+                            });
+
+                            initElements(e.$refs.slider);
+                        }
+                    });
+                });
+            } else {
+                imgs.push({
+                    src: el.attr('href'),
+                    type: 'image',
+                });
+            }
+            dd(imgs);
+
+            $.fancybox.open(
+                imgs, {
+                    loop: true,
+                    helpers : {
+                        thumbs : {
+                            width: 75,
+                            height: 50
+                        }
+                    }
+                }
+            );
+
+            return false;
+        }
+
+        $.fancybox.open({
+            src: el.attr('href'),
+            type: type,
+            opts: {
+                ajax: {
+                    settings: {
+                        data: el.data()
+                    }
+                },
+                afterLoad: function(e, slide) {
+                    slide.$slide.on('click', function(e) {
+                        if($(e.target).hasClass('fancybox-slide')) {
+                            $.fancybox.close()
+                        }
+                    });
+
+                    initElements(e.$refs.slider);
+                }
+            }
+        });
+
+        return false;
+    });
+
+    /*$('body').on('click', '.popup', function() {
         var el = $(this);
 
         $.fancybox.open({
@@ -123,7 +200,7 @@ function initPopups() {
         });
 
         return false;
-    });
+    });*/
 }
 
 function initNav() {

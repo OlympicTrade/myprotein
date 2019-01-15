@@ -10,20 +10,21 @@ class Settings extends EntityHierarchy
     {
         $this->setTable('site_settings');
 
-        $this->addProperties(array(
-            'site_name'   => array(),
-            'site_color'  => array(),
-            'site_logo'   => array(),
-            'domain'      => array(),
-            'html_head'   => array(),
-            'html_body'   => array(),
-            'metriks'     => array(),
-            'robots'      => array(),
-            'mail_sender'    => array(),
-            'mail_email'     => array(),
-            'mail_password'  => array(),
-            'mail_smtp'   => array(),
-        ));
+        $this->addProperties([
+            'site_name'      => [],
+            'site_color'     => [],
+            'site_logo'      => [],
+            'domain'         => [],
+            'html_head'      => [],
+            'html_body'      => [],
+            'metriks'        => [],
+            'robots'         => [],
+            'mail_sender'    => [],
+            'mail_email'     => [],
+            'mail_password'  => [],
+            'mail_smtp'      => [],
+            'css_js_version' => ['type' => Entity::PROPERTY_TYPE_JSON],
+        ]);
 
         $this->getEventManager()->attach(array(Entity::EVENT_PRE_INSERT, Entity::EVENT_PRE_UPDATE), function ($event) {
             file_put_contents(PUBLIC_DIR . '/robots.txt', $event->getTarget()->get('robots'));

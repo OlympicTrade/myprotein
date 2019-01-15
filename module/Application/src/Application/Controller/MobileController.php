@@ -8,17 +8,24 @@ class MobileController extends AbstractMobileActionController
 {
     public function indexAction()
     {
-        $this->generate();
+        $view = $this->generate();
 
-        $contacts = $this->layout()->getVariable('contacts');
+        //$contacts = $this->layout()->getVariable('contacts');
 
-        $discount = $this->getDiscountsService()->getActiveDiscount();
+        //$discount = $this->getDiscountsService()->getActiveDiscount();
 
-        return array(
-            'contacts'   => $contacts,
-            'discount'   => $discount,
-            'articles'   => $this->getBlogService()->getArticles(['limit' => 3]),
-        );
+
+        $products = $this->getProductsService()->getProducts(array(
+            'sort'      => 'popular',
+            'join'      => ['reviews', 'image'],
+        ));
+        $products->select()->limit(12);
+
+        $view->setVariables([
+            'products' => $products
+        ]);
+
+        return $view;
     }
     public function aboutAction()
     {

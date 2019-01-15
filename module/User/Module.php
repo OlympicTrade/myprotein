@@ -13,13 +13,14 @@ class Module implements AutoloaderProviderInterface
         $sharedManager->attach('Zend\Mvc\Application', 'dispatch', array($this, 'mvcPreDispatch'), 100);
     }
 
-    public function mvcPreDispatch($event)
+    public function mvcPreDispatch($mvcEvent)
     {
-        $di = $event->getTarget()->getServiceManager();
-        $auth = $di->get('User\Event\Auth');
-        $auth->setCacheAdapter($di->get('DataCache'));
+        $sm = $mvcEvent->getApplication()->getServiceManager();
+        $auth = new \User\Event\Auth();
+        $auth->setServiceManager($sm);
+        $auth->setCacheAdapter($sm->get('DataCache'));
 
-        return $auth->preDispatch($event);
+        return $auth->preDispatch($mvcEvent);
     }
 
     public function getViewHelperConfig()   {

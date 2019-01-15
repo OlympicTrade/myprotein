@@ -1,5 +1,3 @@
-<?php echo $this->header(['html' => $this->stars($product->get('stars'))]) ?>
-
 <?php
 $inStock = '';
 $notInStock = '';
@@ -15,144 +13,183 @@ $brand = $product->getPlugin('brand');
 $attrs = $product->getPlugin('attrs');
 ?>
 
+<?php //echo $this->header(['header' => '']) ?>
+<?php echo
+'<div class="product-header">'
+    .'<div class="wrapper-panel">'
+        . $this->breadcrumbs($breadcrumbs, array('delimiter' => ' — ', 'showLast' => true))
+    .'</div>'
+.'</div>'
+
+?>
+
+
 <div class="block">
-    <div class="wrapper">
-        <div class="product-view">
-            <div class="product">
-                <div class="images<?php echo $images->count() ? ' gl' : '' ?>">
-                    <?php
-                    $html = '<div class="thumbs">';
+    <div class="wrapper-panel product-view">
+        <div class="product">
+            <div class="images<?php echo $images->count() ? ' gl' : '' ?>">
+                <?php
+                $html = '<div class="thumbs hide">';
 
-                    $defaultImg = '';
-                    if(!$images->count()) {
-                        $html .=
-                            '<a href="' . $product->getPlugin('image')->getImage('m') . '" data-zoom="' . $product->getPlugin('image')->getImage('hr') . '" class="thumb hide">'
-                                .'<img src="' . $product->getPlugin('image')->getImage('s') . '">'
-                            .'</a>';
-                        $defaultImg = $product->getPlugin('image')->getImage('m');
-                    } else {
-                        foreach ($product->getPlugin('images')->load() as $image) {
-                            $html .=
-                                '<a href="' . $image->getImage('m') . '" class="thumb " data-zoom="' . $image->getImage('hr') . '" data-taste="' . $image->get('taste_id') . '" data-size="' . $image->get('size_id') . '">'
-                                    .'<img src="' . $image->getImage('s') . '">'
-                                .'</a>';
-                            if(!$defaultImg) {$defaultImg = $image->getImage('m');}
-                        }
-                    }
-
+                $defaultImg = '';
+                if(!$images->count()) {
                     $html .=
-                        '</div>'
-                        .'<div class="pic" data-taste="" data-size="">'
-                            .'<img src="' . $defaultImg . '" data-zoom-image="" alt="' . $product->getPlugin('brand')->get('name') . ' ' . $product->get('name') . '">'
-                        .'</div>';
+                        '<a href="' . $product->getPlugin('image')->getImage('m') . '" '.
+                        ' data-hr="' . $product->getPlugin('image')->getImage('hr') . '"' .
+                        ' class="thumb active">'
+                            .'<img src="' . $product->getPlugin('image')->getImage('s') . '">'
+                        .'</a>';
+                } else {
+                    foreach ($product->getPlugin('images')->load() as $image) {
+                        if(
+                            $product->get('taste_id') != 0 &&
+                            ($image->get('taste_id') == 0 || $product->get('taste_id') == $image->get('taste_id'))
+                            &&
+                            ($image->get('size_id') == 0 || $product->get('size_id') == $image->get('size_id'))
+                        ) {
+                            $defaultImg = $image->getImage('m');
+                            $hide = false;
+                        } else {
+                            $hide = true;
+                        }
 
-                    echo $html;
-                    ?>
+                        $html .=
+                            '<a href="' . $image->getImage('hr') . '" class="thumb ' . ($hide ? 'hide' : '') . '"' .
+                            ' data-m="' . $image->getImage('m') . '" data-taste="' . $image->get('taste_id') . '" data-size="' . $image->get('size_id') . '">'
+                                .'<img src="' . $image->getImage('s') . '">'
+                            .'</a>';
+                    }
+                }
 
-                    <?php if($product->get('discount')) { ?>
-                        <div class="discount">-<?php echo $product->get('discount') ?>%</div>
-                    <?php } ?>
+                if(!$defaultImg) {
+                    $defaultImg = $product->getPlugin('image')->getImage('m');
+                }
+
+                $html .=
+                    '</div>'
+                    .'<a class="pic popup-img" rel="product-gl" data-taste="" data-size="">'
+                        .'<img src="' . $defaultImg . '" data-hr="" alt="' . $product->getPlugin('brand')->get('name') . ' ' . $product->get('name') . '">'
+                    .'</a>';
+
+                echo $html;
+                ?>
+
+                <?php if($product->get('discount')) { ?>
+                    <div class="discount">-<?php echo $product->get('discount') ?>%</div>
+                <?php } ?>
+            </div>
+            <div class="info-box">
+                <div class="product-header">
+                    <h1><?php echo $header ?></h1>
+                    <div class="desc"><?php echo $product->get('preview') ?></div>
                 </div>
                 <div class="info">
-                    <div class="box">
-                        <div class="type-box">
-                            <input type="hidden" value="<?php echo $product->getId() ?>" name="product_id">
+                    <div class="box type-box">
+                        <input type="hidden" value="<?php echo $product->getId() ?>" name="product_id">
+                        <?php
+                        $propName1 = $attrs->get('prop_name_1') ? $attrs->get('prop_name_1') : 'Размер';
+                        echo $this->cartTypeBoxSelect('size_id', $product->getPlugin('size'), $propName1, $product->get('size_id'));
 
-                            <?php
-                            $propName1 = $attrs->get('prop_name_1') ? $attrs->get('prop_name_1') : 'Размер';
-                            echo $this->cartTypeBoxSelect('size_id', $product->getPlugin('size'), $propName1, $product->get('size_id'));
+                        $propName2 = $attrs->get('prop_name_2') ? $attrs->get('prop_name_2') : 'Вкус';
+                        echo$this->cartTypeBoxSelect('taste_id', $product->getPlugin('taste'), $propName2, $product->get('taste_id'));
+                        ?>
+                    </div>
+                    <div class="box order-box">
+                        <div class="price-box">
+                            <div class="price"><span><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i></div>
+                            <?php if($product->get('discount')) { ?>
+                                <span class="price-old"><span><?php echo $this->price($product->get('price_old')) ?></span> <i class="fas fa-ruble-sign"></i></span>
+                            <?php } ?>
+                        </div>
 
-                            $propName2 = $attrs->get('prop_name_2') ? $attrs->get('prop_name_2') : 'Вкус';
-                            echo$this->cartTypeBoxSelect('taste_id', $product->getPlugin('taste'), $propName2, $product->get('taste_id'));
-                            ?>
-
-                            <?php /*
-                            <div class="row">
-                                <?php $propName = $product->get('prop_name_1') ? $product->get('prop_name_1') : 'Размер' ?>
-                                <div class="label"><?php echo $propName ?></div>
-                                <?php
-                                $html = '<select class="std-select js-size-select" name="size_id">';
-                                $first = true;
-                                foreach($product->getPlugin('size') as $size) {
-                                    if($first) {
-                                        $sizeId = $size->getId();
-                                        $first = false;
-                                    }
-
-                                    $html .= '<option value="' . $size->getId() . '">' . $size->get('name') . '</option>';
-                                }
-                                echo $html .= '<select>';
-                                ?>
-                            </div>
-
-                            <div class="row">
-                                <?php $propName = $product->get('prop_name_2') ? $product->get('prop_name_2') : 'Вкус' ?>
-                                <div class="label"><?php echo $propName ?></div>
-                                <?php
-                                $html = '<select class="std-select js-taste-select" name="taste_id">';
-                                foreach($product->getPlugin('taste', array('size_id' => $sizeId)) as $taste) {
-                                    $html .= '<option value="' . $taste->getId() . '" class="' . ($taste->get('stock') ? 'green' : 'red') . '">' . $taste->get('name') . '</option>';
-                                }
-                                echo $html .= '<select>';
-                                ?>
-                            </div>
-                            */ ?>
-    
-                            <div class="row">
-                                <div class="label">Количество</div>
-                                <div class="std-counter">
-                                    <div class="incr"></div>
-                                    <input value="1" min="1" max="999" name="count">
-                                    <div class="decr"></div>
-                                </div>
-                            </div>
-    
-                            <div class="price-box">
-                                <div class="price"><span><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i></div>
-                                <?php if($product->get('discount')) { ?>
-                                    <span class="price-old"><span><?php echo $this->price($product->get('price_old')) ?></span> <i class="fas fa-ruble-sign"></i></span>
-                                <?php } ?>
-
-                                <div class="stock-i"><a href="/cart/" class="btn red to-cart js-cart-add">В корзину</a></div>
-                                <div class="stock-o"><div class="btn gray to-request js-product-request">Предзаказ<div>(Без предоплаты)</div></div></div>
-                            </div>
-    
-                            <div class="delivery-box">
-                                <a href="/delivery/" class="help popup"><i class="fas fa-truck"></i> Подробнее о доставке и оплате</a>
+                        <div class="counter">
+                            <div class="std-counter">
+                                <div class="incr"></div>
+                                <input value="1" min="1" max="999" name="count">
+                                <div class="decr"></div>
                             </div>
                         </div>
+
+                        <div class="btns">
+                            <div class="stock-i"><a href="/cart/" class="btn c2 to-cart js-cart-add">В корзину</a></div>
+                            <div class="stock-o">
+                                <div class="to-request">
+                                    <span class="btn c3 js-product-request">Предзаказ</span>
+                                    <div class="desc">(Без предоплаты)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php
+                    $delivery = \Delivery\Model\Delivery::getInstance();
+                    /* @var \Delivery\Model\City $city */
+                    $city = \Delivery\Model\Delivery::getInstance()->getCity();
+                    ?>
+                    <div class="box delivery-box">
+                        <div class="row">
+                            Регион: <a href="/regions/" class="popup"><?php echo $city->get('name') ?></a>
+                        </div>
+                        <?php
+                        if($city->get('delivery_income')) {
+                            $dt = (new \DateTime())->modify('+' . $city->getDeliveryDelay(['type' => 'courier'] . ' days'));
+                            echo
+                            '<div class="row">'.
+                                'Доставка - ' . $dt->format('d') . ' ' .
+                                \Aptero\String\Date::$months2[$dt->format('m')] .
+                                ' (' . \Aptero\String\Date::$weekDays[$dt->format('N')] . ')'.
+                                '<div class="desc">'.
+                                    $city->get('delivery_income') . ' руб. при заказе от ' .
+                                    $this->price($city->getFreeDeliveryPrice(['type' => 'delivery'])) . ' руб. - бесплатно'.
+                                '</div>'.
+                            '</div>';
+                        }
+
+                        if($city->get('pickup_income')) {
+                            $dt = (new \DateTime())->modify('+' . $city->getDeliveryDelay(['type' => 'pickup'] . ' days'));
+                            echo
+                            '<div class="row">'.
+                                'Самовывоз - ' . $dt->format('d') . ' ' .
+                                \Aptero\String\Date::$months2[$dt->format('m')] .
+                                ' (' . \Aptero\String\Date::$weekDays[$dt->format('N')] . ')'.
+                                ' <a href="/delivery/points/" class="popup" >посмотреть точки</a>'.
+                                '<div class="desc">'.
+                                    $city->get('pickup_income') . ' руб. при заказе от ' .
+                                    $this->price($city->getFreeDeliveryPrice(['type' => 'pickup'])) . ' руб. - бесплатно'.
+                                '</div>'.
+                            '</div>';
+                        }
+                        ?>
                     </div>
                 </div>
 
                 <div class="recommended">
                     <div class="header">Вас может заинтересовать</div>
-    
-                    <?php
-                    foreach($product->getPlugin('recommended') as $item) {
-                        //if(!$item->get('stock')) { continue; }
-    
-                        $url = '/goods/' . $item->get('url') . '/';
-    
-                        echo
-                            '<div class="item">'
-                                .'<a href="' . $url . '" class="pic">'
-                                    .'<img src="' . $item->getPlugin('image')->getImage('m') . '" alt="' . $item->get('name') . '">'
-                                .'</a>'
-    
-                                .'<a href="' . $url . '" class="title">' . $item->get('name') . '</a>'
-                                .'<div class="price">' . $this->price($item->get('price')) . ' <i class="fas fa-ruble-sign"></i></div>'
-                                .'<span href="/order/cart-form/?pid=' . $item->getId() . '" class="btn s popup">' . ($item->get('stock') ? 'В корзину' : 'Предзаказ') . '</span>'
-                            .'</div>';
-                    } ?>
+                    <div class="body">
+                        <?php
+                        foreach($product->getPlugin('recommended') as $item) {
+                            $url = '/goods/' . $item->get('url') . '/';
+                            echo
+                                '<div class="item">'
+                                    .'<a href="' . $url . '" class="pic">'
+                                        .'<img src="' . $item->getPlugin('image')->getImage('m') . '" alt="' . $item->get('name') . '">'
+                                    .'</a>'
+                                    .'<div class="reco-desc">'
+                                        .'<a href="' . $url . '" class="title">' . $item->get('name') . '</a>'
+                                        .'<div class="price">' . $this->price($item->get('price')) . ' <i class="fas fa-ruble-sign"></i></div>'
+                                        .'<span href="/order/cart-form/?pid=' . $item->getId() . '" class="btn s popup">' . ($item->get('stock') ? 'В корзину' : 'Предзаказ') . '</span>'
+                                    .'</div>'
+                                .'</div>';
+                        } ?>
+                    </div>
                 </div>
-    
-                <div class="clear"></div>
             </div>
-
-            <?php include('product-tabs.phtml') ?>
-
-            <div class="clear"></div>
         </div>
+    </div>
+
+    <div class=" product-tabs">
+        <?php include('product-tabs.phtml') ?>
+        <div class="clear"></div>
     </div>
 </div>
 

@@ -141,7 +141,7 @@ return array(
                     ),
                 ),
             ),
-            /*'admin' => array(
+            'admin' => array(
                 'type'    => 'segment',
                 'priority' => 600,
                 'options' => array(
@@ -160,7 +160,7 @@ return array(
                         'side'       => 'admin'
                     ),
                 ),
-            ),*/
+            ),
             'adminPage' => array(
                 'type'    => 'segment',
                 'priority' => 600,
