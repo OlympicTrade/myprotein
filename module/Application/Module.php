@@ -24,6 +24,50 @@ class Module
         $sharedManager = $application->getEventManager()->getSharedManager();
 
         $side = substr($_SERVER['REQUEST_URI'], 0, 7) == '/admin/' ? 'admin' : 'public';
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $event) {
+            $viewModel = $event->getViewModel();
+            $viewModel->setTemplate('error/layout');
+        }, -200);
+
+        //Errors handler
+        if ($side == 'admin') {
+            $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'errorDispatcherAdmin'), 100);
+            $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRenderAdmin'), 100);
+        } else {
+            $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'errorDispatcher'), 100);
+            $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'onRenderPublic'), 100);
+        }
+
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'mvcPreDispatch'), 100);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initMailSms'), 100);
+        //$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'initTranslate'));
+
+        //Default Db Adapter
+        StaticDbAdapter::setStaticAdapter($sm->get('Zend\Db\Adapter\Adapter'));
+        StaticCacheAdapter::setStaticAdapter($sm->get('DataCache'), 'data');
+        StaticCacheAdapter::setStaticAdapter($sm->get('HtmlCache'), 'html');
+
+        //Errors log
+        /*if(MODE == 'public') {
+            $sharedManager->attach('Zend\Mvc\Application', 'dispatch.error', function ($e) use ($sm) {
+                $mail = new Mail();
+                $mail->setTemplate(
+                    MODULE_DIR . '/Application/view/error/error-mail.phtml',
+                    MODULE_DIR . '/Application/view/mail/error.phtml')
+                    ->setHeader('Ошибка')
+                    ->setVariables(['exception' => $e->getParam('exception')])
+                    ->addTo('info@aptero.ru')
+                    ->send();
+            });
+        }*/
+
+        /*
+        $application   = $mvcEvent->getApplication();
+        $sm = $application->getServiceManager();
+        $eventManager = $mvcEvent->getApplication()->getEventManager();
+        $sharedManager = $application->getEventManager()->getSharedManager();
+
+        $side = substr($_SERVER['REQUEST_URI'], 0, 7) == '/admin/' ? 'admin' : 'public';
 
         //Errors log
         if(MODE == 'public') {
@@ -55,7 +99,7 @@ class Module
         //Default Db Adapter
         StaticDbAdapter::setStaticAdapter($sm->get('Zend\Db\Adapter\Adapter'));
         StaticCacheAdapter::setStaticAdapter($sm->get('DataCache'), 'data');
-        StaticCacheAdapter::setStaticAdapter($sm->get('HtmlCache'), 'html');
+        StaticCacheAdapter::setStaticAdapter($sm->get('HtmlCache'), 'html');*/
     }
 
     public function onRenderAdmin(MvcEvent $mvcEvent)
@@ -198,7 +242,7 @@ class Module
         $exceptionStrategy->setExceptionTemplate('error/exception');*/
     }
 
-    public function initMail(MvcEvent $mvcEvent)
+    public function initMailSms(MvcEvent $mvcEvent)
     {
         $settings = $mvcEvent->getApplication()->getServiceManager()->get('Settings');
         Mail::setOptions([

@@ -9,16 +9,16 @@ class Cart extends Entity
     {
         $this->setTable('orders_cart');
 
-        $this->addProperties(array(
-            'order_id'    => array(),
-            'product_id'  => array(),
-            'size_id'     => array(),
-            'taste_id'    => array(),
-            'count'       => array(), //Сколько реально доступно со склада
-            'order_count' => array(), //Сколько товаров заказал клиент
-            'price'       => array(),
-            'bonus'       => array(),
-        ));
+        $this->addProperties([
+            'order_id'    => [],
+            'product_id'  => [],
+            'size_id'     => [],
+            'taste_id'    => [],
+            'count'       => [], //Сколько реально доступно со склада
+            'order_count' => [], //Сколько товаров заказал клиент
+            'price'       => [],
+            'bonus'       => [],
+        ]);
 
         $this->addPlugin('product', function($model) {
             $product = new Product();

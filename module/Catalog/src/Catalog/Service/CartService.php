@@ -62,8 +62,8 @@ class CartService extends AbstractService
         $cart = new Cart();
 
         $cart->addProperties([
-            'size_id'    => ['virtual' => true],
-            'taste_id'   => ['virtual' => true],
+            //'size_id'    => ['virtual' => true],
+            //'taste_id'   => ['virtual' => true],
             'taste'      => ['virtual' => true],
             'size'       => ['virtual' => true],
             'weight'     => ['virtual' => true],
@@ -76,7 +76,6 @@ class CartService extends AbstractService
             ->from(['p' => 'products'])
             ->columns([
                 'product_id'        => 'id',
-                'product-id'        => 'id',
                 'product-url'       => 'url',
                 'product-name'      => 'name',
                 'product-discount'  => 'discount',

@@ -198,6 +198,7 @@ class OrdersController extends AbstractActionController
                 $resp['oid']   = $order->getId();
                 $resp['phone'] = (int) $order->getPlugin('phone')->get('confirmed');
             } else {
+                $resp['errors'] = $form->getMessages();
                 $resp['oid'] = 0;
             }
         } elseif($step == 2) {

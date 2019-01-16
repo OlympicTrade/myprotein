@@ -118,9 +118,9 @@ class OrdersService extends AbstractService
         $prevOrder->select()
             ->columns(['id'])
             ->where
-            ->greaterThan('time_create', (new \DateTime())->modify('-20 minutes')->format('Y-m-d H:i:s'))
-            ->equalTo('status', Order::STATUS_NEW)
-            ->equalTo('phone_id', $phone->getId());
+                ->greaterThan('time_create', (new \DateTime())->modify('-20 minutes')->format('Y-m-d H:i:s'))
+                ->equalTo('status', Order::STATUS_NEW)
+                ->equalTo('phone_id', $phone->getId());
 
         if($orderId) {
             $prevOrder->select()->where->notEqualTo('id', $orderId);
@@ -380,6 +380,7 @@ class OrdersService extends AbstractService
 
     /**
      * @return Order
+     * @throws \Aptero\Db\Exception\RuntimeException
      */
     protected function createEmptyOrder()
     {
@@ -536,14 +537,14 @@ class OrdersService extends AbstractService
         if($troubles) {
             $order->set('status', Order::STATUS_PROBLEM);
 
-            /*$this->getCallcenterService()->addCall([
+            $this->getCallcenterService()->addCall([
                 'type_id'    => Call::TYPE_ORDER,
                 'item_id'    => $order->getId(),
                 'phone_id'   => $phone->getId(),
                 'name'       => $attrs->get('name'),
                 'theme'      => 'Проблемы с заказом',
                 'desc'       => implode("\n", $troubles),
-            ]);*/
+            ]);
         } else {
             $order->set('status', Order::STATUS_PROCESSING);
         }

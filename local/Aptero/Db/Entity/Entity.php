@@ -253,9 +253,6 @@ class Entity extends AbstractDb implements EventManagerAwareInterface, ArrayAcce
                 $update->set($data);
                 $this->execute($update);
             } else {
-                /*if($this->hasProperty('time_create')) {
-                    $data['time_create'] = new \Zend\Db\Sql\Expression('NOW()');
-                }*/
                 $insert = $this->insert();
                 $insert->values($data);
                 $this->execute($insert);
@@ -625,7 +622,11 @@ class Entity extends AbstractDb implements EventManagerAwareInterface, ArrayAcce
                 continue;
             }
 
-            $this->properties[$name]['filter']->setSource($value)->isChanged(false);
+            $this->properties[$name]['filter']->setSource($value);
+
+            if($this->id) {
+                $this->properties[$name]['filter']->isChanged(false);
+            }
         }
 
         return $this;
