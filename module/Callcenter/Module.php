@@ -18,7 +18,7 @@ class Module implements AutoloaderProviderInterface
             ],
             'factories' => [
                 'CallcenterAdmin\Service\CallcenterService' => function ($sm) {
-                    return new \CallcenterAdmin\Service\CallcenterService($sm->get('CallcenterAdmin\Model\Call'));
+                    return new \CallcenterAdmin\Service\CallcenterService(new \CallcenterAdmin\Model\Call());
                 },
             ]
         ];
