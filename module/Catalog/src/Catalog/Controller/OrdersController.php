@@ -303,8 +303,6 @@ class OrdersController extends AbstractActionController
             'items' => $products,
         ];
 
-        //dd($resp);die();
-
         return new JsonModel($resp);
     }
 

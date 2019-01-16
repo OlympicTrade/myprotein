@@ -51,16 +51,19 @@ var Cart = function(){
                 continue;
             }
 
+            var cartCount = parseInt(this.cart[i].count);
+            cartCount = isNaN(cartCount) || cartCount === undefined ? 1 : cartCount;
+
             if(options.count == 'increase') {
-                data.count = newCount + parseInt(this.cart[i].count);
+                data.count = newCount + cartCount;
             } else {
-                diff = newCount - parseInt(this.cart[i].count);
+                diff = newCount - cartCount;
             }
 
             this.cart.splice(i, 1, data);
             exists = true;
         }
-        
+
         if(!exists) {
             this.cart.push(data);
         }

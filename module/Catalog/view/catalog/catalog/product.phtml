@@ -83,8 +83,8 @@ $attrs = $product->getPlugin('attrs');
                     <h1><?php echo $header ?></h1>
                     <div class="desc"><?php echo $product->get('preview') ?></div>
                 </div>
-                <div class="info">
-                    <div class="box type-box">
+                <div class="info type-box">
+                    <div class="box">
                         <input type="hidden" value="<?php echo $product->getId() ?>" name="product_id">
                         <?php
                         $propName1 = $attrs->get('prop_name_1') ? $attrs->get('prop_name_1') : 'Размер';

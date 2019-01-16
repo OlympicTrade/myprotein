@@ -209,14 +209,14 @@ class CartService extends AbstractService
         $count = 0;
 
         foreach($cart as $product) {
-            $cartInfo['cart'][] = array(
+            $cartInfo['cart'][] = [
                 'count'     => $product->get('count'),
                 'stock'     => $product->get('stock'),
                 'size_id'   => $product->get('size_id'),
                 'taste_id'  => $product->get('taste_id'),
                 'product_id'=> $product->get('product_id'),
                 'price'     => $product->get('price'),
-            );
+            ];
 
             $count += $product->get('count');
         }
