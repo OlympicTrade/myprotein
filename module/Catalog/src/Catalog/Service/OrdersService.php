@@ -536,14 +536,14 @@ class OrdersService extends AbstractService
         if($troubles) {
             $order->set('status', Order::STATUS_PROBLEM);
 
-            $this->getCallcenterService()->addCall([
+            /*$this->getCallcenterService()->addCall([
                 'type_id'    => Call::TYPE_ORDER,
                 'item_id'    => $order->getId(),
                 'phone_id'   => $phone->getId(),
                 'name'       => $attrs->get('name'),
                 'theme'      => 'Проблемы с заказом',
                 'desc'       => implode("\n", $troubles),
-            ]);
+            ]);*/
         } else {
             $order->set('status', Order::STATUS_PROCESSING);
         }

@@ -1600,23 +1600,23 @@ h2.border {
     text-decoration: underline;
 }
 
-.product-view .product .info .type-box {
+.product-view .product .info.type-box {
 
 }
 
-.product-view .product .info .type-box .row {
+.product-view .product .info.type-box .row {
     position: relative;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
 
-.product-view .product .info .type-box .row .label {
+.product-view .product .info.type-box .row .label {
     flex: 0 95px;
     font-size: 16px;
 }
 
-.product-view .product .info .type-box .row > .select-group {
+.product-view .product .info.type-box .row > .select-group {
     flex: 1;
 }
 
