@@ -9,6 +9,7 @@ use Aptero\Service\AbstractService;
 use Catalog\Model\Brands;
 use Catalog\Model\Catalog;
 use Catalog\Model\Product;
+use Zend\Db\Sql\Expression;
 
 class SystemService extends AbstractService
 {
@@ -65,7 +66,11 @@ class SystemService extends AbstractService
             ->columns(array('id', 'url', 'video', 'tab1_url', 'tab1_text', 'tab2_url', 'tab2_text', 'tab3_url', 'tab3_text'))
             ->join(array('c' => 'catalog'), 't.catalog_id = c.id', array())
             ->join(array('pa' => 'products_articles'), 'pa.depend = t.id', array('articles' => 'id'), 'left')
+            ->join(['pt' => 'products_types'], 'pt.depend = t.id', ['types' => new Expression('COUNT(*)')], 'left')
             ->group('t.id');
+
+        $products->select()->where->
+            greaterThan('');
 
         $products = $this->execute($products->select());
 

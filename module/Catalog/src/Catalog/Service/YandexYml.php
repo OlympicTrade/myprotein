@@ -7,6 +7,7 @@ use Aptero\Service\AbstractService;
 use Catalog\Model\Catalog;
 use Catalog\Model\Product;
 use Delivery\Model\City;
+use Zend\Db\Sql\Expression;
 
 class YandexYml extends AbstractService
 {
@@ -100,6 +101,7 @@ class YandexYml extends AbstractService
             'size'      => [],
             'taste_id'  => [],
             'taste'     => [],
+            'types_count'     => [],
         ])->getCollection();
 
         $filter = [
@@ -134,6 +136,11 @@ class YandexYml extends AbstractService
         }
 
         $products->setSelect($select);
+
+        //$products->select()->join(['pt' => 'products_types'], 'pt.depend = t.id', ['types_count' => new Expression('COUNT(*)')], 'left');
+        /*$products->select()->where->
+            greaterThan('types', 0);*/
+
         $offersXML = $shopXML->addChild('offers');
 
         foreach($products as $product) {

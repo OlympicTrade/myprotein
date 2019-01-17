@@ -350,8 +350,9 @@ class Module
     {
         return array(
             'invokables' => array(
-                'Application\Model\Module'          => 'Application\Model\Module',
-                'ApplicationAdmin\Model\Page'       => 'ApplicationAdmin\Model\Page',
+                'Application\Model\Module'           => 'Application\Model\Module',
+                'ApplicationAdmin\Model\Page'        => 'ApplicationAdmin\Model\Page',
+                'Application\Service\SitemapService' => 'Application\Service\SitemapService',
             ),
             'factories' => array(
                 'ApplicationAdmin\Service\PageService' => function ($sm) {
