@@ -14,6 +14,10 @@ class Sitemap
         $this->xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
     }
 
+    /**
+     * @param $options
+     * @throws \Exception
+     */
     public function addPage($options)
     {
         $urlXML = $this->xml->addChild('url');

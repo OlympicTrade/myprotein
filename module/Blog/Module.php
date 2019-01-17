@@ -11,8 +11,9 @@ class Module implements AutoloaderProviderInterface
     {
         return array(
             'invokables' => array(
-                'Blog\Service\BlogService' => 'Blog\Service\BlogService',
-                'BlogAdmin\Model\Article'  => 'BlogAdmin\Model\Article',
+                'Blog\Service\BlogService'   => 'Blog\Service\BlogService',
+                'Blog\Service\SystemService' => 'Blog\Service\SystemService',
+                'BlogAdmin\Model\Article'    => 'BlogAdmin\Model\Article',
             ),
             'initializers' => array(
                 function ($instance, $sm) {

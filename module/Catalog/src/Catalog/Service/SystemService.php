@@ -61,27 +61,28 @@ class SystemService extends AbstractService
 
     public function productsSitemap(Sitemap $sitemap)
     {
-        $products = EntityFactory::collection(new Product());
+        $product = new Product();
+        $product->addProperties([
+            'articles' => [],
+            'video'    => [],
+        ]);
+
+        $products = $product->getCollection();
         $products->select()
-            ->columns(array('id', 'url', 'video', 'tab1_url', 'tab1_text', 'tab2_url', 'tab2_text', 'tab3_url', 'tab3_text'))
+            ->columns(array('id', 'url', 'video'))
             ->join(array('c' => 'catalog'), 't.catalog_id = c.id', array())
             ->join(array('pa' => 'products_articles'), 'pa.depend = t.id', array('articles' => 'id'), 'left')
             ->join(['pt' => 'products_types'], 'pt.depend = t.id', ['types' => new Expression('COUNT(*)')], 'left')
             ->group('t.id');
 
-        $products->select()->where->
-            greaterThan('');
-
-        $products = $this->execute($products->select());
-
         foreach($products as $product) {
-            $url = '/goods/' .  $product['url'] . '/';
+            $url = $product->getUrl();
 
-            $sitemap->addPage(array(
+            $sitemap->addPage([
                 'loc'        => $url,
                 'changefreq' => 'weekly',
                 'priority'   => 0.7,
-            ));
+            ]);
 
             //reviews
             $sitemap->addPage(array(
@@ -108,16 +109,16 @@ class SystemService extends AbstractService
                 ));
             }
 
-            //tabs
-            for($i = 1; $i <= 3; $i ++) {
+            $attrs = $product->getPlugin('attrs');
+            for($i = 1; $i <= 3; $i++) {
                 $tab = 'tab' . $i;
-                if($product[$tab . '_text']) {
-                    $sitemap->addPage(array(
-                        'loc' => $url . $product[$tab . '_url'] . '/',
-                        'changefreq' => 'monthly',
-                        'priority' => 0.6,
-                    ));
-                }
+                if(!$attrs->get($tab . '_url')) { continue; }
+
+                $sitemap->addPage(array(
+                    'loc' => $url . $attrs->get($tab . '_url') . '/',
+                    'changefreq' => 'monthly',
+                    'priority' => 0.6,
+                ));
             }
         }
     }

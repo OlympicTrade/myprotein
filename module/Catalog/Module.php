@@ -51,6 +51,7 @@ class Module implements AutoloaderProviderInterface
                 'Catalog\Service\OrdersService'   => 'Catalog\Service\OrdersService',
                 'Catalog\Service\SuppliesService' => 'Catalog\Service\SuppliesService',
                 'Catalog\Service\YandexYml'       => 'Catalog\Service\YandexYml',
+                'Catalog\Service\SystemService'   => 'Catalog\Service\SystemService',
                 'CatalogAdmin\Model\Orders'       => 'CatalogAdmin\Model\Orders',
                 'CatalogAdmin\Model\Products'     => 'CatalogAdmin\Model\Products',
                 'CatalogAdmin\Model\Size'         => 'CatalogAdmin\Model\Size',

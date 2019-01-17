@@ -447,6 +447,7 @@ class Entity extends AbstractDb implements EventManagerAwareInterface, ArrayAcce
     /**
      * @param $properties
      * @return $this
+     * @throws \Exception
      */
     public function addProperties($properties)
     {
