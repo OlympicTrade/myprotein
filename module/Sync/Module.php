@@ -9,6 +9,9 @@ class Module implements AutoloaderProviderInterface
     public function getServiceConfig()
     {
         return array(
+            'invokables' => array(
+                'Sync\Service\SyncService'  => 'Sync\Service\SyncService',
+            ),
             'initializers' => array(
                 function ($instance, $sm) {
                     if ($instance instanceof \Zend\ServiceManager\ServiceLocatorAwareInterface) {
@@ -16,11 +19,6 @@ class Module implements AutoloaderProviderInterface
                     }
                 }
             ),
-            'factories' => array(
-                'SyncAdmin\Service\SyncService' => function ($sm) {
-                    return new \SyncAdmin\Service\SyncService($sm->get('SyncAdmin\Model\Sync'));
-                },
-            )
         );
     }
 
