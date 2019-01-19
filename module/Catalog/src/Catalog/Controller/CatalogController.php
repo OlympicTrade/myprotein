@@ -242,8 +242,8 @@ class CatalogController extends AbstractActionController
             'breadcrumbs' => $this->getBreadcrumbs(),
             'header'    => 'Поиск "' . $this->viewHelper('escapeHtml', $query) . '"',
             'products'  => $products,
-            'catalog'   => $this->getProductsService()->getProductsCategories(array('query' => $query)),
-            'brands'    => $this->getProductsService()->getProductsBrands(array('query' => $query)),
+            'catalog'   => $this->getProductsService()->getProductsCategories(['query' => $query]),
+            'brands'    => $this->getProductsService()->getProductsBrands(['query' => $query]),
             'query'     => $query,
         );
     }

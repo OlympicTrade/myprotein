@@ -23,6 +23,7 @@ function initMetric() {
 }
 
 function initNav() {
+    //Menu
     var header = $('#header');
     var nav = $('.nav', header);
     var menu = $('.menu', nav);
@@ -67,12 +68,17 @@ function initNav() {
     };
 
     $('.trigger', nav).on('click', function () {
+        closeSearch();
         if(nav.hasClass('open')) {
             closeMenu();
         } else {
             openMenu();
         }
     });
+
+    /*header.children('.item').on('click', function(){
+        closeMenu();
+    });*/
 
     $('.outer', nav).touchwipe({
         wipeLeft: function() {
@@ -102,8 +108,6 @@ function initNav() {
         }
     });
 
-    //$('.nav ul', header).css({height: menuH});
-
     $('a, span', menu).on('click', function (e) {
         var li = $(this).closest('li');
         e.stopPropagation();
@@ -125,26 +129,98 @@ function initNav() {
 
         return true;
     });
-    /*var header = $('#header');
-    var fog = $('#fog');
 
-    $('.item', header).on('click', function() {
-        var box = $('.box.' + $(this).data('box'), header);
+    //Search
+    var search = $('#search');
 
-        if(box.css('display') == 'none') {
-            $('.box', header).css({display: 'none'});
-            box.slideDown(200);
-            fog.fadeIn(200);
+    var openSearch = function () {
+        search.addClass('open');
+    };
+
+    var closeSearch = function () {
+        search.removeClass('open');
+    };
+
+    $(header).children('.search').on('click', function () {
+        closeMenu();
+        if(search.hasClass('open')) {
+            closeSearch();
         } else {
-            box.slideUp(200);
-            fog.fadeOut(200);
+            openSearch();
         }
     });
 
-    fog.on('click', function() {
-        $('.box', header).slideUp(200);
-        fog.fadeOut(200);
-    });*/
+    function stars(stars) {
+        var html =
+            '<div class="stars">';
+        var starFilling;
+        var starClass = '';
+
+        for(var i = 0; i <= 4; i++) {
+            starFilling = stars - i;
+
+            if(starFilling >= 0.6) {
+                starClass = ' class="full"';
+            } else if (starFilling >= 0.1) {
+                starClass = ' class="half"';
+            } else {
+                starClass = '';
+            }
+
+            html += '<div' + starClass + '></div> ';
+        }
+
+        html +=
+            '</div>';
+
+        return html;
+    }
+
+    $('.search-ac', '#search').on('keyup', function() {
+        if($(this).val() === '') {
+            $('.list', '#search').empty();
+            return;
+        }
+
+        $.ajax({
+            url: '/catalog/search/',
+            data: {
+                query: $(this).val()
+            },
+            success: function (resp) {
+                render(resp);
+            }
+        });
+    });
+
+    var render = function (items) {
+        var html = '';
+
+        $.each(items, function (key, item) {
+            switch (item.type) {
+                case 'product':
+                    html +=
+                        '<a href="' + item.url + '" class="item ac-product">' +
+                            '<div>' +
+                                '<div class="pic"><img src="' + item.img + '"></div>' +
+                                '<div class="info">' +
+                                    '<div class="title">' + item.label + '</div>' +
+                                    '<div class="desc">' + item.desc + '</div>' +
+                                    '<div>' + stars(item.stars) + '</div>' +
+                                    '<span class="price"><span>от</span> ' + $.aptero.price(item.price) + ' <i class="fa fa-rub"></i></span> ' +
+                                '</div>' +
+                            '</div>' +
+                        '</a>';
+                    break;
+                case 'category':
+                    html +=
+                        '<a class="item ac-category" href="' + item.url + '">' + item.label + '</a>';
+                    break;
+            }
+        });
+
+        $('.list', '#search').html(html);
+    }
 }
 
 

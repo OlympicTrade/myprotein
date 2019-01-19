@@ -77,11 +77,12 @@ class CatalogService extends AbstractService
                 $result[] = array(
                     'type'     => 'product',
                     'label'    => $product->get('name'),
+                    'desc'     => $product->get('desc'),
                     'id'       => $product->get('id'),
                     'url'      => '/goods/' . $product->get('url') . '/',
                     'price'    => $product->get('price'),
                     'stars'    => $product->get('stars'),
-                    'reviews'  => ($product->get('reviews') ? $product->get('reviews') . ' ' . Numbers::declension($product->get('reviews'), array('отзыв', 'отзыва', 'отзывов')) : 'Нет отзывов'),
+                    //'reviews'  => ($product->get('reviews') ? $product->get('reviews') . ' ' . Numbers::declension($product->get('reviews'), array('отзыв', 'отзыва', 'отзывов')) : 'Нет отзывов'),
                     'img'      => $product->getPlugin('image')->getImage('s'),
                 );
             }

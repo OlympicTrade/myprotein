@@ -74,40 +74,50 @@ i.fa-rub, i.fa-ruble-sign {
 
 #header {
     position: fixed;
+    display: flex;
     top: 0;
     left: 0;
     height: 50px;
     background: #0060c1;
     z-index: 100;
     width: 100%;
+    padding-left: 50px;
 
     .item {
+        flex: 0 50px;
+        height: 50px;
         width: 15%;
         color: #ffffff;
         text-align: center;
         font-size: 23px;
         display: block;
+        border-right: 1px solid rgba(255, 255, 255, 0.14);
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: 28px;
 
         &:last-child {
             border-right: none;
         }
 
         &.logo {
+            flex: 1;
             height: 50px;
             width: 170px;
             margin: 0 auto;
-            background: url($imgDir + 'm-logo.png') 50% 50% no-repeat;
+            background-image: url($imgDir + 'm-logo.png');
+            background-size: 160px;
+        }
+
+        &.search {
+            background-image: url($imgDir + 'search-w.svg');
         }
 
         &.cart {
+            border-right: none;
             border-left: 1px solid rgba(255, 255, 255, 0.14);
-            position: absolute;
-            right: 0;
-            top: 0;
-            height: 50px;
-            width: 60px;
             display: block;
-            background: url($imgDir + 'cart.png') 50% 50% no-repeat;
+            background: url($imgDir + 'cart-w.svg') 50% 50% no-repeat;
             background-size: 26px;
 
             .counter {
@@ -141,15 +151,16 @@ i.fa-rub, i.fa-ruble-sign {
 
         .trigger {
             position: absolute;
-            width: 60px;
+            width: 50px;
             height: 50px;
             cursor: pointer;
+            border-right: 1px solid rgba(255, 255, 255, 0.14);
 
             .icon {
-                width: 27px;
+                width: 25px;
                 height: 18px;
                 position: absolute;
-                left: 16px;
+                left: 13px;
                 top: 16px;
 
                 span {
@@ -158,7 +169,7 @@ i.fa-rub, i.fa-ruble-sign {
                     display: block;
                     background: #fff;
                     width: 100%;
-                    height: 2px;
+                    height: 1px;
                     transition: all ease .2s;
                 }
 
@@ -249,8 +260,8 @@ i.fa-rub, i.fa-ruble-sign {
                 span,
                 a {
                     font-size: 14px;
-                    height: 47px;
-                    line-height: 47px;
+                    height: 45px;
+                    line-height: 45px;
                     display: block;
                     padding: 0 5px;
                     color: #ffffff;
@@ -331,6 +342,145 @@ i.fa-rub, i.fa-ruble-sign {
             .trigger .icon span:nth-child(3) {
                 transform: rotate(-45deg);
                 bottom: 8px;
+            }
+        }
+    }
+}
+
+#search {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 50px;
+    left: -100%;
+    opacity: 0;
+    height: calc(100% - 50px);
+    width: 100%;
+    z-index: 50;
+    transition: all ease .3s;
+
+    &.open {
+        left: 0;
+        opacity: 1;
+    }
+
+    & > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .search-ac {
+        flex: 0 50px;
+        width: 100%;
+        height: 50px;
+        font-size: 15px;
+        padding: 0 15px;
+        background: #ffffff;
+        border: none;
+        border-bottom: 1px solid #e3e3e4;
+    }
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.5);
+    }
+
+    .list {
+        flex: 1;
+        overflow: scroll;
+
+        .item {
+            background: #ffffff;
+        }
+
+        .ac-category {
+            display: block;
+            padding: 10px 17px;
+            border-bottom: 1px solid #ededed;
+        }
+
+        .ac-product {
+            display: block;
+            padding: 5px 10px;
+            position: relative;
+            min-height: 50px;
+            border-bottom: 1px solid #ededed;
+            border-left: 0;
+
+            .pic {
+                position: absolute;
+                left: 7px;
+                top: 6px;
+                width: 68px;
+                border: none;
+                text-align: center;
+            }
+
+            .title {
+                font-size: 16px;
+                text-decoration: none;
+                color: #333;
+                font-weight: 600;
+                border: none;
+                overflow: hidden;
+                display: inline-block;
+
+                &:hover {
+                    color: #0060c1;
+                }
+            }
+
+            .info {
+                padding-top: 4px;
+                margin-left: 80px;
+                min-height: 70px;
+                position: relative;
+                font-style: normal;
+            }
+
+            .stars {
+                display: inline-block;
+            }
+
+            .desc {
+                color: #777777;
+                font-size: 13px;
+                margin-bottom: 7px;
+            }
+
+            .reviews {
+                display: none;
+                color: #949494;
+                font-size: 13px;
+                margin-left: 10px;
+            }
+
+            .info {
+                .price {
+                    position: absolute;
+                    bottom: 4px;
+                    right: 0;
+                    font-weight: bold;
+                    font-size: 17px;
+                    color: #000;
+                    display: inline-block;
+                    min-width: 60px;
+
+                    span {
+                        color: #949494;
+                        font-weight: 400;
+                        font-size: 15px;
+                    }
+
+                    .i {
+                        font-size: 11px;
+                    }
+                }
             }
         }
     }

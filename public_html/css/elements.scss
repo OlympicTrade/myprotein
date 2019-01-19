@@ -306,6 +306,10 @@
     content: "\f005";
 }
 
+.stars > div {
+    display: inline-block;
+}
+
 .stars .half:before,
 .stars .full:before {
     color: #ffc600;

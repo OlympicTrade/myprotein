@@ -204,6 +204,7 @@ function initPopups() {
 }
 
 function initNav() {
+    //Menu
     function showFog() {
         $('#fog').stop().fadeIn(200);
     }
@@ -214,7 +215,6 @@ function initNav() {
 
     var header = $('#header');
     var nav = $('#nav');
-    var catalog = $('.catalog', nav);
     var navTopLine = nav.offset().top;
     $(window).on('scroll', function() {
         if(navTopLine <= $(this).scrollTop()) {
@@ -240,43 +240,6 @@ function initNav() {
         $('.catalog .box', nav).fadeOut(200);
         hideFog();
     });
-
-    /*var cMenu = $('.c-menu', catalog);
-
-    $('.a', cMenu).hover(function(e) {
-        var el = $(this);
-        var url = el.attr('href').replace(/\/catalog/, '');
-        var isSub = el.closest('ul').hasClass('sub');
-
-        $('.cbox', catalog).css({display: 'none'});
-
-        $('a', cMenu).removeClass('hover');
-        el.addClass('hover');
-        if(isSub) {
-            catalog.addClass('sbmenu-hover');
-        }
-
-        if(!$('.cbox[data-url="' + url + '"]', catalog).css({display: 'block'}).length) {
-            $.ajax({
-                url: '/catalog/popular' + url,
-                data: {sub: isSub},
-                method: 'post',
-                success: function (resp) {
-                    $('.cbox', catalog).css({display: 'none'});
-                    $('.cbox[data-url="' + url + '"]', catalog).remove();
-                    $('.c-products', catalog).prepend(
-                        '<div class="cbox" data-url="' + url + '">' + resp + '</div>'
-                    );
-                }
-            });
-        }
-        el.addClass('loaded');
-        e.stopPropagation();
-    }, function () {
-        catalog.removeClass('sbmenu-hover');
-    });
-
-    $('li:eq(0) > a', cMenu).trigger('mouseenter');*/
 }
 
 function initDatepicker() {
@@ -321,18 +284,21 @@ function initAutocomplete() {
         var html =
             '<div class="stars">';
 
-        for($i = 0; $i <= 4; $i++) {
-            $starFilling = stars - $i;
+        var starFilling;
+        var starClass = '';
 
-            if($starFilling >= 0.6) {
-                $class = ' class="full"';
-            } else if ($starFilling >= 0.1) {
-                $class = ' class="half"';
+        for(var i = 0; i <= 4; i++) {
+            starFilling = stars - $i;
+
+            if(starFilling >= 0.6) {
+                starClass = ' class="full"';
+            } else if (starFilling >= 0.1) {
+                starClass = ' class="half"';
             } else {
-                $class = '';
+                starClass = '';
             }
 
-            html += '<div' + $class + '></div> ';
+            html += '<div' + starClass + '></div> ';
         }
 
         html +=
@@ -374,21 +340,22 @@ function initAutocomplete() {
                     li.addClass('ac-category');
                     li.append('<a href="' + item.url + '">' + item.label + '</a>');
                     break;
-                case 'brand':
+                /*case 'brand':
                     li.addClass('ac-brand');
                     li.append('<a href="' + item.url + '">' + item.label + '</a>');
-                    break;
+                    break;*/
                 case 'product':
                     li.addClass('ac-product');
                     li.append(
                         '<div class="pr-box">' +
                         '<div>' +
-                        '<a href="' + item.url + '" class="pic"><img src="' + item.img + '"></a>' +
+                        '<div class="pic"><img src="' + item.img + '"></div>' +
                         '<div class="info">' +
-                        '<a href="' + item.url + '" class="title">' + item.label + '</a>' +
+                        '<div class="title">' + item.label + '</div>' +
+                        '<div class="desc">' + item.desc + '</div>' +
                         '<div>' +
                         stars(item.stars) +
-                        '<span class="reviews">' + item.reviews + '</span>' +
+                        //'<span class="reviews">' + item.reviews + '</span>' +
                         '</div>' +
                         '<span class="price"><span>от</span> ' + $.aptero.price(item.price) + ' <i class="fa fa-rub"></i></span> ' +
                             /*'<div class="order-box">' +
