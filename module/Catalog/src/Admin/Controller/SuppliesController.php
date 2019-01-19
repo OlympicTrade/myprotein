@@ -78,7 +78,6 @@ class SuppliesController extends AbstractActionController
     {
         $ids = $this->params()->fromPost('ids');
 
-        dd(SyncService::SITE . '/sync/stock/sync-product/?id=1');
         $msg = '';
         foreach ($ids as $id) {
             $product = new Products();
