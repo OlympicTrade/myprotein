@@ -288,7 +288,7 @@ function initAutocomplete() {
         var starClass = '';
 
         for(var i = 0; i <= 4; i++) {
-            starFilling = stars - $i;
+            starFilling = stars - i;
 
             if(starFilling >= 0.6) {
                 starClass = ' class="full"';
@@ -297,7 +297,6 @@ function initAutocomplete() {
             } else {
                 starClass = '';
             }
-
             html += '<div' + starClass + '></div> ';
         }
 

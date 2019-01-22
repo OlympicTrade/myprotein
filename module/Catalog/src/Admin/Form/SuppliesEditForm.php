@@ -113,6 +113,11 @@ class SuppliesEditForm extends Form
         $inputFilter = new InputFilter();
         $factory     = new InputFactory();
 
+        $inputFilter->add($factory->createInput(array(
+            'name'     => 'status',
+            'required' => false,
+        )));
+
         $this->setInputFilter($inputFilter);
     }
 }
