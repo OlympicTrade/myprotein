@@ -354,6 +354,7 @@ class Module
                 'ApplicationAdmin\Model\Page'        => 'ApplicationAdmin\Model\Page',
                 'Application\Service\SitemapService' => 'Application\Service\SitemapService',
                 'Application\Service\SystemService'  => 'Application\Service\SystemService',
+                'ApplicationAdmin\Service\SettingsService'  => 'ApplicationAdmin\Service\SettingsService',
             ),
             'factories' => array(
                 'ApplicationAdmin\Service\PageService' => function ($sm) {
