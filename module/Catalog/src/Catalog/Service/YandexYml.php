@@ -144,6 +144,10 @@ class YandexYml extends AbstractService
         $offersXML = $shopXML->addChild('offers');
 
         foreach($products as $product) {
+            if(!$product->getPlugin('image')->hasImage()) {
+                continue;
+            }
+
             if(!$price = $product->get('price')) {
                 continue;
             }
@@ -207,11 +211,7 @@ class YandexYml extends AbstractService
                 $offerXML->addChild('market_category', $catalog->get('ya_market_id'));
             }*/
 
-            if(!empty($product->getPlugin('image')->hasImage())) {
-                @$offerXML->addChild('picture', $settings->get('domain') . $product->getPlugin('image')->getImage('hr'));
-            } else {
-                continue;
-            }
+            @$offerXML->addChild('picture', $settings->get('domain') . $product->getPlugin('image')->getImage('hr'));
 
             if(!$product->get('preview')) {
                 $offerXML->addChild('description', $product->get('preview'));
