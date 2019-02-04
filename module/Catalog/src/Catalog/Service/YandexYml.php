@@ -159,7 +159,7 @@ class YandexYml extends AbstractService
             $offerXML->addAttribute('available', $product->get('stock') ? 'true' : 'false');
 
             $offerXML->addAttribute('bid',  5 /*min(3, (int) ($price * 0.03))*/);
-            $offerXML->addAttribute('cbid', 5 /*min(3, (int) ($price * 0.03))*/);
+            //$offerXML->addAttribute('cbid', 5 /*min(3, (int) ($price * 0.03))*/);
             $offerXML->addAttribute('fee',  '100');
 
             $url = $settings->get('domain') . $product->getUrl('url');
@@ -209,6 +209,8 @@ class YandexYml extends AbstractService
 
             if(!empty($product->getPlugin('image')->hasImage())) {
                 @$offerXML->addChild('picture', $settings->get('domain') . $product->getPlugin('image')->getImage('hr'));
+            } else {
+                continue;
             }
 
             if(!$product->get('preview')) {
