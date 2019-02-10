@@ -49,6 +49,7 @@ class Module implements AutoloaderProviderInterface
                 'Catalog\Service\ProductsService' => 'Catalog\Service\ProductsService',
                 'Catalog\Service\CartService'     => 'Catalog\Service\CartService',
                 'Catalog\Service\OrdersService'   => 'Catalog\Service\OrdersService',
+                'Catalog\Service\PaymentService'  => 'Catalog\Service\PaymentService',
                 'Catalog\Service\SuppliesService' => 'Catalog\Service\SuppliesService',
                 'Catalog\Service\YandexYml'       => 'Catalog\Service\YandexYml',
                 'Catalog\Service\SystemService'   => 'Catalog\Service\SystemService',

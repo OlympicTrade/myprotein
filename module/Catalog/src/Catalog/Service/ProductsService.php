@@ -450,8 +450,7 @@ class ProductsService extends AbstractService
 
         /*if(!empty($filters['taste_id'])) {
             $select->join(['pt' => 'products_taste'], new Expression('t.id = pp.depend AND pt.id = ' . $filters['taste_id']), ['taste_id' => 'id'], 'left');
-        }
-*/
+        }*/
         if(isset($filters['join'])) {
             if (in_array('reviews', $filters['join'])) {
                 $select
