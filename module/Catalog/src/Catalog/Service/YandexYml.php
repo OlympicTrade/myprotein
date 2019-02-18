@@ -179,9 +179,9 @@ class YandexYml extends AbstractService
 
             $offerXML->addChild('country_of_origin', 'Великобритания');
 
-            $offerXML->addChild('typePrefix', $product->get('name'));
             $offerXML->addChild('vendor', $brand->get('name'));
 
+            $typePrefix = $product->get('name');
             $model = '';
             if($uploadOpts['products']['full']) {
                 if ($product->get('size')) {
@@ -197,6 +197,12 @@ class YandexYml extends AbstractService
                 }
             }
 
+            if(!$uploadOpts['products']['model']) {
+                $model = $product->get('name');
+                $typePrefix = '';
+            }
+
+            $offerXML->addChild('typePrefix', $typePrefix);
             @$offerXML->addChild('model', $model);
 
             if($product->get('discount')) {

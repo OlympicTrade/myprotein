@@ -43,7 +43,7 @@ class YandexController extends AbstractActionController
                         'utm_medium=cpc'
                     ],
                     'products' => [
-                        'full' => false
+                        'full'  => false,
                     ]
                 ];
                 break;
@@ -79,7 +79,8 @@ class YandexController extends AbstractActionController
                         'utm_medium=cpc'
                     ],
                     'products' => [
-                        'full' => true
+                        'full'  => true,
+                        'model' => false,
                     ]
                 ];
                 break;
