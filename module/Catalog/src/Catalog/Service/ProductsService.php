@@ -466,7 +466,7 @@ class ProductsService extends AbstractService
 
             if (in_array('image', $filters['join'])) {
                 $select
-                    ->join(['pi' => 'products_images'], 't.id = pi.depend', ['image-id' => 'id', 'image-filename' => 'filename'], 'left');
+                    ->join(['pi' => 'products_images'], 't.id = pi.depend', ['image-id' => 'id', 'image-filename' => 'filename']);
             }
 
             if (in_array('catalog', $filters['join'])) {

@@ -26,11 +26,13 @@ class ProductsList extends AbstractHelper
 
         $i = 0;
         foreach($products as $product) {
-            $picClass = in_array($product->get('category_id'), [32, 33, 34]) ? ' pic-wire' : '';
+            //$picClass = in_array($product->get('category_id'), [32, 33, 34]) ? ' pic-wire' : '';
 
             $i++;
 
             $url = '/goods/' . $product->get('url') . '/';
+
+            //if(!$product->getPlugin('image')->hasImage()) continue;
 
             $img = $product->getPlugin('image')->getImage($options['cols'] > 1 ? 's' : 'm');
             //$reviews = $product->get('reviews');

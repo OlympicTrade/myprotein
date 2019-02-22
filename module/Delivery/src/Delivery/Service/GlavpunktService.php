@@ -221,7 +221,9 @@ class GlavpunktService extends AbstractService
 
             $select = $this->getSql()
                 ->select(self::TABLE_POINTS)
-                ->columns(['id'])
+                ->columns(['id']);
+
+            $select
                 ->where
                     ->equalTo('address', $address)
                     ->or
