@@ -127,6 +127,10 @@ $products->select()
         max-width: 1100px;
     }
 
+    .main-block-2 .col-50 {
+        padding: 0;
+    }
+
     .products-list .pic {
         text-align: center;
         padding: 15px;
@@ -148,11 +152,17 @@ $products->select()
     }
 
     .main-block-2 .products-list.col-2 .product {
-        flex: 0 0 calc(50% - 6px);
+        flex: 0 0 calc(50% - 8px);
+        margin: 0 4px 8px 4px;
     }
 
     .main-block-2 .products-list.col-1 .product {
         flex: 0 0 100%;
+        margin-bottom: 8px;
+    }
+
+    .main-block-2 .cols > .col-1 {
+        padding-right: 8px;
     }
 
     .main-block-2 .products-list.col-1 .product .title{
