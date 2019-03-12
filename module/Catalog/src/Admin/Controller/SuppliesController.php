@@ -41,7 +41,6 @@ class SuppliesController extends AbstractActionController
             'link' => array(
                 'name'      => 'Трекер',
                 'type'      => TableService::FIELD_TYPE_TEXT,
-                'field'     => 'user_id',
                 'width'     => '14',
                 'filter'    => function($value, $row) {
                     return $value ? '<a target="_blank" href="' . $value . '">Трекер</a>' : '';
