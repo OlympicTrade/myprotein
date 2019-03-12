@@ -38,11 +38,20 @@ class SuppliesController extends AbstractActionController
                     return '<b>' . Supplies::$users[$value] . '</b>';
                 },
             ),
+            'link' => array(
+                'name'      => 'Трекер',
+                'type'      => TableService::FIELD_TYPE_TEXT,
+                'field'     => 'user_id',
+                'width'     => '14',
+                'filter'    => function($value, $row) {
+                    return $value ? '<a target="_blank" href="' . $value . '">Трекер</a>' : '';
+                },
+            ),
             'status' => array(
                 'name'      => 'Статус',
                 'type'      => TableService::FIELD_TYPE_TEXT,
                 'field'     => 'status',
-                'width'     => '18',
+                'width'     => '22',
                 'filter'    => function($value, $row) use ($classes){
                     return '<span class="wrap ' . $classes[$value] . '">' . Supplies::$statuses[$value]. '</span>';
                 },
@@ -52,11 +61,11 @@ class SuppliesController extends AbstractActionController
                 'type'      => TableService::FIELD_TYPE_TEXT,
                 'field'     => 'price',
                 'filter'    => function($value, $row) use ($classes){
-                    return $row->getPrice(0) . ' (' . $row->getPrice() . ' €)';
+                    return $row->getPrice(0)/* . ' (' . $row->getPrice() . ' €)'*/;
                 },
                 'width'     => '18',
             ),
-            'delivery' => array(
+            /*'delivery' => array(
                 'name'      => 'Доставка',
                 'type'      => TableService::FIELD_TYPE_TEXT,
                 'field'     => 'price',
@@ -64,7 +73,7 @@ class SuppliesController extends AbstractActionController
                     return $row->getDelivery(0) . ' (' . $row->getDelivery() . ' €)';
                 },
                 'width'     => '18',
-            ),
+            ),*/
             'date' => array(
                 'name'      => 'Дата',
                 'type'      => TableService::FIELD_TYPE_DATE,

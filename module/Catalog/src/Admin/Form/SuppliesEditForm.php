@@ -39,10 +39,10 @@ class SuppliesEditForm extends Form
         ]);
 
         $this->add([
-            'name' => 'login',
+            'name' => 'link',
             'type'  => 'Zend\Form\Element\Text',
             'options' => [
-                'label' => 'Логин',
+                'label' => 'Трекер',
             ],
         ]);
 

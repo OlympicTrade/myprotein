@@ -77,7 +77,7 @@ class Supplies extends Entity
         $this->addProperties([
             'user_id'       => [],
             'balance_id'    => [],
-            'login'         => [],
+            'link'          => [],
             'number'        => [],
             'date'          => ['default' => date('Y-m-d')],
             'weight'        => ['default' => 15],
