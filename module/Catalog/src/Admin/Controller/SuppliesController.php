@@ -43,7 +43,7 @@ class SuppliesController extends AbstractActionController
                 'type'      => TableService::FIELD_TYPE_TEXT,
                 'width'     => '14',
                 'filter'    => function($value, $row) {
-                    if($value) return '';
+                    if(!$value) return '';
 
                     return
                         '<a target="_blank" href="http://www.trackmytrakpak.com/?MyTrakPakNumber=' . $value . '">TP</a> | '.
