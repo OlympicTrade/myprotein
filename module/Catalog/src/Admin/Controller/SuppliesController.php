@@ -43,7 +43,8 @@ class SuppliesController extends AbstractActionController
                 'type'      => TableService::FIELD_TYPE_TEXT,
                 'width'     => '14',
                 'filter'    => function($value, $row) {
-                    return $value ? '<a target="_blank" href="' . $value . '">Трекер</a>' : '';
+                    //http://www.trackmytrakpak.com/?MyTrakPakNumber=
+                    return $value ? '<a target="_blank" href="https://boxberry.ru/tracking/?id=' . $value . '">Трекер</a>' : '';
                 },
             ),
             'status' => array(
