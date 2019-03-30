@@ -95,6 +95,9 @@ class SuppliesController extends AbstractActionController
     {
         $view = new ViewModel();
         $view->setTerminal(true);
+        $view->setVariables([
+            'id' => $this->params()->fromRoute('id')
+        ]);
 
         return $view;
     }

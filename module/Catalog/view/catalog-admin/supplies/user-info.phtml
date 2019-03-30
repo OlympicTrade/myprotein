@@ -46,7 +46,7 @@ $rows = [
         'name'    => 'Жукова Марина Владимировна',
         'index'   => '198255',
         'address' => 'ул. Лени Голикова, д.  94, кв 31',
-        'email'   => 'gurina.galina87@yandex.ru',
+        'email'   => 'lastshelter.zukova@yandex.ru',
         'phone'   => '8 996 779 57 93',
         'passport' => [
             'number'   => '4012 633586',
@@ -111,30 +111,32 @@ $rowRd = function ($name, $val) {
         '<span class="val">' . $val . '</span>'.
         '</div>';
 };
+
+$row = $rows[$id];
 ?>
 
 <div class="supplies-user-info">
-    <div class="title">Рогожин Виктор Александрович</div>
+    <div class="title"><?php echo $row['name'] ?></div>
     <div class="rows">
     <?php
     $html = '';
-    foreach ($rows as $row) {
-        $html .=
-            $rowRd('Имя', $row['name']).
-            $rowRd('E-mail', $row['email']).
-            $rowRd('Телефон', $row['phone']).
-            $rowRd('Адрес', $row['address']);
 
-        $html .=
-            '<div class="title">Пасспорт</div>';
+    $html .=
+        $rowRd('Имя', $row['name']).
+        $rowRd('E-mail', $row['email']).
+        $rowRd('Телефон', $row['phone']).
+        $rowRd('Адрес', $row['address']);
 
-        $html .=
-            $rowRd('Номер', $row['passport']['number']).
-            $rowRd('Выдан', $row['passport']['address']).
-            $rowRd('Дата выдачи', $row['passport']['received']).
-            $rowRd('Дата рождения', $row['passport']['birthday']).
-            $rowRd('ИНН', $row['passport']['inn']);
-    }
+    $html .=
+        '<div class="title">Пасспорт</div>';
+
+    $html .=
+        $rowRd('Номер', $row['passport']['number']).
+        $rowRd('Выдан', $row['passport']['address']).
+        $rowRd('Дата выдачи', $row['passport']['received']).
+        $rowRd('Дата рождения', $row['passport']['birthday']).
+        $rowRd('ИНН', $row['passport']['inn']);
+
     echo $html;
     ?>
     </div>
