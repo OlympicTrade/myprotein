@@ -1,0 +1,190 @@
+<?php
+$rows = [
+    7 => [
+        'name'    => 'Рогожин Виктор Александрович',
+        'index'   => '198264',
+        'address' => 'ул. Летчика Пилютова, д. 16, корп. 2, кв. 3',
+        'email'   => 'viktor.rgogjin@gmail.com',
+        'phone'   => '8 996 779 57 93',
+        'passport' => [
+            'number'   => '4002 303912',
+            'address'  => 'Выдан 42 отделом милиции Красносельского района Санкт-Петербурга',
+            'received' => '28.05.2002',
+            'birthday' => '13.03.1952',
+            'inn'      => '780713362395',
+        ],
+    ],
+    8 => [
+        'name'    => 'Рогожина Ольга Дмитриевна',
+        'index'   => '198264',
+        'address' => 'ул. Летчика Пилютова, д. 16, корп. 2, кв. 3',
+        'email'   => 'viktor.rgogjin@gmail.com',
+        'phone'   => '8 996 771 05 39',
+        'passport' => [
+            'number'   => '4003 023860',
+            'address'  => 'Выдан 42 отделом милиции Красносельского района города Санкт-Петербурга',
+            'received' => '18.09.2002',
+            'birthday' => '28.08.1957',
+            'inn'      => '780705213270',
+        ],
+    ],
+    35 => [
+        'name'    => 'Гурина Галина Васильевна',
+        'index'   => '198264',
+        'address' => 'ул. Пограничника Гарькавого, д 16, корп. 4, кв 12',
+        'email'   => 'gurina.galina87@yandex.ru',
+        'phone'   => '8 952 215 25 22',
+        'passport' => [
+            'number'   => '4002 036221',
+            'address'  => 'Выдан 42 отделом милиции Красносельского района города Санкт-Петербурга',
+            'received' => '16.03.2002',
+            'birthday' => '03.03.1943',
+            'inn'      => '780705218493',
+        ],
+    ],
+    37 => [
+        'name'    => 'Жукова Марина Владимировна',
+        'index'   => '198255',
+        'address' => 'ул. Лени Голикова, д.  94, кв 31',
+        'email'   => 'gurina.galina87@yandex.ru',
+        'phone'   => '8 996 779 57 93',
+        'passport' => [
+            'number'   => '4012 633586',
+            'address'  => 'ТП №25 отдела УФМС России по СПб и Ленинградской обл.',
+            'received' => '20.11.2012',
+            'birthday' => '10.04.1963',
+            'inn'      => '780509594269',
+        ],
+    ],
+    38 => [
+        'name'    => 'Залесов Сергей Александрович',
+        'index'   => '197022',
+        'address' => 'Большой пр. ПС, дом 100, кв. 513',
+        'email'   => 'serjfromspb@yandex.ru',
+        'phone'   => '',
+        'passport' => [
+            'number'   => '4002 001845',
+            'address'  => '59 отделом милиции Выборгского района Санкт-Петербурга',
+            'received' => '30.01.2002',
+            'birthday' => '29.10.1975',
+            'inn'      => '780222954456',
+        ],
+    ],
+    /*8 => [
+        'name'    => '',
+        'index'   => '',
+        'address' => '',
+        'email'   => '',
+        'phone'   => '',
+        'passport' => [
+            'number'   => '',
+            'address'  => '',
+            'received' => '',
+            'birthday' => '',
+            'inn'      => '',
+        ],
+    ],*/
+    36 => [
+        'name'    => 'Цветкова Наталья Владимировна',
+        'index'   => '198302',
+        'address' => 'Маршала Казакова д. 1, корп. 2, кв. 128',
+        'email'   => 'mulechka.tzwetkova@gmail.com',
+        'phone'   => '8 996 771 05 39',
+        'passport' => [
+            'number'   => '4004 513499',
+            'address'  => '64 отделом милиции Кировского района Санкт-Петербурга',
+            'received' => '10.10.2000',
+            'birthday' => '25.04.1957',
+            'inn'      => '780516128438',
+        ],
+    ],
+
+
+
+
+];
+
+$rowRd = function ($name, $val) {
+    return
+        '<div class="row">'.
+        '<div class="label">' . $name . '</div>' .
+        '<span class="val">' . $val . '</span>'.
+        '</div>';
+};
+?>
+
+<div class="supplies-user-info">
+    <div class="title">Рогожин Виктор Александрович</div>
+    <div class="rows">
+    <?php
+    $html = '';
+    foreach ($rows as $row) {
+        $html .=
+            $rowRd('Имя', $row['name']).
+            $rowRd('E-mail', $row['email']).
+            $rowRd('Телефон', $row['phone']).
+            $rowRd('Адрес', $row['address']);
+
+        $html .=
+            '<div class="title">Пасспорт</div>';
+
+        $html .=
+            $rowRd('Номер', $row['passport']['number']).
+            $rowRd('Выдан', $row['passport']['address']).
+            $rowRd('Дата выдачи', $row['passport']['received']).
+            $rowRd('Дата рождения', $row['passport']['birthday']).
+            $rowRd('ИНН', $row['passport']['inn']);
+    }
+    echo $html;
+    ?>
+    </div>
+
+    <script>
+        $(function () {
+            var box = $('.supplies-user-info');
+            $('.val', box).on('click', function () {
+                copyToClipboard($(this));
+            });
+        });
+    </script>
+
+    <style>
+        .supplies-user-info {
+            width: 650px;
+            padding: 10px 20px;
+        }
+
+        .supplies-user-info .title {
+            font-weight: 700;
+            font-size: 17px;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .supplies-user-info .row {
+            position: relative;
+            padding-left: 115px;
+            padding-bottom: 5px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #d7d7d7;
+        }
+
+        .supplies-user-info .row:last-child {
+            border-bottom: none;
+        }
+
+        .supplies-user-info .row .label {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .supplies-user-info .row .val {
+            cursor: pointer;
+        }
+
+        .supplies-user-info .row .val:hover {
+            color: #108fe3;
+        }
+    </style>
+</div>

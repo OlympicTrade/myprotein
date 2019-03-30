@@ -10,6 +10,7 @@ use ReviewsAdmin\Model\Review;
 use Sync\Service\SyncService;
 use Zend\Json\Json;
 use Zend\View\Model\JsonModel;
+use Zend\View\Model\ViewModel;
 
 class SuppliesController extends AbstractActionController
 {
@@ -27,7 +28,7 @@ class SuppliesController extends AbstractActionController
                 'name'      => 'Номер',
                 'type'      => TableService::FIELD_TYPE_LINK,
                 'field'     => 'number',
-                'width'     => '10',
+                'width'     => '8',
             ),
             'user_id' => array(
                 'name'      => 'ФИО',
@@ -35,13 +36,13 @@ class SuppliesController extends AbstractActionController
                 'field'     => 'user_id',
                 'width'     => '20',
                 'filter'    => function($value, $row) {
-                    return '<b>' . Supplies::$users[$value] . '</b>';
+                    return '<b><a class="popup-form" href="/admin/catalog/supplies/user-info/' . $value . '/">' . Supplies::$users[$value] . '</a></b>';
                 },
             ),
             'link' => array(
                 'name'      => 'Трекер',
                 'type'      => TableService::FIELD_TYPE_TEXT,
-                'width'     => '14',
+                'width'     => '6',
                 'filter'    => function($value, $row) {
                     if(!$value) return '';
 
@@ -55,19 +56,22 @@ class SuppliesController extends AbstractActionController
                 'name'      => 'Статус',
                 'type'      => TableService::FIELD_TYPE_TEXT,
                 'field'     => 'status',
-                'width'     => '22',
+                'width'     => '6',
                 'filter'    => function($value, $row) use ($classes){
-                    return '<span class="wrap ' . $classes[$value] . '">' . Supplies::$statuses[$value]. '</span>';
+                    return '<span class="wrap ' . $classes[$value] . '" style="display: inline-block; width: 20px; height: 20px; border-radius: 50%"></span>';
                 },
+                'tdStyle'   => array(
+                    'text-align' => 'center'
+                ),
             ),
             'price' => array(
                 'name'      => 'Товары',
                 'type'      => TableService::FIELD_TYPE_TEXT,
                 'field'     => 'price',
                 'filter'    => function($value, $row) use ($classes){
-                    return $row->getPrice(0)/* . ' (' . $row->getPrice() . ' €)'*/;
+                    return $row->getPrice(0) . ' руб.' /* . ' (' . $row->getPrice() . ' €)'*/;
                 },
-                'width'     => '18',
+                'width'     => '8',
             ),
             /*'delivery' => array(
                 'name'      => 'Доставка',
@@ -82,9 +86,17 @@ class SuppliesController extends AbstractActionController
                 'name'      => 'Дата',
                 'type'      => TableService::FIELD_TYPE_DATE,
                 'field'     => 'date',
-                'width'     => '16',
+                'width'     => '52',
             ),
         ));
+    }
+
+    public function userInfoAction()
+    {
+        $view = new ViewModel();
+        $view->setTerminal(true);
+
+        return $view;
     }
 
     public function syncStocksAction()
