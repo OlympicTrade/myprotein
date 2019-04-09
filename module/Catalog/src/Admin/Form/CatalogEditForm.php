@@ -66,10 +66,10 @@ class CatalogEditForm extends Form
         ));
 
         $this->add(array(
-            'name'  => 'ya_market_id',
+            'name'  => 'market_category',
             'type'  => 'Zend\Form\Element\Text',
             'options' => array(
-                'label'   => 'Яндекс Маркет ID',
+                'label'   => 'ЯМаркет - категория',
             ),
         ));
 

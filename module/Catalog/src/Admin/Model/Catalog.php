@@ -21,10 +21,10 @@ class Catalog extends EntityHierarchy
             'description'   => [],
             'keywords'      => [],
             'parent'        => [],
-            'ya_market_id'  => [],
             'time_update'   => [],
             'active'        => [],
             'sort'          => [],
+            'market_category'  => [],
         ));
 
         $this->addPlugin('image', function() {

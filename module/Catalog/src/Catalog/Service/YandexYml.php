@@ -213,9 +213,9 @@ class YandexYml extends AbstractService
                 $offerXML->addChild('barcode', $catalog->get('barcode'));
             }
 
-            /*if($catalog->get('ya_market_id')) {
-                $offerXML->addChild('market_category', $catalog->get('ya_market_id'));
-            }*/
+            if($catalog->get('market_category')) {
+                $offerXML->addChild('market_category', $catalog->get('market_category'));
+            }
 
             @$offerXML->addChild('picture', $settings->get('domain') . $product->getPlugin('image')->getImage('hr'));
 

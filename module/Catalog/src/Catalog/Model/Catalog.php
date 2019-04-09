@@ -13,7 +13,7 @@ class Catalog extends EntityHierarchy
     {
         $this->setTable('catalog');
 
-        $this->addProperties(array(
+        $this->addProperties([
             'parent'      => [],
             'name'        => [],
             'url'         => [],
@@ -23,9 +23,8 @@ class Catalog extends EntityHierarchy
             'title'       => [],
             'description' => [],
             'keywords'    => [],
-            'ya_market_id'    => [],
-            'go_market_id'    => [],
-        ));
+            'market_category'    => [],
+        ]);
 
         $this->addPropertyFilterOut('header', function($model, $header) {
             return $header ? $header : $model->get('name');

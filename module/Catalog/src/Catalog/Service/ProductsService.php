@@ -471,7 +471,12 @@ class ProductsService extends AbstractService
 
             if (in_array('catalog', $filters['join'])) {
                 $select
-                    ->join(['pc' => 'catalog'], 't.catalog_id = pc.id', ['catalog-id' => 'id', 'catalog-name' => 'name', 'catalog-url' => 'url'], 'left');
+                    ->join(['pc' => 'catalog'], 't.catalog_id = pc.id', [
+                        'catalog-id' => 'id',
+                        'catalog-name' => 'name',
+                        'catalog-url' => 'url',
+                        'catalog-market_category' => 'market_category'
+                    ], 'left');
             }
         }
 
