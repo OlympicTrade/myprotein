@@ -200,6 +200,14 @@ class YandexYml extends AbstractService
             if(!$uploadOpts['products']['model']) {
                 $model = $product->get('name');
                 $typePrefix = '';
+
+                if($catalog->getId() == 1) {
+                    $model = 'Протеин Myprotein ' . $model;
+                }
+
+                if ($product->get('size')) {
+                    $model .= ' (' . $product->get('size') . ')';
+                }
             }
 
             $offerXML->addChild('typePrefix', $typePrefix);
