@@ -162,8 +162,12 @@ class YandexYml extends AbstractService
             $offerXML->addAttribute('type', 'vendor.model');
             $offerXML->addAttribute('available', $product->get('stock') ? 'true' : 'false');
 
-            $offerXML->addAttribute('bid',  5 /*min(3, (int) ($price * 0.03))*/);
-            //$offerXML->addAttribute('cbid', 5 /*min(3, (int) ($price * 0.03))*/);
+            if($catalog->getId() == 1) {
+                $offerXML->addAttribute('bid',  10);
+            } else {
+                $offerXML->addAttribute('bid',  5);
+            }
+
             $offerXML->addAttribute('fee',  '100');
 
             $url = $settings->get('domain') . $product->getUrl('url');
