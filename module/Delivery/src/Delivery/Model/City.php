@@ -135,6 +135,18 @@ class City extends Entity
                 break;
         }
 
+        switch ((clone $dt)->modify('+' . $delay . ' days')->format('m-d')) {
+            case '05-01':
+                $delay += 5;
+                break;
+            case '05-02':
+                $delay += 4;
+                break;
+            case '05-09':
+                $delay += 4;
+                break;
+        }
+
         return $delay;
     }
 
