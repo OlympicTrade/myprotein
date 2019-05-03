@@ -40,6 +40,7 @@
 
             <span class="btn submit">Применить</span>
         	<a class="btn btn-blue" href="/delivery/update-delivery/" target="_blank">Обвновить точки выдачи</a>
+        	<span class="btn btn-blue clear-invoice">Сбросить накладную</span>
 
             <div class="clear"></div>
         </div>
@@ -71,6 +72,16 @@
                 } else {
                     $('.tb-cb', list).prop('checked', false);
                 }
+            });
+
+            $('.clear-invoice').on('click', function() {
+                $.ajax({
+                    url: '/admin/delivery/delivery/clear-invoice/',
+                    data: data,
+                    success: function (resp) {
+                        alert('Номер накладной обновлен');
+                    }
+                });
             });
 
             var form = $('.table-edit');

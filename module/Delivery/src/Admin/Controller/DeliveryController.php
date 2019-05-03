@@ -1,6 +1,7 @@
 <?php
 namespace DeliveryAdmin\Controller;
 
+use Aptero\Delivery\Glavpunkt;
 use Aptero\Mvc\Controller\Admin\AbstractActionController;
 use DeliveryAdmin\Model\City;
 use DeliveryAdmin\Model\Delivery;
@@ -31,6 +32,14 @@ class DeliveryController extends AbstractActionController
         return new JsonModel([
             'companies' => $companies
         ]);
+    }
+
+    public function clearInvoiceAction()
+    {
+        $gp = new Glavpunkt();
+        $gp->delInvoice();
+
+        return new JsonModel(['status' => true]);
     }
 
     public function getCitiesAction()

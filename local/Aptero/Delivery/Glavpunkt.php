@@ -59,7 +59,7 @@ class Glavpunkt
 
         $data['orders'][] = $this->orderData($order);
         $invoice = $this->getInvoiceData();
-        if($invoice && $invoice->date == date('Y-m-d')) {
+        if($invoice) {
             $url = '/api/append_pkgs';
             $data['arrival_move_id'] = $invoice->invoice;
         } else {
