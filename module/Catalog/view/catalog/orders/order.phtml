@@ -691,15 +691,28 @@
                     $('[data-courier-price]').text(price(deliveryData.courier.price.income));
                     updateDatepicker($('[name="attrs-date"]', step2), deliveryData.courier.delay, deliveryData.courier.exclude);
 
+                    var optsCount = 0;
                     if(deliveryData.pickup.points > 0) {
-                        $('.op', step2).addClass('half');
-                        $('.op[data-type="courier"]', step2).css({display: 'block'});
+                        optsCount++;
                         $('.op[data-type="pickup"]', step2).css({display: 'block'});
                     } else {
-                        $('.op', step2).removeClass('half');
-                        $('.op[data-type="courier"]', step2).css({display: 'block'}).trigger('click');
                         $('.op[data-type="pickup"]', step2).css({display: 'none'});
                     }
+
+                    if(deliveryData.courier.price.income > 0) {
+                        optsCount++;
+                        $('.op[data-type="courier"]', step2).css({display: 'block'});
+                    } else {
+                        $('.op[data-type="courier"]', step2).css({display: 'none'});
+                    }
+
+                    if(optsCount > 1) {
+                        $('.op', step2).addClass('half');
+                    } else {
+                        $('.op', step2).removeClass('half');
+                    }
+
+                    $('.op:visible', step2).trigger('click');
                 }
             });
         }
