@@ -36,6 +36,38 @@ class MobileUserController extends AbstractMobileActionController
         return $viewModel;
     }
 
+    public function confirmAction()
+    {
+        $login = $this->params()->fromQuery('login');
+        $hash = $this->params()->fromQuery('hash');
+
+        if(!$login && !$hash) {
+            $this->generate();
+            $viewModel = new ViewModel();
+            $viewModel->setTemplate('user/user/confirmation.phtml');
+            return $viewModel;
+        }
+
+        $result = $this->getUserService()->activateUser($login, $hash);
+
+        $viewModel = new ViewModel();
+        switch($result) {
+            case 1:
+                $viewModel->setTemplate('user/user/activate-not-found.phtml');
+                break;
+            case 2:
+                $viewModel->setTemplate('user/user/activate-already.phtml');
+                break;
+            case 3:
+                $viewModel->setTemplate('user/user/activate-success.phtml');
+                break;
+        }
+
+        $this->generate();
+
+        return $viewModel;
+    }
+
     /**
      * @return \User\Service\UserService
      */
