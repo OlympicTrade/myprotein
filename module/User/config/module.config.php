@@ -21,9 +21,9 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'user' => [
-                        'type'    => 'segment',
-                        'priority' => 500,
+                    'userMobile' => [
+                        'type'    => 'literal',
+                        'priority' => 600,
                         'options' => [
                             'route'    => '/user/',
                             'defaults' => [
@@ -34,6 +34,76 @@ return [
                             ],
                         ],
                     ],
+                    'user' => [
+                        'type'    => 'segment',
+                        'priority' => 500,
+                        'options' => [
+                            'route'    => '/user/[:action][/:id]/',
+                            'constraints' => [
+                                'locale' => '[a-z]{2}',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'module'     => 'User',
+                                'section'    => 'User',
+                                'controller' => 'User\Controller\User',
+                                'action'     => 'index',
+                            ],
+                        ],
+                    ],
+                    /*'login' => [
+                        'type'    => 'literal',
+                        'priority' => 600,
+                        'options' => [
+                            'route'    => '/login/',
+                            'defaults' => [
+                                'module'     => 'User',
+                                'section'    => 'User',
+                                'controller' => 'User\Controller\User',
+                                'action'     => 'login',
+                            ],
+                        ],
+                    ],
+                    'logout' => [
+                        'type'    => 'literal',
+                        'priority' => 600,
+                        'options' => [
+                            'route'    => '/logout/',
+                            'defaults' => [
+                                'module'     => 'User',
+                                'section'    => 'User',
+                                'controller' => 'User\Controller\User',
+                                'action'     => 'logout',
+                            ],
+                        ],
+                    ],
+                    'registration' => [
+                        'type'    => 'literal',
+                        'priority' => 600,
+                        'options' => [
+                            'route'    => '/registration/',
+                            'defaults' => [
+                                'module'     => 'User',
+                                'section'    => 'User',
+                                'controller' => 'User\Controller\User',
+                                'action'     => 'registration',
+                            ],
+                        ],
+                    ],
+                    'remind' => [
+                        'type'    => 'literal',
+                        'priority' => 600,
+                        'options' => [
+                            'route'    => '/remind/',
+                            'defaults' => [
+                                'module'     => 'User',
+                                'section'    => 'User',
+                                'controller' => 'User\Controller\User',
+                                'action'     => 'remind',
+                            ],
+                        ],
+                    ],*/
                 ],
             ],
             'user' => [

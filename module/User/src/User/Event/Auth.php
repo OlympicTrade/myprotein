@@ -49,11 +49,10 @@ class Auth implements ServiceManagerAwareInterface, CacheAwareInterface
             $role = $user->get('type');
         }
 
-        /*var_dump($role);
-        var_dump($resource);
-        var_dump($acl->isAllowed($role, $resource));
-        die();*/
-
+        //dd($routeMatch);
+        /*d($role);
+        d($resource);
+        dd($acl->isAllowed($role, $resource));*/
 
         if (!$acl->isAllowed($role, $resource)) {
             $side = $routeMatch->getParam('side');

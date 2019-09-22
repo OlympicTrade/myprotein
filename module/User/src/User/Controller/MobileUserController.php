@@ -10,6 +10,7 @@ class MobileUserController extends AbstractMobileActionController
 {
     public function indexAction()
     {
+        dd('qweqew');
         if ($this->getRequest()->isXmlHttpRequest()) {
             die('<script>location.href = "/user/";</script>');
         }
