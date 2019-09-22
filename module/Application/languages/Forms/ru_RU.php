@@ -5,7 +5,7 @@ return array(
     "The input is not a valid email address. Use the basic format local-part@hostname" => "Неверный e-mail адрес",
     "The input is less than %min% characters long" => "Значение должно быть больше %min% символов",
     "Value is required and can't be empty" => "Поле не заполнено",
-    "A record matching the input was found" => "Такая запись уже есть",
+    "A record matching the input was found" => "Такая запись уже существует",
     "The two given tokens do not match" => "Значения не совпадают",
 
     "'%hostname%' is not a valid hostname for the email address" => "'%hostname%' не может быть использован как хост почты",

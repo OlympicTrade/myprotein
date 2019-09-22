@@ -40,7 +40,7 @@ class Module
 
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'mvcPreDispatch'), 100);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'initMailSms'), 100);
-        //$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'initTranslate'));
+        $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'initTranslate'));
 
         //Default Db Adapter
         StaticDbAdapter::setStaticAdapter($sm->get('Zend\Db\Adapter\Adapter'));

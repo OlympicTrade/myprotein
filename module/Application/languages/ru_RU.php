@@ -5,7 +5,8 @@ return array(
     'Articles'  => 'Статьи',
     'Contacts'  => 'Контакты',
 
-    "Value is required and can't be empty" => "Поле не заполнено",
+    "Value is required and can't be empty"  => "Поле не заполнено",
+    "A record matching the input was found" => "Такая запись уже существует",
 
     //Errors
     'Page not found'  => 'Страница не найдена',
@@ -14,7 +15,6 @@ return array(
 
     'Save' => 'Сохранить',
     'Delete' => 'Удалить',
-    'Cancel' => 'Отмена',
     'Cancel' => 'Отмена',
 
     'Monday'	=> 'Понедельник',
