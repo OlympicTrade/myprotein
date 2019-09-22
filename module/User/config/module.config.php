@@ -21,7 +21,7 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
-                    'userMobile' => [
+                    'userMobileIndex' => [
                         'type'    => 'literal',
                         'priority' => 600,
                         'options' => [
@@ -31,6 +31,19 @@ return [
                                 'section'    => 'User',
                                 'controller' => 'User\Controller\MobileUser',
                                 'action'     => 'index',
+                            ],
+                        ],
+                    ],
+                    'userMobileConfirm' => [
+                        'type'    => 'segment',
+                        'priority' => 600,
+                        'options' => [
+                            'route'    => '/user/confirm/',
+                            'defaults' => [
+                                'module'     => 'User',
+                                'section'    => 'User',
+                                'controller' => 'User\Controller\MobileUser',
+                                'action'     => 'confirm',
                             ],
                         ],
                     ],
