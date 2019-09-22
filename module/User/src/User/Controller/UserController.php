@@ -482,7 +482,7 @@ class UserController extends AbstractActionController
             $authService->clearIdentity();
         }
 
-        $this->redirect()->toUrl('/');
+        return $this->redirect()->toUrl('/');
         //$this->redirect()->toRoute('user', array('action' => 'login'));
     }
 

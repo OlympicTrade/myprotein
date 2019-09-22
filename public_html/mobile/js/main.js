@@ -225,12 +225,12 @@ function initNav() {
 
 
 function initElements(box) {
-    $('.popup-gallery', box).lightGallery({
+    /*$('.popup-gallery', box).lightGallery({
         thumbnail:true,
         animateThumb: true,
         download: false,
         closable: true
-    });
+    });*/
 
     $('.select-group', box).each(function () {
         var group = $(this);

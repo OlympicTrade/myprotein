@@ -56,9 +56,6 @@ class IndexController extends AbstractActionController
         $products6->select()
             ->offset(14)->limit(4);
 
-        $articles = $this->getBlogService()->getArticles(['limit' => 3]);
-        //$discount = $this->getDiscountsService()->getActiveDiscount();
-
         $view->setVariables([
             'products1'     => $products1,
             'products2'     => $products2,

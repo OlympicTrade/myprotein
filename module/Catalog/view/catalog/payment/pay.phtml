@@ -32,7 +32,7 @@ $domain = 'https://' . $_SERVER['HTTP_HOST'];
                 <input type="hidden" name="quickpay-form" value="shop">
                 <input type="hidden" name="targets" value="Оплата заказа №<?php echo $order->getPublicId() ?>">
                 <input type="hidden" name="sum" value="">
-                <input type="hidden" name="successURL" value="<?php echo $domain ?>/payment/pay/?id=<?php echo $order->getId() ?>&p=<?php echo crc32($order->getPlugin('phone')->get('phone')) ?>">
+                <input type="hidden" name="successURL" value="<?php echo $domain ?>/payment/pay/?o=<?php echo $order->getId() ?>&p=<?php echo crc32($order->getPlugin('phone')->get('phone')) ?>">
                 <input type="hidden" name="paymentType" value="">
             </form>
         </div>

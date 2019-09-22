@@ -56,6 +56,10 @@ $this->headScript()
                 </div>*/ ?>
 
                 <ul class="menu">
+                    <li><a href="/delivery/">Оплата и доставка</a></li>
+                    <li><a href="/about/">О компании</a></li>
+                    <li class="title">Каталог</li>
+
                     <?php
                     $сatalog = \Catalog\Model\Catalog::getEntityCollection();
                     echo $this->mobileCatalogMenu(['ul' => false, 'catalog' => $сatalog]);

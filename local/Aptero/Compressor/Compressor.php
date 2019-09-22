@@ -106,6 +106,11 @@ class Compressor {
     {
         $newFile = $this->getFile($type, $platform, true);
 
+        /*if($type == 'css') {
+            $scss = new Compiler();
+            $content = $scss->compile($content);
+        }*/
+
         $content = '';
         foreach($files as $file) {
             if((new \SplFileInfo($file))->getExtension() == 'scss') {
@@ -115,6 +120,11 @@ class Compressor {
                 $content .= file_get_contents($file);
             }
         }
+
+        /*if($type == 'css') {
+            $scss = new Compiler();
+            $content = $scss->compile($content);
+        }*/
 
         $h = fopen($newFile, 'w');
         fwrite($h, $content);

@@ -212,7 +212,6 @@ i.fa-rub, i.fa-ruble-sign {
         }
 
         .box {
-            padding: 10px 20px;
             position: absolute;
             left: -90%;
             top: 0;
@@ -259,11 +258,11 @@ i.fa-rub, i.fa-ruble-sign {
 
                 span,
                 a {
+                    padding: 10px 20px;
                     font-size: 14px;
                     height: 45px;
                     line-height: 45px;
                     display: block;
-                    padding: 0 5px;
                     color: #ffffff;
 
                     i {
@@ -490,7 +489,7 @@ i.fa-rub, i.fa-ruble-sign {
     position: relative;
     background: url($imgDir + 'main-bg.jpg') 50% 50%;
     background-size: cover;
-    height: 210px;
+    height: 190px;
     display: flex;
     justify-items: center;
     justify-content: center;
@@ -527,7 +526,7 @@ i.fa-rub, i.fa-ruble-sign {
 }
 
 .main-block-2 {
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 20px;
 }
 
@@ -560,7 +559,7 @@ i.fa-rub, i.fa-ruble-sign {
     border-radius: 5px;
     background: #0060c1;
     padding: 10px 20px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 
     a {
         display: block;
@@ -575,59 +574,6 @@ i.fa-rub, i.fa-ruble-sign {
     }
 }
 
-/*
-#header .box {
-    display: none;
-    top: 50px;
-    left: 0;
-    width: 100%;
-    background: #ffffff;
-    position: absolute;
-}
-
-#header .box.search form {
-    position: relative;
-}
-
-#header .box.search .sbm {
-    position: absolute;
-    right: 15px;
-    top: 8px;
-    color: #646464;
-    font-size: 21px;
-    background: none;
-    border: none;
-}
-
-#header .box li a {
-    display: block;
-    line-height: 38px;
-    height: 38px;
-    padding: 0 15px;
-    border-bottom: 1px solid #eaeaea;
-}
-
-#header .box li.spec a {
-    font-weight: 600;
-    background: #f3f3f3;
-    border-color: #dedede;
-}
-
-#header .box li.title {
-    background: #939393;
-    height: 2px;
-}
-
-#header .box li.title a {
-    background: #ababab;
-    color: #ffffff;
-}
-
-#header .box.search {
-    background: #e3e4e4;
-    padding: 10px;
-}
-*/
 #container {
     padding-top: 50px;
 }
@@ -2693,7 +2639,7 @@ i.fa-rub, i.fa-ruble-sign {
 .popup-box {
     background: #ffffff;
     border-radius: 10px;
-    width: 300px !important;
+    //width: 300px !important;
 }
 
 .popup-box .header {
@@ -2708,9 +2654,12 @@ i.fa-rub, i.fa-ruble-sign {
 }
 
 .popup-box .header .desc {
-    font-size: 14px;
-    color: #9a9a9a;
+    font-size: 13px;
+    color: #757575;
     text-decoration: none;
+    text-transform: none;
+    font-weight: 400;
+    margin-bottom: 5px;
 }
 
 .popup-box .body {

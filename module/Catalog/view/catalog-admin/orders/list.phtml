@@ -77,7 +77,7 @@
             $('.clear-invoice').on('click', function() {
                 $.ajax({
                     url: '/admin/delivery/delivery/clear-invoice/',
-                    data: data,
+                    method: 'post',
                     success: function (resp) {
                         alert('Номер накладной обновлен');
                     }

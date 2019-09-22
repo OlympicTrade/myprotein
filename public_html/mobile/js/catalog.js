@@ -9,6 +9,8 @@ $(function() {
 function orderForm() {
     $('.order-popup').on('click', function () {
         $.fancybox.open({
+            width: "100%",
+            margin: [0, 0, 0, 100],
             src: '/order/',
             type: 'ajax',
             opts : {

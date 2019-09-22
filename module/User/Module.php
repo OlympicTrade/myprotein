@@ -35,9 +35,11 @@ class Module implements AutoloaderProviderInterface
     {
         return array(
             'invokables' => array(
+                'UserAdmin\Model\Phone'    => 'UserAdmin\Model\Phone',
                 'User\Model\AclAdapter'    => 'User\Model\Acl\AclAdapter',
                 'User\Model\Acl\AclBuilder'=> 'User\Model\Acl\AclBuilder',
                 'User\Service\UserService' => 'User\Service\UserService',
+                'User\Service\SocialService' => 'User\Service\SocialService',
             ),
             'initializers' => array(
                 function ($instance, $sm) {

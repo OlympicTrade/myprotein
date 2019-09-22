@@ -130,7 +130,7 @@ class Glavpunkt
             if($attrs->get('time_to') == '21:00') {
                 $orderData['delivery']['18_21'] = 1;
             } else {
-                $orderData['delivery']['time'] = 'с ' . $attrs->get('time_from') . ' до ' . $attrs->get('time_to');
+                $orderData['delivery']['time'] = $attrs->get('time_from') . '-' . $attrs->get('time_to');
             }
         }
 
