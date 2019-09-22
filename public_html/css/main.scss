@@ -2356,69 +2356,70 @@ h2.border {
 .product-tabs .reviews-list .review .answer .text {
     padding: 0;
 }
+.orders-list {
+    .order {
+        margin-bottom: 4px;
 
-.orders-list .order {
-    margin-bottom: 4px;
-}
+        .header {
+            position: relative;
+            height: 55px;
+            border-bottom: 1px solid #ededed;
+            border-top: 1px solid #ededed;
+            background: #f8f8f8;
+            cursor: pointer;
+        }
 
-.orders-list .order .header {
-    position: relative;
-    height: 55px;
-    border-bottom: 1px solid #ededed;
-    border-top: 1px solid #ededed;
-    background: #f8f8f8;
-    cursor: pointer;
-}
+        &.active .header {
+            background: #f8f8f8;
+            border-bottom: 1px solid #ededed;
+        }
 
-.orders-list .order.active .header {
-    background: #f8f8f8;
-    border-bottom: 1px solid #ededed;
-}
+        .body {
+            display: none;
+        }
 
-.orders-list .body {
-    display: none;
-}
+        .col-r,
+        .col-l {
+            padding-top: 20px;
+        }
 
-.orders-list .col-r,
-.orders-list .col-l {
-    padding-top: 20px;
-}
+        .order-name,
+        .date,
+        .price,
+        .status {
+            position: absolute;
+            font-size: 16px;
+            top: 16px;
+        }
 
-.orders-list .order-name,
-.orders-list .date,
-.orders-list .price,
-.orders-list .status {
-    position: absolute;
-    font-size: 16px;
-    top: 16px;
-}
+        .order-name {
+            left: 20px;
+            font-weight: 600;
+        }
 
-.orders-list .order-name {
-    left: 20px;
-    font-weight: 600;
-}
+        .date {
+            left: 245px;
+        }
 
-.orders-list .date {
-    left: 245px;
-}
+        .price {
+            left: 68%;
+        }
 
-.orders-list .price {
-    left: 68%;
-}
+        .status {
+            right: 20px;
+        }
 
-.orders-list .status {
-    right: 20px;
-}
+        .price {
+            font-size: 16px;
+        }
 
-.orders-list .price {
-    font-size: 16px;
-}
-
-.orders-list .arr {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    font-size: 30px;
+        .arr {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 30px;
+        }
+    }
 }
 
 .std-text h2 {

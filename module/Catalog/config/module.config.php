@@ -17,7 +17,7 @@ return [
             'CatalogAdmin\Controller\Supplies'  => 'CatalogAdmin\Controller\SuppliesController',
             'Catalog\Controller\MobileCatalog'  => 'Catalog\Controller\MobileCatalogController',
             'Catalog\Controller\MobileOrders'   => 'Catalog\Controller\MobileOrdersController',
-            'Catalog\Controller\MobilePayment'   => 'Catalog\Controller\MobilePaymentController',
+            'Catalog\Controller\MobilePayment'  => 'Catalog\Controller\MobilePaymentController',
         ],
     ],
     'router' => [
@@ -255,6 +255,32 @@ return [
 							],
 						],
 					],
+                    'orders' => [
+                        'type'    => 'literal',
+                        'priority' => 500,
+                        'options' => [
+                            'route'    => '/orders/',
+                            'defaults' => [
+                                'module'     => 'Catalog',
+                                'section'    => 'Orders',
+                                'controller' => 'Catalog\Controller\Orders',
+                                'action'     => 'orders',
+                            ],
+                        ],
+                    ],
+                    'orderCart' => [
+                        'type'    => 'segment',
+                        'priority' => 500,
+                        'options' => [
+                            'route'    => '/order/cart/:id/',
+                            'defaults' => [
+                                'module'     => 'Catalog',
+                                'section'    => 'Orders',
+                                'controller' => 'Catalog\Controller\Orders',
+                                'action'     => 'orderCart',
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'orderStatus' => [

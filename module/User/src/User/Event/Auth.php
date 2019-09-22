@@ -49,12 +49,11 @@ class Auth implements ServiceManagerAwareInterface, CacheAwareInterface
             $role = $user->get('type');
         }
 
-        /*
-        var_dump($role);
+        /*var_dump($role);
         var_dump($resource);
         var_dump($acl->isAllowed($role, $resource));
-        die();
-        */
+        die();*/
+
 
         if (!$acl->isAllowed($role, $resource)) {
             $side = $routeMatch->getParam('side');
@@ -82,25 +81,21 @@ class Auth implements ServiceManagerAwareInterface, CacheAwareInterface
 
     protected function getResourceName(\Zend\Mvc\Router\Http\RouteMatch $routeMatch)
     {
-        $controller = strtolower($routeMatch->getParam('controller'));
 
-        $temp = explode('\\', $controller);
+        $contrArr = explode('\\', $routeMatch->getParam('controller'));
 
-        /*$module     = $temp[0];
-        $controller = $temp[2];*/
-        /*$module     = strtolower($routeMatch->getParam('module'));
-        if(!$module) {
-            $module = strtolower($temp[0]);
-        }*/
+        $module  = $routeMatch->getParam('module') ?? $contrArr[0];
+        $section = $routeMatch->getParam('section') ?? $contrArr[2];
+        $action  = $routeMatch->getParam('action') ?? $routeMatch->getParam('action');
 
-        $module = strtolower($temp[0]);
-        $controller = $temp[2];
-        $action     = $routeMatch->getParam('action');
+        $module  = strtolower($module);
+        $section = strtolower($section);
+        $action  = strtolower($action);
 
-        $resource = rtrim($module . ':' . $controller . ':' . $action);
+        $resource = rtrim($module . ':' . $section . ':' . $action);
 
         if(!$this->acl->hasResource($resource)) {
-            $resource = $module . ':' . $controller;
+            $resource = $module . ':' . $section;
             if(!$this->acl->hasResource($resource)) {
                 $resource = $module;
                 if(!$this->acl->hasResource($resource)) {

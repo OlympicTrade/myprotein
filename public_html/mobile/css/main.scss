@@ -77,19 +77,19 @@ i.fa-rub, i.fa-ruble-sign {
     display: flex;
     top: 0;
     left: 0;
-    height: 50px;
+    height: 40px;
     background: #0060c1;
     z-index: 100;
     width: 100%;
-    padding-left: 50px;
+    padding-left: 40px;
 
     .item {
-        flex: 0 50px;
-        height: 50px;
+        flex: 0 40px;
+        height: 40px;
         width: 15%;
         color: #ffffff;
         text-align: center;
-        font-size: 23px;
+        font-size: 18px;
         display: block;
         border-right: 1px solid rgba(255, 255, 255, 0.14);
         background-repeat: no-repeat;
@@ -102,15 +102,17 @@ i.fa-rub, i.fa-ruble-sign {
 
         &.logo {
             flex: 1;
-            height: 50px;
-            width: 170px;
             margin: 0 auto;
-            background-image: url($imgDir + 'm-logo.png');
-            background-size: 160px;
+            background: url($imgDir + 'm-logo.png') 50% 50% no-repeat;
+            background-size: 90%;
         }
 
         &.search {
             background-image: url($imgDir + 'search-w.svg');
+        }
+
+        &.user {
+            background-image: url($imgDir + 'user.svg');
         }
 
         &.cart {
@@ -122,14 +124,14 @@ i.fa-rub, i.fa-ruble-sign {
 
             .counter {
                 position: absolute;
-                right: 6px;
-                top: 7px;
-                font-size: 13px;
-                color: #ffffff;
-                height: 18px;
-                width: 18px;
+                right: 2px;
+                top: 5px;
+                font-size: 11px;
+                color: #fff;
+                height: 16px;
+                width: 17px;
                 text-align: center;
-                line-height: 20px;
+                line-height: 17px;
                 background: red;
                 border-radius: 50%;
                 display: none;
@@ -151,17 +153,17 @@ i.fa-rub, i.fa-ruble-sign {
 
         .trigger {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             border-right: 1px solid rgba(255, 255, 255, 0.14);
 
             .icon {
-                width: 25px;
+                width: 22px;
                 height: 18px;
                 position: absolute;
-                left: 13px;
-                top: 16px;
+                left: 10px;
+                top: 11px;
 
                 span {
                     position: absolute;
@@ -191,7 +193,7 @@ i.fa-rub, i.fa-ruble-sign {
             z-index: 300;
             position: absolute;
             left: 0;
-            top: 50px;
+            top: 40px;
             width: 0;
             transition: opacity ease .3s;
             overflow: hidden;
@@ -583,7 +585,7 @@ i.fa-rub, i.fa-ruble-sign {
 }
 
 #container {
-    padding-top: 50px;
+    padding-top: 40px;
 }
 
 .main-slider {
@@ -2175,6 +2177,53 @@ i.fa-rub, i.fa-ruble-sign {
     color: #000000;
 }
 
+.orders-list {
+    .order {
+        margin-bottom: 4px;
+
+        .header {
+            position: relative;
+            height: 50px;
+            border-bottom: 1px solid #ededed;
+            border-top: 1px solid #ededed;
+            background: #f8f8f8;
+            cursor: pointer;
+            padding: 5px 10px;
+
+            .order-name, .date, .price, .status {
+                float: left;
+                width: 50%;
+                margin-bottom: 5px;
+            }
+
+            .order-name {
+                font-weight: 600;
+            }
+
+            .arr {
+                position: absolute;
+                top: 16px;
+                right: 20px;
+                font-size: 30px;
+            }
+        }
+
+        &.active .header {
+            background: #f8f8f8;
+            border-bottom: 1px solid #ededed;
+        }
+
+        .body {
+            display: none;
+        }
+
+        .col-r,
+        .col-l {
+            padding-top: 20px;
+        }
+    }
+}
+
 .payment-form .btns {
     text-align: center;
     margin-top: 20px;
@@ -2310,10 +2359,10 @@ i.fa-rub, i.fa-ruble-sign {
 }
 
 .cart-list .product .name {
-    padding: 10px;
+    padding: 0;
     font-weight: 700;
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: inline-block;
 }
 
@@ -2349,21 +2398,18 @@ i.fa-rub, i.fa-ruble-sign {
 .cart-list .product .price-box {
     margin-top: 8px;
     padding: 5px 10px;
-    height: 38px;
     background: #ececec;
 }
 
 .cart-list .product .sum {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 700;
-    margin-bottom: 7px;
     width: 90px;
     display: inline-block;
 }
 
 .cart-list .product .std-counter {
     width: 105px;
-    margin-bottom: 7px;
     display: inline-block;
 }
 

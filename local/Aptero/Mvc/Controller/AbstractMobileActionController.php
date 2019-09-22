@@ -9,6 +9,10 @@ use Zend\View\Model\ViewModel;
 
 abstract class AbstractMobileActionController extends AbstractActionController
 {
+    /**
+     * @param null $url
+     * @return ViewModel
+     */
     public function generate($url = null)
     {
         $sm = $this->getServiceLocator();
@@ -70,22 +74,5 @@ abstract class AbstractMobileActionController extends AbstractActionController
             'page'         => $page,
             'isAjax'       => $this->getRequest()->isXmlHttpRequest(),
         ]);
-
-        /*$this->layout()->setVariables(array(
-            'route'        => $sm->get('Application')->getMvcEvent()->getRouteMatch(),
-            'canonical'    => $canonical,
-            'contacts'     => $contacts,
-            'settings'     => $settings,
-            'breadcrumbs'  => $this->getBreadcrumbs($page),
-            'page'         => $page,
-            'header'       => $header,
-            'meta'         => $meta,
-            //'uf'           => $uf,
-        ));
-
-        return new ViewModel(array(
-            'breadcrumbs'  => $this->getBreadcrumbs($page),
-            'header'       => $header,
-        ));*/
     }
 }
