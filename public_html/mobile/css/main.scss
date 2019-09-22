@@ -256,9 +256,17 @@ i.fa-rub, i.fa-ruble-sign {
                 border-bottom: 1px solid #6c6c6c;
                 transition: all ease .3s;
 
+                &.title {
+                    background: #6c6c6c;
+                    color: #ffffff;
+                    padding: 5px 20px;
+                    border: none;
+                    font-size: 13px;
+                }
+
                 span,
                 a {
-                    padding: 10px 20px;
+                    padding: 0 20px;
                     font-size: 14px;
                     height: 45px;
                     line-height: 45px;
