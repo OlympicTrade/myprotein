@@ -483,7 +483,6 @@ class UserController extends AbstractActionController
         }
 
         return $this->redirect()->toUrl('/');
-        //$this->redirect()->toRoute('user', array('action' => 'login'));
     }
 
     /**

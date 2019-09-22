@@ -9,16 +9,16 @@ class SocialService extends AbstractService
 {
     public $adaptersConfig = array(
         'vk' => array(
-            'client_id'     => '5477096',
-            'client_secret' => 'pv8S0LnX7tQu6gfHzkKL',
-            'redirect_uri'  => 'http://myprotein.spb.ru/user/login-social/vk/'
+            'client_id'     => '7143863',
+            'client_secret' => 'onw2tcctQnpdJYD0upji',
+            'redirect_uri'  => 'https://myprotein.spb.ru/user/login-social/vk/'
         ),
-        'odnoklassniki' => array(
+        /*'odnoklassniki' => array(
             'client_id'     => '',
             'client_secret' => '',
             'redirect_uri'  => 'http://myprotein.spb.ru/user/login-social/',
             'public_key'    => 'CBADCBMKABABABABA'
-        ),
+        ),*/
         'mailru' => array(
             'client_id'     => '',
             'client_secret' => '',
