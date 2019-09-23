@@ -1114,7 +1114,7 @@ i.fa-rub, i.fa-ruble-sign {
 .products-list .product {
     background: #ffffff;
     border-radius: 4px;
-    padding: 10px;
+    padding: 10px 6px;
     margin-bottom: 10px;
     display: flex;
 
@@ -1173,7 +1173,7 @@ i.fa-rub, i.fa-ruble-sign {
                 justify-content: center;
                 flex-direction: column;
                 min-height: 33px;
-                width: 90px;
+                width: 82px;
                 text-align: center;
             }
 
@@ -1411,20 +1411,19 @@ i.fa-rub, i.fa-ruble-sign {
 }
 
 .product-view .info .type-box .row .label {
-    width: 30%;
+    width: 28%;
     float: left;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 37px;
 }
 
 .product-view .info .type-box .row .std-select,
 .product-view .info .type-box .row .std-counter {
-    width: 60%;
-    margin-left: 35%;
+    width: 70%;
+    margin-left: 30%;
     display: block;
 }
-
 
 .product-view .info .type-box .row .std-select .red {
     color: #b6b6b6;
@@ -2374,8 +2373,8 @@ i.fa-rub, i.fa-ruble-sign {
 
 .cart-list .product .props .label {
     display: inline-block;
-    width: 68px;
     font-weight: 600;
+    margin-right: 8px;
     color: #333333;
 }
 
@@ -2422,6 +2421,7 @@ i.fa-rub, i.fa-ruble-sign {
 }
 
 .cart-list .order-info {
+    border-radius: 999px;
     text-align: center;
 }
 

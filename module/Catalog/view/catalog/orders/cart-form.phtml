@@ -95,12 +95,20 @@
     </style>
 
     <script>
-        var form = $('.popup-cart-form');
+        let form = $('.popup-cart-form');
 
         toCartForm(form, {
             priceUpdate: function (resp) {
+                let counter =  $('.std-counter', form).inputCounter();
+
+                if(resp.stock) {
+                    counter.setMax(resp.stock).setMin(1);
+                } else {
+                    counter.setMax(0).setMin(0);
+                }
+
                 $('.price-per-unit span', form).text($.aptero.price(resp.price));
-                $('.price-full', form).text($.aptero.price(resp.price * $('.js-count', form).val()));
+                $('.price-full', form).text($.aptero.price(resp.price * counter.getCount()));
 
                 if (parseInt(resp.stock)) {
                     $('.in-stock', form).css({display: 'block'});

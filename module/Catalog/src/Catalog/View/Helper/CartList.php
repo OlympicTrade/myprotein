@@ -24,6 +24,7 @@ class CartList extends AbstractHelper
 
         foreach($cart as $cartRow) {
             $product = $cartRow->getPlugin('product');
+            $stock = $product->getStock($cartRow->get('size_id'), $cartRow->get('taste_id'));
             $url = '/goods/' . $product->get('url') . '/';
 
             $html .=
@@ -46,9 +47,9 @@ class CartList extends AbstractHelper
                     .'</div>'
                     .'<div class="price-box">'
                         .'<div class="sum"><span>' . $view->price($product->get('price') * $cartRow->get('count')) . '</span> <i class="fas fa-ruble-sign"></i></div>'
-                        .'<div class="std-counter s">'
+                        .'<div class="std-counter s js-cart-count">'
                             .'<div class="incr"></div>'
-                            .'<input class="js-cart-count" value="' . $cartRow->get('count') . '" min="1" max="999">'
+                            .'<input value="' . $cartRow->get('count') . '" min="1" max="' . $stock . '">'
                             .'<div class="decr"></div>'
                         .'</div>'
                         .'<div class="per-unit"><b>' . $view->price($product->get('price')) . '</b> <i class="fas fa-ruble-sign"></i> за шт.</div>'

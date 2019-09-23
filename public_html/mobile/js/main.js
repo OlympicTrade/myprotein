@@ -225,13 +225,6 @@ function initNav() {
 
 
 function initElements(box) {
-    /*$('.popup-gallery', box).lightGallery({
-        thumbnail:true,
-        animateThumb: true,
-        download: false,
-        closable: true
-    });*/
-
     $('.select-group', box).each(function () {
         var group = $(this);
         var vals = $('span', group);
@@ -256,39 +249,7 @@ function initElements(box) {
         setActive(initVal);
     });
 
-    $('.std-counter', box).each(function() {
-        var el = $(this);
-        var input = $('input', el);
-
-        $('.incr', el).on('click', function() {
-            var count = parseInt(input.val()) + 1;
-            var max = input.attr('max') ? parseInt(input.attr('max')) : 999;
-            if(count > max) {
-                return false;
-            }
-
-            input.val(count);
-        });
-
-        $('.decr', el).on('click', function() {
-            var count = parseInt(input.val()) - 1;
-            var min = input.attr('min') ? parseInt(input.attr('min')) : 1;
-            if(count < min) {
-                return false;
-            }
-
-            input.val(count);
-        });
-
-        var timer = null;
-        $('.incr, .decr', el).on('click', function () {
-            if(timer) clearTimeout(timer);
-
-            setTimeout(function() {
-                input.trigger('change');
-            }, 200);
-        });
-    });
+    $('.std-counter', box).inputCounter();
 }
 
 function initPopups() {

@@ -51,7 +51,7 @@ var Cart = function(){
                 continue;
             }
 
-            var cartCount = parseInt(this.cart[i].count);
+            var cartCount = parseInt(this.cart[i].setCount);
             cartCount = isNaN(cartCount) || cartCount === undefined ? 1 : cartCount;
 
             if(options.count == 'increase') {
@@ -103,7 +103,7 @@ var Cart = function(){
     this.del = function(data) {
         for (var i in this.cart) {
             if(this.compare(this.cart[i], data)) {
-            	var quantity = this.cart[i].count;
+            	var quantity = this.cart[i].setCount;
                 this.cart.splice(i, 1);
                 this.getProductInfo(data, function (resp) {
 	                gtag('event', 'remove_from_cart', {'items': [

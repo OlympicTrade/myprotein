@@ -306,6 +306,22 @@ class Product extends Entity
         });
     }
 
+    public function getStock($sizeId, $tasteId)
+    {
+        $select = $this->getSql()->select()
+            ->from(array('ps' => 'products_stock'))
+            ->columns(['count'])
+            ->where([
+                'product_id' => $this->getId(),
+                'size_id'    => $sizeId,
+                'taste_id'   => $tasteId,
+            ]);
+
+        $result = $this->execute($select)->current();
+
+        return $result ? $result['count'] : 0;
+    }
+
     public function getUrl()
     {
         $url = '/goods/' . $this->get('url') . '/';

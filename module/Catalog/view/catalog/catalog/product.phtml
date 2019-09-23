@@ -96,7 +96,7 @@ $attrs = $product->getPlugin('attrs');
                     </div>
                     <div class="box order-box">
                         <div class="price-box">
-                            <div class="price"><span><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i></div>
+                            <div class="price price-full"><span><?php echo $this->price($product->get('price')) ?></span> <i class="fas fa-ruble-sign"></i></div>
                             <?php if($product->get('discount')) { ?>
                                 <span class="price-old"><span><?php echo $this->price($product->get('price_old')) ?></span> <i class="fas fa-ruble-sign"></i></span>
                             <?php } ?>
@@ -128,16 +128,19 @@ $attrs = $product->getPlugin('attrs');
                     ?>
                     <div class="box delivery-box">
                         <div class="row">
-                            Регион: <a href="/regions/" class="popup"><?php echo $city->get('name') ?></a>
+                            <div class="label">Регион</div>
+                            <a href="/regions/" class="popup"><?php echo $city->get('name') ?></a>
                         </div>
                         <?php
                         if($city->get('delivery_income')) {
                             $dt = (new \DateTime())->modify('+' . $city->getDeliveryDelay(['type' => 'courier'] . ' days'));
                             echo
                             '<div class="row">'.
-                                'Доставка - ' . $dt->format('d') . ' ' .
-                                \Aptero\String\Date::$months2[$dt->format('m')] .
-                                ' (' . \Aptero\String\Date::$weekDays[$dt->format('N')] . ')'.
+                                '<div class="label">'.
+                                    'Доставка - ' . $dt->format('d') . ' ' .
+                                    \Aptero\String\Date::$months2[$dt->format('m')] .
+                                    ' (' . \Aptero\String\Date::$weekDays[$dt->format('N')] . ')'.
+                                '</div>'.
                                 '<div class="desc">'.
                                     $city->get('delivery_income') . ' руб. при заказе от ' .
                                     $this->price($city->getFreeDeliveryPrice(['type' => 'delivery'])) . ' руб. - бесплатно'.
@@ -149,13 +152,15 @@ $attrs = $product->getPlugin('attrs');
                             $dt = (new \DateTime())->modify('+' . $city->getDeliveryDelay(['type' => 'pickup'] . ' days'));
                             echo
                             '<div class="row">'.
-                                'Самовывоз - ' . $dt->format('d') . ' ' .
-                                \Aptero\String\Date::$months2[$dt->format('m')] .
-                                ' (' . \Aptero\String\Date::$weekDays[$dt->format('N')] . ')'.
-                                ' <a href="/delivery/points/" class="popup" >посмотреть точки</a>'.
+                                '<div class="label">'.
+                                    'Самовывоз - ' . $dt->format('d') . ' ' .
+                                    \Aptero\String\Date::$months2[$dt->format('m')] .
+                                    ' (' . \Aptero\String\Date::$weekDays[$dt->format('N')] . ')'.
+                                '</div>'.
                                 '<div class="desc">'.
                                     $city->get('pickup_income') . ' руб. при заказе от ' .
                                     $this->price($city->getFreeDeliveryPrice(['type' => 'pickup'])) . ' руб. - бесплатно'.
+                                    ' <a href="/delivery/points/" class="popup">посмотреть точки</a>'.
                                 '</div>'.
                             '</div>';
                         }
@@ -251,7 +256,6 @@ gtag('event', 'view_item', {
 	'items': [{
     	'id': <?php echo $product->getId() ?>,
         'name': '<?php echo $product->get('name') ?>',
-        'list': 'Product card',
         'list': 'Product card',
         'brand': '<?php echo $brand->get('name') ?>',
         'category': '<?php echo $category->get('name') ?>',

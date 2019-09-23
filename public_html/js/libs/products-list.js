@@ -19,7 +19,7 @@ var Products = function(){
 
         for (var i = 0; i < this.products.length; i++) {
             if(this.products[i].id == data.id) {
-                data.count = this.products[i].count + 1;
+                data.count = this.products[i].setCount + 1;
                 this.products.splice(i, 1, data);
                 exists = true;
             }

@@ -136,8 +136,17 @@ function productView(box) {
 
     toCartForm(product, {
         priceUpdate: function (resp) {
-            $('.price span', product).text($.aptero.price(resp.price));
-            $('.price-old span', product).text($.aptero.price(resp.price_old));
+            let counter = $('.counter .std-counter', product).inputCounter();
+
+            if(resp.stock) {
+                counter.setMax(resp.stock).setMin(1);
+            } else {
+                counter.setMax(0).setMin(0);
+            }
+
+            $('.price-per-unit span', product).text($.aptero.price(resp.price));
+            $('.price-full span', product).text($.aptero.price(resp.price * counter.getCount()));
+            $('.price-old span', product).text($.aptero.price(resp.price_old * counter.getCount()));
 
             if (parseInt(resp.stock)) {
                 $('.stock-i', product).css({display: 'block'});
@@ -159,11 +168,9 @@ function productView(box) {
                 var th_taste_id = thumb.data('taste');
 
                 if((th_size_id && th_size_id != size_id) || (th_taste_id && th_taste_id != taste_id)) {
-                    thumb.addClass('hide')
-                        .attr('rel', null);
+                    thumb.addClass('hide').attr('rel', null);
                 } else {
-                    thumb.removeClass('hide')
-                        .attr('rel', 'product-gl');
+                    thumb.removeClass('hide').attr('rel', 'product-gl');
                 }
             });
 
@@ -298,21 +305,32 @@ function cartView() {
     var box = $('.cart-list');
     if (!box.length) { return; }
 
-    box.on('change', '.js-cart-count', function() {
-        var el = $(this);
+    $('.js-cart-count', box).each(function () {
+        let el = $(this);
 
-        var data = el.closest('.product').data();
-        data.count = parseInt(el.val());
+        el.on('change', function () {
+            let counter = el.inputCounter();
+            let product = el.closest('.product');
 
-        if(data.count > 0) {
-            $.cart.add(data, {count: 'replace'});
-        }
+            if(counter.getCount() > 0) {
+                $.cart.add({
+                    product_id: product.data('product_id'),
+                    size_id: product.data('size_id'),
+                    taste_id: product.data('taste_id'),
+                    count: counter.getCount()
+                }, {count: 'replace'});
+            }
+        });
     });
 
     box.on('click', '.js-cart-del', function() {
         var product = $(this).closest('.product');
         product.fadeOut(200);
-        $.cart.del(product.data());
+        $.cart.del({
+            product_id: product.data('product_id'),
+            size_id: product.data('size_id'),
+            taste_id: product.data('taste_id')
+        });
     });
 
     $.cart.on('update', function () {

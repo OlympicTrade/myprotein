@@ -58,8 +58,8 @@
 .std-textarea {
     border: 1px solid #cecece;
     padding: 0 15px;
-    height: 40px;
-    font-size: 16px;
+    height: 35px;
+    font-size: 15px;
     color: #575757;
     width: 100%;
     font-family: "Proxima Nova", sans-serif;
@@ -89,90 +89,90 @@
 
 .std-counter {
     position: relative;
-    height: 40px;
+    height: 35px;
     border: 1px solid #cecece;
     font-size: 16px;
     padding: 0 36px;
     background: #ffffff;
-}
 
-.std-counter .decr,
-.std-counter .incr {
-    position: absolute;
-    top: 0;
-    height: 38px;
-    width: 39px;
-    line-height: 38px;
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all ease .2s;
-}
+    .decr, .incr {
+        position: absolute;
+        top: 0;
+        height: 33px;
+        width: 39px;
+        line-height: 33px;
+        text-align: center;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all ease .2s;
 
-.std-counter .decr:hover,
-.std-counter .incr:hover {
-    background: #e9e9e9;
-}
+        &:before {
+            font-family: "FontAwesome", sans-serif;
+        }
 
-.std-counter .decr:active,
-.std-counter .incr:active {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
-}
+        &:hover {
+            background: #e9e9e9;
+        }
 
-.std-counter .decr {
-    left: 0;
-    border-right: 1px solid #cecece;
-}
+        &:active {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+        }
 
-.std-counter .incr {
-    right: 0;
-    border-left: 1px solid #cecece;
-}
+        &.disabled {
+            background: #eee;
+            color: #afafaf;
+        }
+    }
 
-.std-counter .incr:before,
-.std-counter .decr:before {
-    font-family: "FontAwesome", sans-serif;
-}
+    .decr {
+        left: 0;
+        border-right: 1px solid #cecece;
 
-.std-counter .decr:before {
-    content: "\f068";
-}
+        &:before {
+            content: "\f068";
+        }
+    }
 
-.std-counter .incr:before {
-    content: "\f067";
-}
+    .incr {
+        right: 0;
+        border-left: 1px solid #cecece;
 
-.std-counter input {
-    height: 38px;
-    width: 100%;
-    border: none;
-    text-align: center;
-    padding: 0 10px;
-    font-size: 16px;
-    color: #575757;
-}
+        &:before {
+            content: "\f067";
+        }
+    }
 
-.std-counter.s {
-    height: 28px;
-    padding: 0 27px;
-}
+    input {
+        height: 32px;
+        width: 100%;
+        border: none;
+        text-align: center;
+        padding: 0 10px;
+        font-size: 16px;
+        color: #575757;
+    }
 
-.std-counter.s input {
-    padding: 0 5px;
-}
+    &.s {
+        height: 28px;
+        padding: 0 27px;
 
-.std-counter.s input,
-.std-counter.s .decr,
-.std-counter.s .incr {
-    height: 26px;
-    font-size: 14px;
-}
+        input {
+            padding: 0 5px;
+        }
 
-.std-counter.s .decr,
-.std-counter.s .incr {
-    width: 27px;
-    line-height: 26px;
-    font-size: 13px;
+        input,
+        .decr,
+        .incr {
+            height: 26px;
+            font-size: 14px;
+        }
+
+        .decr, .incr {
+            width: 27px;
+            line-height: 26px;
+            font-size: 13px;
+        }
+    }
 }
 
 

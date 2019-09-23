@@ -513,12 +513,14 @@ class Entity extends AbstractDb implements EventManagerAwareInterface, ArrayAcce
         return $this;
     }
 
-    public function dump($echo = true)
+    public function dump($select = null, $echo = true)
     {
-        $select = clone $this->select();
+        if(!$select) {
+            $select = clone $this->select();
 
-        if($this->getId()) {
-            $select->where(['t.' . $this->primary => $this->getId()]);
+            if ($this->getId()) {
+                $select->where(['t.' . $this->primary => $this->getId()]);
+            }
         }
 
         $dump = $this->getSql()->buildSqlString($select);

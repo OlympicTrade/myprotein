@@ -138,6 +138,7 @@ class Module
 
         $jsDesktop = [
             0  => PUBLIC_DIR . '/js/config.js',
+            3  => PUBLIC_DIR . '/js/libs/elements.js',
             5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
             15 => PUBLIC_DIR . '/js/chat.js',
             17 => PUBLIC_DIR . '/js/libs/youtube-bg.js',
@@ -178,12 +179,11 @@ class Module
 
         $jsMobile = [
             0  => PUBLIC_DIR . '/mobile/js/config.js',
+            3  => PUBLIC_DIR . '/js/libs/elements.js',
             5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
             15 => PUBLIC_DIR . '/js/chat.js',
             20 => PUBLIC_DIR . '/js/libs/fancybox/fancybox.js',
             21 => PUBLIC_DIR . '/js/libs/fancybox/fullscreen.js',
-            //23 => PUBLIC_DIR . '/js/libs/lightgallery/lightgallery.js',
-            //24 => PUBLIC_DIR . '/js/libs/lightgallery/thumbnail.js',
             25 => PUBLIC_DIR . '/js/libs/history.js',
             30 => PUBLIC_DIR . '/js/libs/inputmask.js',
             35 => PUBLIC_DIR . '/js/libs/aptero.js',

@@ -130,7 +130,7 @@
     padding-bottom: 9px;
     height: 90px;
 }
-
+/*
 .std-counter {
     position: relative;
     height: 42px;
@@ -242,6 +242,95 @@
     width: 34px;
     line-height: 33px;
     font-size: 13px;
+}*/
+
+.std-counter {
+    position: relative;
+    height: 40px;
+    border: 1px solid #cecece;
+    font-size: 16px;
+    padding: 0 29px;
+    background: #ffffff;
+
+    .decr, .incr {
+        position: absolute;
+        top: 0;
+        height: 38px;
+        width: 29px;
+        line-height: 38px;
+        text-align: center;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all ease .2s;
+
+        &:before {
+            font-weight: 900;
+            font-family: "Font Awesome 5 Free", sans-serif;
+        }
+
+        &:hover {
+            background: #e9e9e9;
+        }
+
+        &:active {
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+        }
+
+        &.disabled {
+            background: #eee;
+            color: #afafaf;
+        }
+    }
+
+    .decr {
+        left: 0;
+        border-right: 1px solid #cecece;
+
+        &:before {
+            content: "\f068";
+        }
+    }
+
+    .incr {
+        right: 0;
+        border-left: 1px solid #cecece;
+
+        &:before {
+            content: "\f067";
+        }
+    }
+
+    input {
+        height: 38px;
+        width: 100%;
+        border: none;
+        text-align: center;
+        padding: 0 10px;
+        font-size: 16px;
+        color: #575757;
+    }
+
+    &.s {
+        height: 28px;
+        padding: 0 27px;
+
+        input {
+            padding: 0 5px;
+        }
+
+        input,
+        .decr,
+        .incr {
+            height: 26px;
+            font-size: 14px;
+        }
+
+        .decr, .incr {
+            width: 27px;
+            line-height: 26px;
+            font-size: 13px;
+        }
+    }
 }
 
 
