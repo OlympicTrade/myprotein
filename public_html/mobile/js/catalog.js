@@ -20,7 +20,7 @@ function orderForm() {
                 smallBtn : false,
                 closeTpl: '',
                 afterLoad: function(e) {
-                    initElements(box);
+                    initElements(e.$refs.slider);
                 }
             }
         });

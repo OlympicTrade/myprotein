@@ -203,6 +203,9 @@ class Order extends Entity
         if($type == 'courier') {
             $info['address'] = $this->getDeliveryAddress() . '. с ' . $attrs->get('time_from') . ' до ' . $attrs->get('time_to');
             $info['notice'] = 'Курьер позвонит вам за 40 минут до прибытия';
+        } elseif($type == 'express') {
+            $info['address'] = 'Доставим сегодня с ' . $attrs->get('time_from') . ' до ' . $attrs->get('time_to');
+            $info['notice'] = 'Курьер позвонит вам за 40 минут до прибытия';
         } elseif($type == 'pickup') {
             $point = new Point();
             $point->setId($attrs->get('point'));

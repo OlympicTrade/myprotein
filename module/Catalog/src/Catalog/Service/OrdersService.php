@@ -89,6 +89,10 @@ class OrdersService extends AbstractService
             ], $data['attrs-delivery'])->format('d.m.Y');
         }
 
+        if($data['attrs-delivery'] == 'express') {
+            $data['attrs-date'] = date('d.m.Y');
+        }
+
         $order->unserializeArray($data);
         $this->updateOrderPrice($order);
         $order->save();
@@ -205,6 +209,13 @@ class OrdersService extends AbstractService
             $sms->send(
                 $order->getPlugin('phone')->get('phone'),
                 'Заказ ' . $order->getPublicId() . ' (' . $order->getPrice() . ' руб) Доставка ' . $attrs->get('date') . ' с ' . $attrs->get('time_from') . ' до ' . $attrs->get('time_to')
+            );
+        } elseif($attrs->get('delivery') == 'express') {
+            $messages[] = 'Заказ будет доставлен с ' . $attrs->get('time_from') . ' по ' . $attrs->get('time_to') . ' по адресу ' . $attrs->get('address');
+
+            $sms->send(
+                $order->getPlugin('phone')->get('phone'),
+                'Заказ ' . $order->getPublicId() . ' (' . $order->getPrice() . ' руб) Доставка сегодня с ' . $attrs->get('time_from') . ' до ' . $attrs->get('time_to')
             );
         } else {
             $messages[] = 'Заказ будет отправлен на следующий день после получения оплаты. При поступлении денег и отправке заказа вам будет выслано SMS подтверждение и трекер Почты России.';

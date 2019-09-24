@@ -108,6 +108,10 @@ class City extends Entity
             $dt = new \DateTime();
         }
 
+        if($this->isSpb() && $options['type'] == Delivery::TYPE_COURIER) {
+            return 1;
+        }
+
         switch ($dt->format('N')) {
             case 5:
                 $delay = 3;
@@ -134,18 +138,6 @@ class City extends Entity
                 $delay += max($this->get('delivery_delay'), $this->get('pickup_delay'));
                 break;
         }
-
-        /*switch ((clone $dt)->modify('+' . $delay . ' days')->format('m-d')) {
-            case '05-01':
-                $delay += 5;
-                break;
-            case '05-02':
-                $delay += 4;
-                break;
-            case '05-09':
-                $delay += 4;
-                break;
-        }*/
 
         return $delay;
     }
@@ -279,8 +271,13 @@ class City extends Entity
         return $delay;
     }
     */
+
     public function getFreeDeliveryPrice($options = ['type' => 'delivery'])
     {
+        if($options['type'] == 'express') {
+            return 5000;
+        }
+
         if($options['type'] == 'pickup' && $this->isCapital()) {
             return 3000;
         }
@@ -434,5 +431,33 @@ class City extends Entity
         $this->set('post_delay', $delay)->save();
 
         return $delay;
+    }
+
+    public function getExpressData()
+    {
+        if(!$this->isSpb() || date('G' ) > 16) {
+            return [
+                'price' => [
+                    'income' => 0,
+                    'outgo'  => 0,
+                ],
+            ];
+        }
+
+        return [
+            'price' => [
+                'income' => 400,
+                'outgo'  => 160,
+            ],
+            'time'  => [
+                'delay'  => 3,
+                'max'    => 15,
+            ],
+        ];
+    }
+
+    public function getFreeExpressPrice($options = ['type' => 'delivery'])
+    {
+        return 3000;
     }
 }

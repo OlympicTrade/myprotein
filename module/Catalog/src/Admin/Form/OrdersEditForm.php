@@ -136,7 +136,8 @@ class OrdersEditForm extends Form
 
         $time = array('' => '');
         for($i = 9; $i <= 21; $i++) {
-            $time[$i . ':00'] = $i . ':00';
+            $tmp = str_pad($i, 2, '0', STR_PAD_LEFT);
+            $time[$tmp . ':00'] = $tmp . ':00';
         }
 
         $this->add([
@@ -177,6 +178,7 @@ class OrdersEditForm extends Form
                 'options' => [
                     ''         => 'Не выбран',
                     'pickup'   => 'Самовывоз',
+                    'express'  => 'Экспресс',
                     'courier'  => 'Курьер',
                     'post'     => 'Почта',
                 ],

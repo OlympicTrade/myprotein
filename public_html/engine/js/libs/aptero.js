@@ -4,6 +4,10 @@ fn.loadCss = function(url) {
     $('head').append('<link rel="stylesheet" href="' + url + '" type="text/css">');
 };
 
+function dd(data) {
+    console.log(data);
+}
+
 /* loadingHtml
  Loading animation
  */

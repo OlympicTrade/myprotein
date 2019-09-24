@@ -206,11 +206,11 @@ $phone = $order->getPlugin('phone');
 </style>
 
 <script>
-    var form = $('.edit-form');
+    let form = $('.edit-form');
 
     //Изменение статуса заказа
     $('.btn-status', form).on('click', function () {
-        var btn = $(this);
+        let btn = $(this);
 
         $.ajax({
             url: '/admin/catalog/orders/change-status/',
@@ -230,39 +230,40 @@ $phone = $order->getPlugin('phone');
     });
 
     //Изменение полей в доставке
-    var delivery = $('[name="attrs-street"], [name="attrs-time_from"], [name="attrs-time_to"], [name="attrs-date"], [name="region_id"]', form);
-    var pickup   = $('[name="attrs-point"], [name="attrs-address"], [name="attrs-date"], [name="region_id"]', form);
-    var post     = $('[name="attrs-index"], [name="attrs-city"], [name="attrs-street"]', form);
+    let all      = $('[name="attrs-point"], [name="attrs-address"], [name="attrs-street"], [name="attrs-time_from"], [name="attrs-time_to"], [name="attrs-date"], [name="region_id"]', form);
+    let express  = $('[name="attrs-street"], [name="attrs-time_from"], [name="attrs-time_to"], [name="attrs-date"], [name="region_id"]', form);
+    let delivery = $('[name="attrs-street"], [name="attrs-time_from"], [name="attrs-time_to"], [name="attrs-date"], [name="region_id"]', form);
+    let pickup   = $('[name="attrs-point"], [name="attrs-address"], [name="attrs-date"], [name="region_id"]', form);
+    let post     = $('[name="attrs-index"], [name="attrs-city"], [name="attrs-street"]', form);
 
     $('[name="attrs-delivery"]').on('change', function () {
-        var type = $(this).val();
+        let type = $(this).val();
 
+        dd(type);
         if(type == 'pickup') {
-            post.closest('.row').css('display', 'none');
-            delivery.closest('.row').css('display', 'none');
+            all.closest('.row').css('display', 'none');
             pickup.closest('.row').css('display', 'block');
         } else if(type == 'courier') {
-            post.closest('.row').css('display', 'none');
-            pickup.closest('.row').css('display', 'none');
+            all.closest('.row').css('display', 'none');
+            delivery.closest('.row').css('display', 'block');
+        } else if(type == 'express') {
+            all.closest('.row').css('display', 'none');
             delivery.closest('.row').css('display', 'block');
         } else if(type == 'post') {
-            delivery.closest('.row').css('display', 'none');
-            pickup.closest('.row').css('display', 'none');
+            all.closest('.row').css('display', 'none');
             post.closest('.row').css('display', 'block');
         } else {
-            post.closest('.row').css('display', 'none');
-            delivery.closest('.row').css('display', 'none');
-            pickup.closest('.row').css('display', 'none');
+            all.closest('.row').css('display', 'none');
         }
     }).trigger('change');
 
     //Корзина
-    var cTable = $('.cart-table', form);
-    var cCount = $('.cart-count', cTable);
-    var productForm = $('.product-form', form);
+    let cTable = $('.cart-table', form);
+    let cCount = $('.cart-count', cTable);
+    let productForm = $('.product-form', form);
 
     cCount.on('change', function () {
-        var el = $(this);
+        let el = $(this);
         $.ajax({
             url: '/admin/catalog/orders/cart-count-update/',
             data: {
@@ -289,7 +290,7 @@ $phone = $order->getPlugin('phone');
                 productId: id
             },
             success: function(resp) {
-                var html = '';
+                let html = '';
 
                 html +=
                     '<div class="row">' +
@@ -366,13 +367,13 @@ $phone = $order->getPlugin('phone');
         });
     });
 
-    var deliverySelect = $('[name="attrs-delivery"]', form);
-    var pointsSelect   = $('[name="attrs-point"]', form);
-    var companySelect  = $('[name="delivery_company"]', form);
-    var citiesSelect   = $('[name="city_id"]', form);
+    let deliverySelect = $('[name="attrs-delivery"]', form);
+    let pointsSelect   = $('[name="attrs-point"]', form);
+    let companySelect  = $('[name="delivery_company"]', form);
+    let citiesSelect   = $('[name="city_id"]', form);
 
     pointsSelect.on('change', function() {
-        var pointId = $(this).val();
+        let pointId = $(this).val();
 
         $.ajax({
             url: '/admin/delivery/delivery/get-point-info/',
@@ -395,7 +396,7 @@ $phone = $order->getPlugin('phone');
     });
 
     function updateCities() {
-        var deliveryType = deliverySelect.val();
+        let deliveryType = deliverySelect.val();
 
         $.ajax({
             url: '/admin/delivery/delivery/get-cities/',
@@ -408,7 +409,7 @@ $phone = $order->getPlugin('phone');
     }
 
     function updatePoints() {
-        var cityId = $('[name="city_id"]', form).val();
+        let cityId = $('[name="city_id"]', form).val();
 
         $.ajax({
             url: '/admin/delivery/delivery/get-points/',
@@ -421,7 +422,7 @@ $phone = $order->getPlugin('phone');
     }
 
     function updateSelect(select, data) {
-        var cVal = select.val();
+        let cVal = select.val();
         select.empty();
 
         $.each(data, function(key, val) {

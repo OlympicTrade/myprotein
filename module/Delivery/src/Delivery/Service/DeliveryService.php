@@ -183,6 +183,10 @@ class DeliveryService extends AbstractService
 		
         $packagePrice = 10;
 
+        if(($type === null || $type == 'express')) {
+            $result['express'] = Delivery::getInstance()->getCity()->getExpressData()['price'];
+        }
+
         if(($type === null || $type == 'pickup')) {
             $isFree = $city->getFreeDeliveryPrice(['type' => 'pickup']) < $price;
 
@@ -231,7 +235,8 @@ class DeliveryService extends AbstractService
     /**
      * @param array $options
      * @param null $type
-     * @return array|\DateTime
+     * @return array|mixed
+     * @throws \Exception
      */
     public function getDeliveryDates($options = [], $type = null)
     {
@@ -239,6 +244,10 @@ class DeliveryService extends AbstractService
 
         if($type === null || $type == 'pickup') {
             $result['pickup'] = $this->getNearestPickupDate($options);
+        }
+
+        if($type === null || $type == 'express') {
+            $result['express'] = new \DateTime();
         }
 
         if($type === null || $type == 'courier') {
@@ -264,9 +273,9 @@ class DeliveryService extends AbstractService
     {
         $excludedDates = [];
 		
-		$cityName = Delivery::getInstance()->getCity()->get('name');
+		$delivery = Delivery::getInstance()->getCity();
 		
-		if($cityName == 'Москва') {
+		if($delivery->isMoscow() || $delivery->isSpb()) {
 			return $excludedDates;
 		}
 		

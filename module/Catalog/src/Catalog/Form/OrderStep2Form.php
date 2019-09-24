@@ -43,7 +43,7 @@ class OrderStep2Form extends Form
             'type'  => 'Zend\Form\Element\Text',
         ]);
 
-        if(in_array($type, ['courier', 'post'])) {
+        if(in_array($type, ['courier', 'express', 'post'])) {
             $this->add([
                 'name'  => 'attrs-index',
                 'type'  => 'Zend\Form\Element\Text',

@@ -9,6 +9,7 @@ use Catalog\Form\OrderStep2Form;
 use Catalog\Form\ProductRequestForm;
 use Catalog\Model\Order;
 
+use Delivery\Model\Delivery;
 use User\Service\AuthService;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -237,6 +238,8 @@ class OrdersController extends AbstractActionController
 
         $deliveryService = $this->getDeliveryService();
 
+        $delivery = Delivery::getInstance()->getCity()->isSpb();
+
         $resp = [
             'delivery' => [
                 'type'  => 'delivery',
@@ -250,6 +253,10 @@ class OrdersController extends AbstractActionController
                     'date'     => $deliveryService->getDeliveryDates([], 'pickup')->format('d.m'),
                     'price'    => $deliveryService->getDeliveryPrice(['price' => $order->get('income')], 'pickup'),
                     'points'   => $this->getDeliveryService()->getPickupCount($order),
+                ],
+                'express'  => [
+                    'date'     => $deliveryService->getDeliveryDates([], 'express')->format('d.m'),
+                    'price'    => $deliveryService->getDeliveryPrice(['price' => $order->get('income')], 'express'),
                 ],
             ],
         ];

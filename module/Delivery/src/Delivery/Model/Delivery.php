@@ -6,11 +6,13 @@ use Aptero\Db\Entity\Entity;
 
 class Delivery extends Entity
 {
+    const TYPE_EXPRESS = 'express';
     const TYPE_COURIER = 'courier';
     const TYPE_PICKUP  = 'pickup';
     const TYPE_POST    = 'post';
 
     static public $deliveryTypes = [
+        self::TYPE_EXPRESS  => 'Экспресс доставка',
         self::TYPE_COURIER  => 'Курьерская доставка',
         self::TYPE_PICKUP   => 'Самовывоз',
         self::TYPE_POST     => 'Почта России',
@@ -60,14 +62,14 @@ class Delivery extends Entity
         return self::$instance;
     }
 
-    public function getPickupCount()
+    /*public function getPickupCount()
     {
         $points = Pickup::getEntityCollection();
         $points->select()->where(['delivery_id' => $this->getId()]);
         return $points->count();
-    }
+    }*/
 
-    public function getNearestPickupDate()
+    /*public function getNearestPickupDate()
     {
         $pickupDate = new \DateTime();
 
@@ -87,11 +89,15 @@ class Delivery extends Entity
         $deliveryDelay += $delivery->get('delay');
 
         return $pickupDate->modify('+ ' . $deliveryDelay . ' days');
-    }
+    }*/
 
-    public function getNearestCourierDate()
+    /*public function getNearestCourierDate()
     {
         $courierDate = new \DateTime();
+
+        if($this->getCity()->isSpb()) {
+            return $courierDate->modify('+1 day');
+        }
 
         switch ($courierDate->format('N')) {
             case 1: $deliveryDelay = 1; break;
@@ -109,10 +115,5 @@ class Delivery extends Entity
         $deliveryDelay += $delivery->get('delay');
 
         return $courierDate->modify('+' . $deliveryDelay . ' days');
-    }
-
-    public function getNearestPostDate()
-    {
-        
-    }
+    }*/
 }

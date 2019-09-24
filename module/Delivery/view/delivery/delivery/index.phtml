@@ -1,6 +1,6 @@
 <?php $city = $delivery->getCity() ?>
 
-<?php  if($ajax) { ?>
+<?php /* if($ajax) { ?>
 <div class="popup-box popup-delivery">
     <div class="header">
         <div class="title">Доставка о оплата</div>
@@ -22,7 +22,7 @@
         </div>
     </div>
 </div>
-<?php } else { ?>
+<?php } else {*/ ?>
 <div class="block header-box">
     <div class="wrapper">
         <?php echo $this->breadcrumbs($breadcrumbs, array('delimiter' => ' — ', 'showLast' => false)) ?>
@@ -48,10 +48,24 @@
             ?>
 
             <?php
+
             $deliveryFree = $city->getFreeDeliveryPrice(['type' => 'delivery']);
-            $pickupFree = $city->getFreeDeliveryPrice(['type' => 'pickup']);
             $deliveryDelay = $city->getDeliveryDelay(['type' => 'delivery']);
+
+            $pickupFree = $city->getFreeDeliveryPrice(['type' => 'pickup']);
             $pickupDelay = $city->getDeliveryDelay(['type' => 'pickup']);
+
+            if($city->isSpb()) {
+                $expressPrice = $city->getExpressData()['price']['income'];
+                $expressFree = $city->getFreeDeliveryPrice(['type' => 'express']);
+                echo
+                '<div class="item express">'.
+                    '<h2>Экспресс доставка</h2>'.
+                    '<p>до ' . $this->price($expressFree) . ' руб. - <strong>' . $expressPrice . ' руб.</strong>'.
+                    ' от ' . $this->price($expressFree) . ' руб. - <strong>бесплатно</strong></p>'.
+                    '<p>Доставим ваш заказ уже сегодня с точностью до 1 часа. Услуга доступна до 16 часов дня!</p>'.
+                '</div>';
+            }
 
             if($city->get('delivery_income')) {
                 echo
@@ -61,7 +75,7 @@
                             . ' от ' . $this->price($deliveryFree) . ' руб. - <strong>бесплатно</strong></p>';
 
                 if($deliveryDelay == 1) {
-                    echo '<p>Вы можете получит свой заказ уже завтра';
+                    echo '<p>Вы можете получит свой заказ завтра';
                 } else {
                     $dt = (new \DateTime())->modify('+' . $deliveryDelay . ' days');
                     echo
@@ -121,4 +135,4 @@
 
 <?php } ?>
 
-<?php } ?>
+<?php //} ?>
