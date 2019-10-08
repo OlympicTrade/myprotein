@@ -26,7 +26,7 @@ class MessengersController extends AbstractActionController
     public function sendAction()
     {
         $msgr = new Messenger();
-        $result = $msgr->send('89522872998', 'my first test message');
+        $result = $msgr->send('+79522872998', 'my first test message');
         dd($result);
     }
 }
