@@ -12,9 +12,10 @@ class Messenger
     public function send($receiver, $text)
     {
         return $this->api('post', [
-            'type'       => 'text',
-            'receiver'   => $receiver,
-            'text'       => $text,
+            'type'        => 'text',
+            'sender.name' => 'Myprotein',
+            'receiver'    => $receiver,
+            'text'        => $text,
         ]);
     }
 
