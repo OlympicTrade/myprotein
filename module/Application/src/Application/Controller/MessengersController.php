@@ -9,13 +9,13 @@ class MessengersController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new JsonModel(['success' => 1]);
+        return new JsonModel(['status' => 1]);
     }
 
-    public function weebhookAction()
+    public function webhookAction()
     {
         $msgr = new Messenger();
-        $result = $msgr->webhook('https://myprotein.spb.ru/messengers/viber/');
+        $result = $msgr->webhook('https://myprotein.spb.ru/messengers/?type=viber');
         dd($result);
     }
 }
