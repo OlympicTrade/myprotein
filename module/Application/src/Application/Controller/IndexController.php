@@ -7,7 +7,7 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-    public function indexAction2()
+    public function indexAction()
     {
         $view = $this->generate();
 
