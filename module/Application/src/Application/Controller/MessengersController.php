@@ -9,7 +9,11 @@ class MessengersController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new JsonModel(['status' => 1]);
+        return new JsonModel([
+            'status'         => 0,
+            'status_message' => 'ok',
+            'event_types'    => ['delivered', 'seen']
+        ]);
     }
 
     public function webhookAction()
