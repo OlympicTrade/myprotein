@@ -45,6 +45,7 @@ class Module implements AutoloaderProviderInterface
     {
         return array(
             'invokables' => array(
+                'Catalog\Service\BrandsService'   => 'Catalog\Service\BrandsService',
                 'Catalog\Service\CatalogService'  => 'Catalog\Service\CatalogService',
                 'Catalog\Service\ProductsService' => 'Catalog\Service\ProductsService',
                 'Catalog\Service\CartService'     => 'Catalog\Service\CartService',

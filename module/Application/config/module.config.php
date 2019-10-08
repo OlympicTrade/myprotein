@@ -9,6 +9,7 @@ return array(
             __NAMESPACE__ . '\Controller\Mobile' => __NAMESPACE__ . '\Controller\MobileController',
             __NAMESPACE__ . '\Controller\Index' => __NAMESPACE__ . '\Controller\IndexController',
             __NAMESPACE__ . '\Controller\Error' => __NAMESPACE__ . '\Controller\ErrorController',
+            'Application\Controller\Messengers' => 'Application\Controller\MessengersController',
             'Admin\Controller\Index'       => __NAMESPACE__ . 'Admin\Controller\IndexController',
             'Admin\Controller\Service'     => __NAMESPACE__ . 'Admin\Controller\ServiceController',
             'Admin\Controller\Page'        => __NAMESPACE__ . 'Admin\Controller\PageController',
@@ -161,6 +162,22 @@ return array(
                     ),
                 ),
             ),
+            'messengers' => [
+                'type'    => 'segment',
+                'priority' => 600,
+                'options' => [
+                    'route'    => '/messengers[/:messenger]/',
+                    'constraints' => [
+                        'messenger' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'module'     => 'application',
+                        'section'    => 'messenger',
+                        'controller' => 'Application\Controller\Messengers',
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
             'adminPage' => array(
                 'type'    => 'segment',
                 'priority' => 600,

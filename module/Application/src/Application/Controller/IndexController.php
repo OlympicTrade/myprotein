@@ -7,11 +7,9 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-    public function indexAction()
+    public function indexAction2()
     {
         $view = $this->generate();
-
-        //$contacts = $this->layout()->getVariable('contacts');
 
         $productsService = $this->getProductsService();
 

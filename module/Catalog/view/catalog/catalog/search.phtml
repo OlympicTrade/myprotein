@@ -1,8 +1,12 @@
 <?php echo $this->header() ?>
 
 <div class="block">
-    <div class="wrapper">
-        <?php echo $this->productsList($products, ['list' => 'search']) ?>
+    <div class="wrapper container">
+        <div class="content">
+            <div class="products-list col-4">
+                <?php echo $this->productsList($products, ['list' => 'List', 'cols' => 4]) ?>
+            </div>
+        </div>
         <div class="clear"></div>
     </div>
 </div>
