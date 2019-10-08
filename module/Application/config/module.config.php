@@ -166,9 +166,9 @@ return array(
                 'type'    => 'segment',
                 'priority' => 600,
                 'options' => [
-                    'route'    => '/messengers[/:messenger]/',
+                    'route'    => '/messengers[/:action]/',
                     'constraints' => [
-                        'messenger' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ],
                     'defaults' => [
                         'module'     => 'application',
