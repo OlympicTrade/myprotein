@@ -3,6 +3,7 @@ return [
     'controllers' => [
         'invokables' => [
             'Sync\Controller\Sync' => 'Sync\Controller\SyncController',
+            'Sync\Controller\Vkontakte' => 'Sync\Controller\VkontakteController',
         ],
     ],
     'router' => [
@@ -28,6 +29,22 @@ return [
                                 'section'    => 'Sync',
                                 'controller' => 'Sync\Controller\Sync',
                                 'action'     => 'stock',
+                            ],
+                        ],
+                    ],
+                    'messengers' => [
+                        'type'    => 'segment',
+                        'priority' => 400,
+                        'options' => [
+                            'route'    => '/vkontakte[/:action]/',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ],
+                            'defaults' => [
+                                'module'     => 'Sync',
+                                'section'    => 'Sync',
+                                'controller' => 'Sync\Controller\Vkontakte',
+                                'action'     => 'index',
                             ],
                         ],
                     ],
