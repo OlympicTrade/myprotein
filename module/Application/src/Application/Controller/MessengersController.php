@@ -22,4 +22,11 @@ class MessengersController extends AbstractActionController
         $result = $msgr->webhook('https://myprotein.spb.ru/messengers/?type=viber');
         dd($result);
     }
+
+    public function sendAction()
+    {
+        $msgr = new Messenger();
+        $result = $msgr->send('89522872998', 'my first test message');
+        dd($result);
+    }
 }
