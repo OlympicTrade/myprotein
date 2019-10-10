@@ -500,7 +500,7 @@ return [
                 'type'    => 'segment',
                 'priority' => 500,
                 'options' => [
-                    'route'    => '/yandex[/:action]/',
+                    'route'    => '/yandex/market[/:action]/',
                     'defaults' => [
                         'module'     => 'Catalog',
                         'section'    => 'Catalog',

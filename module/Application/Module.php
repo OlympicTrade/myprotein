@@ -139,7 +139,7 @@ class Module
         $jsDesktop = [
             0  => PUBLIC_DIR . '/js/config.js',
             3  => PUBLIC_DIR . '/js/libs/elements.js',
-            5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
+            //5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
             15 => PUBLIC_DIR . '/js/chat.js',
             17 => PUBLIC_DIR . '/js/libs/youtube-bg.js',
             20 => PUBLIC_DIR . '/js/libs/fancybox/fancybox.js',
@@ -161,7 +161,7 @@ class Module
 
         if(MODE == 'dev') {
             unset($jsDesktop[5]);
-            unset($jsDesktop[15]);
+            //unset($jsDesktop[15]);
         }
 
         $compressor->compress($jsDesktop, 'js');
@@ -180,7 +180,7 @@ class Module
         $jsMobile = [
             0  => PUBLIC_DIR . '/mobile/js/config.js',
             3  => PUBLIC_DIR . '/js/libs/elements.js',
-            5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
+            //5  => PUBLIC_DIR . '/js/libs/vkopenapi.js',
             15 => PUBLIC_DIR . '/js/chat.js',
             20 => PUBLIC_DIR . '/js/libs/fancybox/fancybox.js',
             21 => PUBLIC_DIR . '/js/libs/fancybox/fullscreen.js',
@@ -199,7 +199,7 @@ class Module
 
         if(MODE == 'dev') {
             unset($jsMobile[5]);
-            unset($jsMobile[15]);
+            //unset($jsMobile[15]);
         }
 
         $compressor->compress($jsMobile, 'js', 'mobile');

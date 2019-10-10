@@ -71,6 +71,8 @@ class YandexYml extends AbstractService
 
         $writer =  new Xlsx($spreadsheet);
         $writer->save('php://output');
+
+        die();
     }
 
     public function getYml($uploadOpts)
@@ -81,12 +83,12 @@ class YandexYml extends AbstractService
         $rootXML->addAttribute('date', date('Y-m-d H:i:s'));
 
         $shopXML = $rootXML->addChild('shop');
-        $shopXML->addChild('name', $settings->get('site_name') . ' СПб');
-        $shopXML->addChild('company', 'ООО Аптеро');
+        $shopXML->addChild('name', $settings->get('site_name') . ' Россия');
+        $shopXML->addChild('company', 'ИП Кукин Р.О.');
         $shopXML->addChild('url', $settings->get('domain'));
         $shopXML->addChild('platform', 'Zend Framework');
         $shopXML->addChild('version', '2');
-        $shopXML->addChild('email', 'info@aptero.ru');
+        $shopXML->addChild('email', 'vks.ecommerce@gmail.com');
 
         $currenciesXML = $shopXML->addChild('currencies');
         $currencyXML = $currenciesXML->addChild('currency');
