@@ -8,14 +8,13 @@ class YandexController extends AbstractActionController
 {
     public function xmlAction()
     {
-        //$source = $this->params()->fromQuery('sprav');
-
-        echo $this->getYandexYml()->getXML();
-        die();
+        //Для яндекс справочника
+        $this->getYandexYml()->getXML();
     }
 
     public function ymlAction()
     {
+        //Для яндекс метрики и вебмастера
         $source = $this->params()->fromQuery('s');
 
         switch ($source) {
