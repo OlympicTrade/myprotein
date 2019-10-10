@@ -8,6 +8,13 @@ class VkontakteController extends AbstractActionController
 {
     public function indexAction()
     {
-        die('21239623');
+        $clientId = '7163796';
+        $callbackUrl = 'https://myprotein.com.ru/sync/vkontakte/auth';
+        $callbackUrl = 'https://oauth.vk.com/blank.html';
+        $scope = 'offline,messages';
+
+        $url = 'https://oauth.vk.com/authorize?client_id=' . $clientId . '&display=page&redirect_uri=' . $callbackUrl . '&scope=' . $scope . '&response_type=token&v=5.101';
+
+        die($url);
     }
 }

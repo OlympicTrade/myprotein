@@ -6,6 +6,14 @@ use Zend\View\Model\JsonModel;
 
 class YandexController extends AbstractActionController
 {
+    public function xmlAction()
+    {
+        //$source = $this->params()->fromQuery('sprav');
+
+        echo $this->getYandexYml()->getXML();
+        die();
+    }
+
     public function ymlAction()
     {
         $source = $this->params()->fromQuery('s');

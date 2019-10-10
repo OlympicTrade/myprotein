@@ -496,7 +496,20 @@ return [
                     ],
                 ],
             ],
-            'yandexMarket' => [
+            'catalogYandex' => [
+                'type'    => 'segment',
+                'priority' => 500,
+                'options' => [
+                    'route'    => '/yandex[/:action]/',
+                    'defaults' => [
+                        'module'     => 'Catalog',
+                        'section'    => 'Catalog',
+                        'controller' => 'Catalog\Controller\Yandex',
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+            /*'yandexMarket' => [
                 'type' => 'literal',
                 'priority' => 500,
                 'options' => [
@@ -544,7 +557,7 @@ return [
                         ],
                     ],
                 ],
-            ],
+            ],*/
             'googleMerchant' => [
                 'type'    => 'segment',
                 'priority' => 600,

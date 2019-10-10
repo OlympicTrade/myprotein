@@ -7,10 +7,72 @@ use Aptero\Service\AbstractService;
 use Catalog\Model\Catalog;
 use Catalog\Model\Product;
 use Delivery\Model\City;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Zend\Db\Sql\Expression;
 
 class YandexYml extends AbstractService
 {
+    public function getXML()
+    {
+        $products = (new Product)->addProperties([
+            'size_id'   => [],
+            'size'      => [],
+            'taste_id'  => [],
+            'taste'     => [],
+            'types_count'     => [],
+        ])->getCollection();
+
+        $filters = [
+            'yandexYmlFull' => false,
+            'minPrice'      => true,
+            'join'          => ['catalog'],
+            'columns'       => ['id', 'catalog_id', 'name', 'discount', 'url', 'sort']
+        ];
+
+        $select = $this->getProductsService()->getProductsSelect($filters);
+        $products->setSelect($select);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Категория');
+        $sheet->setCellValue('B1', 'Название');
+        $sheet->setCellValue('C1', 'Описание');
+        $sheet->setCellValue('D1', 'Цена');
+        $sheet->setCellValue('E1', 'Фото');
+        $sheet->setCellValue('F1', 'Популярный товар');
+        $sheet->setCellValue('G1', 'В наличии');
+
+        $domain = Settings::getInstance()->get('domain');
+        $row = 1;
+        foreach ($products as $product) {
+            if(!$product->getPlugin('image')->hasImage()) {
+                continue;
+            }
+
+            if(!$price = $product->get('price')) {
+                continue;
+            }
+
+            $row++;
+
+            $catalog = $product->getPlugin('catalog');
+            $sheet->setCellValue('A' . $row, $catalog->get('name'));
+            $sheet->setCellValue('B' . $row, $product->get('name'));
+            $sheet->setCellValue('C' . $row, ($product->get('preview') ? $product->get('preview') : $product->get('desc')));
+            $sheet->setCellValue('D' . $row, $product->get('price'));
+            $sheet->setCellValue('E' . $row, $domain . $product->getPlugin('image')->getImage('m'));
+            $sheet->setCellValue('F' . $row, $product->get('sort') >= 4 ? 'Да' : 'Нет');
+            $sheet->setCellValue('G' . $row, $product->get('stock') > 0 ? 'Да' : 'Нет');
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="products.xlsx');
+
+        $writer =  new Xlsx($spreadsheet);
+        $writer->save('php://output');
+    }
+
     public function getYml($uploadOpts)
     {
         $settings = new Settings();
