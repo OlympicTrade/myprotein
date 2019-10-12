@@ -25,15 +25,14 @@ class Settings extends EntityHierarchy
             'mail_smtp'      => [],
             'css_js_version' => ['type' => Entity::PROPERTY_TYPE_JSON],
 
-            'city_name'      => [],
-            'city_name_r'    => [],
-            'city_name_i'    => [],
-            'city_name_b'    => [],
+            'city_name'      => ['virtual' => true],
+            'city_name_r'    => ['virtual' => true],
+            'city_name_i'    => ['virtual' => true],
+            'city_name_b'    => ['virtual' => true],
         ]);
 
         $this->getEventManager()->attach(array(Entity::EVENT_PRE_INSERT, Entity::EVENT_PRE_UPDATE), function ($event) {
             file_put_contents(PUBLIC_DIR . '/robots.txt', $event->getTarget()->get('robots'));
-
             return true;
         });
 
@@ -52,6 +51,13 @@ class Settings extends EntityHierarchy
     {
         if(!self::$instance) {
             $settings = self::$instance = (new self())->load();
+
+            /*$settings->addProperties([
+                'city_name'      => ['virtual' => true],
+                'city_name_r'    => ['virtual' => true],
+                'city_name_i'    => ['virtual' => true],
+                'city_name_b'    => ['virtual' => true],
+            ]);*/
 
             $domain = new Domain();
             $domain->select()->where

@@ -9,7 +9,7 @@ $(function() {
 });
 
 function initMetric() {
-    var url = $.aptero.url();
+    let url = $.aptero.url();
     url.init();
 
     $.ajax({
@@ -44,11 +44,11 @@ function initElements(box) {
     });
 
     $('.select-group', box).each(function () {
-        var group = $(this);
-        var vals = $('span', group);
-        var input = $('input', group);
+        let group = $(this);
+        let vals = $('span', group);
+        let input = $('input', group);
 
-        var setActive = function (val) {
+        let setActive = function (val) {
             if(input.val() == val) { return; }
 
             input.val(val).trigger('change');
@@ -62,7 +62,7 @@ function initElements(box) {
             setActive($(this).data('value'));
         });
 
-        var initVal = input.val() ? input.val() : vals.eq(0).data('value');
+        let initVal = input.val() ? input.val() : vals.eq(0).data('value');
         input.val('');
         setActive(initVal);
     });
@@ -72,17 +72,17 @@ function initElements(box) {
 
 function initPopups() {
     $('body').on('click', '.popup, .popup-img', function() {
-        var el = $(this);
-        var type = el.hasClass('popup-img') ? 'image' : 'ajax';
+        let el = $(this);
+        let type = el.hasClass('popup-img') ? 'image' : 'ajax';
 
         if(el.hasClass('popup-img')) {
-            var imgs = [];
+            let imgs = [];
 
             if(el.attr('rel')) {
-                var repeats = [];
+                let repeats = [];
 
                 $('a[rel="' + el.attr('rel') + '"]').each(function() {
-                    var url = $(this).attr('href');
+                    let url = $(this).attr('href');
                     if($.inArray(url, repeats) >= 0) return;
 
                     repeats.push(url);
@@ -149,7 +149,7 @@ function initPopups() {
     });
 
     /*$('body').on('click', '.popup', function() {
-        var el = $(this);
+        let el = $(this);
 
         $.fancybox.open({
             src: el.attr('href'),
@@ -181,9 +181,9 @@ function initNav() {
         $('#fog').stop().fadeOut(200);
     }
 
-    var header = $('#header');
-    var nav = $('#nav');
-    var navTopLine = nav.offset().top;
+    let header = $('#header');
+    let nav = $('#nav');
+    let navTopLine = nav.offset().top;
     $(window).on('scroll', function() {
         if(navTopLine <= $(this).scrollTop()) {
             if(nav.hasClass('fixed')) {
@@ -197,7 +197,7 @@ function initNav() {
         }
     }).trigger('scroll');
 
-    var navTimer = null;
+    let navTimer = null;
     $('.catalog', nav).hover(function() {
         navTimer = setTimeout(function () {
             $('.catalog .box', nav).fadeIn(200);
@@ -245,17 +245,17 @@ function initDatepicker() {
 }
 
 function initAutocomplete() {
-    var input = $('.search .query');
-    var url   = '/catalog/search/';
+    let input = $('.search .query');
+    let url   = '/catalog/search/';
 
     function stars(stars) {
-        var html =
+        let html =
             '<div class="stars">';
 
-        var starFilling;
-        var starClass = '';
+        let starFilling;
+        let starClass = '';
 
-        for(var i = 0; i <= 4; i++) {
+        for(let i = 0; i <= 4; i++) {
             starFilling = stars - i;
 
             if(starFilling >= 0.6) {
@@ -281,7 +281,7 @@ function initAutocomplete() {
             $('.add-to-cart').menu("option", "disabled", true);
         },
         _renderItem: function(ul, item) {
-            var li = $('<li></li>');
+            let li = $('<li></li>');
             li.addClass('ac-item');
 
             switch(item.type) {
@@ -345,7 +345,7 @@ function initAutocomplete() {
         }
     });
 
-    var pos = {my: "left top", at: "left bottom"};
+    let pos = {my: "left top", at: "left bottom"};
 
     input.catcomplete({
         position: pos,
@@ -369,7 +369,7 @@ function initAutocomplete() {
         },
         open: function(event, ui) {
             $('.order-box .js-to-cart', '.ac-product').on('click', function(e) {
-                var el = $(this);
+                let el = $(this);
 
                 cart.add({
                     id:    el.data('id'),
@@ -389,10 +389,10 @@ function initAutocomplete() {
     });
 }
 
-var mapsArr = [];
+let mapsArr = [];
 
 function setPickupMap(options) {
-    var map = null;
+    let map = null;
 
     $.each(mapsArr, function (key, val) {
         if(val.id == options.id) {
@@ -402,8 +402,8 @@ function setPickupMap(options) {
     });
 
     $.getScript(libs.libYandexMaps, function() {
-        var data = options.pointsData ? options.pointsData : {};
-        var url = options.url ? options.url : '/delivery/points-map-data/';
+        let data = options.pointsData ? options.pointsData : {};
+        let url = options.url ? options.url : '/delivery/points-map-data/';
 
         $.ajax({
             url: url,
@@ -420,7 +420,7 @@ function setPickupMap(options) {
         });
     });
 
-    var initMap = function (options) {
+    let initMap = function (options) {
         if(!options.center.lat || !options.center.lon) {
             return;
         }
@@ -432,17 +432,26 @@ function setPickupMap(options) {
                 zoom: (options.zoom ? options.zoom : 11)
             });
 
-            var clusterer = new ymaps.Clusterer({
+            let clusterer = new ymaps.Clusterer({
                 preset: 'twirl#invertedBlueClusterIcons',
                 clusterDisableClickZoom: false,
             });
 
-            var markers = [];
+            let markers = [];
             options.points.forEach(function(point) {
-                var marker = new ymaps.Placemark([point.lat, point.lon], {
+                let marker = new ymaps.Placemark([point.lat, point.lon], {
                     balloonContent: point.desc
                 }, {
-                    preset: "islands#blackHomeIcon",
+                    //preset: "islands#blackHomeIcon",
+                    iconLayout: 'default#image',
+                    iconImageHref: '/images/marker.png',
+                    // Размеры метки.
+                    iconImageSize: [26, 26],
+                    // Смещение левого верхнего угла иконки относительно
+                    // её "ножки" (точки привязки).
+                    iconImageOffset: [-12, -12],
+                    // Смещение слоя с содержимым относительно слоя с картинкой.
+                    iconContentOffset: [26, 26],
                 });
 
                 marker.events.add('balloonopen', function (e) {

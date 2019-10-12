@@ -16,7 +16,6 @@ $modules = array(
     'Manager',
     'Callcenter',
     'Sync',
-    //'ZendDeveloperTools',
 );
 
 return array(
