@@ -5,5 +5,3 @@ Disallow: *?*
 Allow: *?*page=*
 Disallow: *?*page=*&*
 Disallow: /*sort=
-Host: https://myprotein.spb.ru
-Sitemap: https://myprotein.spb.ru/sitemap.xml

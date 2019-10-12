@@ -10,10 +10,10 @@ $(function(){
 });
 
 function renderElement(type, options) {
-    var html = '';
+    let html = '';
 
     function atributes(attrs) {
-        var str = '';
+        let str = '';
 
         if(attrs === undefined) {
             return str;
@@ -28,10 +28,15 @@ function renderElement(type, options) {
 
     switch (type) {
         case 'text':
-            var value = options.value !== undefined ? ' value="' + options.value + '"' : '';
-            var placeholder = options.placeholder !== undefined ? ' placeholder="' + options.placeholder + '"' : '';
+            let value = options.value !== undefined ? ' value="' + options.value + '"' : '';
+            let placeholder = options.placeholder !== undefined ? ' placeholder="' + options.placeholder + '"' : '';
 
             html += '<input type="text" class="' + options.class + '"' + value + placeholder + atributes(options.attrs) +'>';
+            break;
+        case 'textarea':
+            html += '<textarea class="' + options.class + '"' + atributes(options.attrs) +'>' +
+                (options.value !== undefined ? ' value="' + options.value + '"' : '') +
+            '</textarea>';
             break;
         case 'select':
             html += '<select class="' + options.class + '"' + atributes(options.attrs) +'>';
@@ -60,12 +65,12 @@ function renderElement(type, options) {
 
 function initElements() {
     $('.std-counter').each(function() {
-        var el = $(this);
-        var input = $('input', el);
+        let el = $(this);
+        let input = $('input', el);
 
         $('.incr', el).on('click', function() {
-            var count = parseInt(input.val()) + 1;
-            var max = input.attr('max') ? parseInt(input.attr('max')) : 999;
+            let count = parseInt(input.val()) + 1;
+            let max = input.attr('max') ? parseInt(input.attr('max')) : 999;
             if(count > max) {
                 return false;
             }
@@ -74,8 +79,8 @@ function initElements() {
         });
 
         $('.decr', el).on('click', function() {
-            var count = parseInt(input.val()) - 1;
-            var min = input.attr('min') ? parseInt(input.attr('min')) : 1;
+            let count = parseInt(input.val()) - 1;
+            let min = input.attr('min') ? parseInt(input.attr('min')) : 1;
             if(count < min) {
                 return false;
             }
@@ -83,7 +88,7 @@ function initElements() {
             input.val(count);
         });
 
-        var timer = null;
+        let timer = null;
         $('.incr, .decr', el).on('click', function () {
             if(timer) clearTimeout(timer);
 
@@ -103,24 +108,29 @@ function initFileManager() {
 
 function initCoolectionsList() {
     $('.collection-list').each(function(){
-        var collectionBox = $(this);
-        var name = collectionBox.data('name');
+        let collectionBox = $(this);
+        let name = collectionBox.data('name');
 
         $('.add', collectionBox).on('click', function(){
-            var html = '<tr>';
+            let html = '<tr>';
 
-            $('input[type="text"], select', $('.form', collectionBox)).each(function() {
-                var el = $(this).clone()
-                    .attr('name', name + '[add][' + $(this).data('name') + '][]')
-                    .val($(this).val());
+            $('input[type="text"], select, textarea', $('.form', collectionBox)).each(function() {
+                let el = $(this).clone()
+                    .attr('name', name + '[add][' + $(this).data('name') + '][]');
+
+                if(el.is('textarea')) {
+                    el.text($(this).val())
+                } else {
+                    el.val($(this).val())
+                }
 
                 html += '<td>' + el.prop('outerHTML') + '</td>';
             });
 
             html +=
                 '<td>' +
-                '<input type="hidden" name="price-collection[id][]" value="">' +
-                '<span class="btn btn-blue del"><i class="fa fa-trash"></i></span>' +
+                    '<input type="hidden" name="price-collection[id][]" value="">' +
+                    '<span class="btn btn-blue del"><i class="fa fa-trash"></i></span>' +
                 '</td>';
 
             html += '</tr>';
@@ -142,7 +152,7 @@ function initCoolectionsList() {
 
 function initFilesList() {
     $('.file-form').each(function(){
-        var form = $(this);
+        let form = $(this);
 
         $('.del-file', form).on('click', function() {
             form.text('Файл отмечен на удаление.');
@@ -153,29 +163,29 @@ function initFilesList() {
 
 function initImagesList() {
     $('.images-list').each(function(){
-        var imagesBox = $(this);
-        var form = $('.form', imagesBox);
-        var list = $('.list', imagesBox);
-        var name = imagesBox.data('name');
+        let imagesBox = $(this);
+        let form = $('.form', imagesBox);
+        let list = $('.list', imagesBox);
+        let name = imagesBox.data('name');
 
         $('.edit', form).click(function(){
-            var row = $(this).closest('.row').find('input').prop('disabled', false);
+            let row = $(this).closest('.row').find('input').prop('disabled', false);
         });
 
         $('.add', form).click(function(){
-            var filePath = $('[data-name="path"]', form);
+            let filePath = $('[data-name="path"]', form);
             if(!filePath.val()) {
                 return false;
             }
 
-            var img = $('<div class="img"></div>');
+            let img = $('<div class="img"></div>');
 
             img.append('<span class="delete"><i class="fa fa-times-circle"></i></span>');
             img.append('<img src="' + filePath.val() + '">');
 
 
             $('input, select', form).each(function () {
-                var propName = $(this).data('name');
+                let propName = $(this).data('name');
                 if(!propName) { return; }
 
                 img.append('<input type="hidden" name="' + name + '[add][' + propName +'][]" value="' + $(this).val() + '">');
@@ -185,8 +195,8 @@ function initImagesList() {
         });
 
         imagesBox.on('click', '.delete', function() {
-            var img = $(this).closest('.img');
-            var id = $(this).data('id');
+            let img = $(this).closest('.img');
+            let id = $(this).data('id');
 
             img.fadeOut(200);
 
@@ -195,7 +205,7 @@ function initImagesList() {
                 return;
             }
 
-            var name = imagesBox.attr('data-name');
+            let name = imagesBox.attr('data-name');
             list.append('<input type="hidden" name="' + name + '[del][]" value="' + id + '">');
         });
     });
@@ -203,16 +213,16 @@ function initImagesList() {
 
 function initPropsList() {
     $('.props-list').each(function(){
-        var propsBox = $(this);
-        var name = propsBox.attr('data-name');
+        let propsBox = $(this);
+        let name = propsBox.attr('data-name');
 
         propsBox.find('.edit').click(function(){
-            var row = $(this).closest('.row').find('input').prop('disabled', false);
+            let row = $(this).closest('.row').find('input').prop('disabled', false);
         });
 
         propsBox.find('.remove').click(function(){
-            var row = $(this).closest('.row');
-            var id = $(this).attr('data-id');
+            let row = $(this).closest('.row');
+            let id = $(this).attr('data-id');
 
             if(id) {
                 propsBox.find('.list').append('<input type="hidden" name="' + name + '[delete]" value="' + id + '">');
@@ -222,7 +232,7 @@ function initPropsList() {
         });
 
         propsBox.find('.add').click(function(){
-            var name = propsBox.attr('data-name');
+            let name = propsBox.attr('data-name');
             propsBox.find('.list').append(
                 '<div class="row"><input type="text" name="' + name + '[]"> <div class="btn btn-blue remove"><i class="fa fa-trash-o"></i></div></div>'
             );
@@ -235,23 +245,23 @@ function initPropsList() {
 
 function initAttrsList() {
     $('.attrs-list').each(function(){
-        var propsBox = $(this);
-        var name = propsBox.attr('data-name');
+        let propsBox = $(this);
+        let name = propsBox.attr('data-name');
 
         propsBox.find('.edit').click(function(){
-            var row = $(this).closest('.row').find('input').prop('disabled', false);
+            let row = $(this).closest('.row').find('input').prop('disabled', false);
         });
 
         propsBox.find('.remove').click(function(){
-            var row = $(this).closest('.row');
-            var id = $(this).attr('data-id');
+            let row = $(this).closest('.row');
+            let id = $(this).attr('data-id');
 
             $('input[data-filed="val"]', row).val('');
             row.css('display', 'none');
         });
 
         propsBox.find('.add').click(function(){
-            var name = propsBox.attr('data-name');
+            let name = propsBox.attr('data-name');
             propsBox.find('.list').append(
                 '<div class="row">' +
                     '<input type="text" name="' + name + '[keys][]" placeholder="Свойство"> ' +
@@ -267,14 +277,14 @@ function initAttrsList() {
 }
 
 //CKEditor
-var editors = [];
+let editors = [];
 
 function initTextEditor() {
-    //var finder = new CKFinder();
+    //let finder = new CKFinder();
 
     $('textarea.editor').each(function(i){
-        var textarea = $(this);
-        var editor = CKEDITOR.replace(this, {
+        let textarea = $(this);
+        let editor = CKEDITOR.replace(this, {
             language: 'ru',
             toolbar: [
                 { name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source']},
@@ -307,7 +317,7 @@ function initTextEditor() {
 
 function updateEditors() {
     $.each(editors, function(value, i) {
-        var editor = editors[value];
+        let editor = editors[value];
         if (editor) {
             editor.textarea.val(editor.getData());
         }
@@ -317,7 +327,7 @@ function updateEditors() {
 function removeTextEditor() {
     if (editors.length > 0) {
         $.each(editors, function(value, i) {
-            var editor = editors[value];
+            let editor = editors[value];
             if (editor) {
                 editor.destroy();
                 editor = null;
@@ -329,7 +339,7 @@ function removeTextEditor() {
 //CKFinder
 function showFileManager(setFunctionData)
 {
-    var finder = new CKFinder();
+    let finder = new CKFinder();
     finder.selectActionFunction = setFileField;
     finder.selectActionData     = setFunctionData;
     finder.popup();

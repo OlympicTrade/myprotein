@@ -2,6 +2,7 @@
 namespace Application\Controller;
 
 use Application\Model\Region;
+use Application\Model\Settings;
 use Aptero\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -104,7 +105,7 @@ class IndexController extends AbstractActionController
 
     public function robotsAction()
     {
-        $settings = $this->getServiceLocator()->get('Settings');
+        $settings = Settings::getInstance();
         header('Content-type: text/plain');
         die($settings->get('robots'));
     }

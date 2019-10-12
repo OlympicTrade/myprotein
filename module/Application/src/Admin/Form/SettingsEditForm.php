@@ -8,6 +8,13 @@ use Zend\InputFilter\InputFilter;
 
 class SettingsEditForm extends Form
 {
+    public function setModel($model)
+    {
+        parent::setModel($model);
+
+        $this->get('domains-collection')->setOption('model', $model->getPlugin('domains'));
+    }
+
     public function __construct()
     {
         parent::__construct('edit-form');
@@ -119,6 +126,37 @@ class SettingsEditForm extends Form
                 'required'  => true
             ),
         ));
+
+        /*$this->add([
+            'name' => 'domains-collection',
+            'type'  => 'Aptero\Form\Element\Admin\Collection',
+            'options' => [
+                'options'      => [
+                    'product_id' => [
+                        'domain'   => ['label' => 'Домен', 'width' => 150],
+                        'robots'   => ['label' => 'Robots.txt', 'width' => 150],
+                    ],
+                ],
+            ],
+        ]);*/
+
+        $this->add([
+            'name' => 'domains-collection',
+            'type'  => 'Aptero\Form\Element\Admin\Collection',
+            'options' => [
+                'options'      => [
+                    'domain'      => ['label' => 'Домен', 'width' => 100],
+                    'mdomain'     => ['label' => 'Домен моб.', 'width' => 100],
+                    'robots'      => ['label' => 'Robots.txt', 'width' => 250, 'type' => 'textarea'],
+                    'html_head'   => ['label' => 'Тег head', 'width' => 250, 'type' => 'textarea'],
+                    'html_body'   => ['label' => 'Тег body', 'width' => 250, 'type' => 'textarea'],
+                    'city_name'   => ['label' => 'Город', 'width' => 100],
+                    'city_name_r' => ['label' => 'Города', 'width' => 100],
+                    'city_name_i' => ['label' => 'в Городе', 'width' => 100],
+                    'city_name_b' => ['label' => 'по Городу', 'width' => 100],
+                ]
+            ],
+        ]);
     }
 
     public function setFilters()

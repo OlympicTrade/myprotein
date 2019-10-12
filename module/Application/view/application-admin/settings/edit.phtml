@@ -11,6 +11,7 @@
             <div class="tab" data-tab="general">Основное</div>
             <div class="tab" data-tab="mail">Почта</div>
             <div class="tab" data-tab="seo">Seo</div>
+            <div class="tab" data-tab="domains">Домены</div>
         </div>
         <div class="tabs-body">
             <div class="tab" data-tab="general">
@@ -18,8 +19,8 @@
                 echo $this->AdminFormRow($form->get('site_name'));
                 echo $this->AdminFormRow($form->get('site_color'));
                 echo $this->AdminFormRow($form->get('site_logo'));
-                echo $this->AdminFormRow($form->get('domain'));
-                echo $this->AdminFormRow($form->get('mdomain'));
+                //echo $this->AdminFormRow($form->get('domain'));
+                //echo $this->AdminFormRow($form->get('mdomain'));
                 ?>
             </div>
             <div class="tab" data-tab="seo">
@@ -35,6 +36,11 @@
                 echo $this->AdminFormRow($form->get('mail_email'));
                 echo $this->AdminFormRow($form->get('mail_password'));
                 echo $this->AdminFormRow($form->get('mail_smtp'));
+                ?>
+            </div>
+            <div class="tab" data-tab="domains">
+                <?php
+                echo $this->AdminFormRow($form->get('domains-collection'));
                 ?>
             </div>
         </div>

@@ -36,24 +36,36 @@ class Collection extends AbstractHelper
             foreach($options as $field => $opts) {
                 $name = $element->getName() . '[add][' . $field . '][]';
                 $html .= '<td>';
-                if($opts['options']) {
-                    if(is_array($opts['options'])) {
-                        $select = new Select($name, ['options' => $opts['options']]);
-                    } else {
-                        $select = new TreeSelect($name, ['collection' => $opts['options'], 'sort' => $opts['sort']]);
-                    }
-                    $select->setAttributes(['data-name' => $field])->setValue($row->get($field));
-                    $html .= $this->getView()->formElement($select);
-                } else {
-                    $html .= '<input type="text" name="' . $name . '" value="' . htmlspecialchars($row->get($field)) . '">';
+
+                if(!($type = $opts['type'])) {
+                    $type = $opts['options'] ? 'select' : 'text';
                 }
+
+                switch ($type) {
+                    case 'select':
+                        if(is_array($opts['options'])) {
+                            $select = new Select($name, ['options' => $opts['options']]);
+                        } else {
+                            $select = new TreeSelect($name, ['collection' => $opts['options'], 'sort' => $opts['sort']]);
+                        }
+                        $select->setAttributes(['data-name' => $field])->setValue($row->get($field));
+                        $html .= $this->getView()->formElement($select);
+                        break;
+                    case 'textarea':
+                        $html .= '<textarea name="' . $name . '">' . htmlspecialchars($row->get($field)) . '</textarea>';
+                        break;
+                    case 'text':
+                        $html .= '<input type="text" name="' . $name . '" value="' . htmlspecialchars($row->get($field)) . '">';
+                        break;
+                }
+
                 $html .= '</td>';
             };
 
             $html .=
                 '<td>'
-                .'<input type="hidden" name="' . $element->getName() . '[add][id][]" value="' . $row->getId() . '">'
-                .'<span class="btn btn-blue del"><i class="fa fa-trash"></i></span>'
+                    .'<input type="hidden" name="' . $element->getName() . '[add][id][]" value="' . $row->getId() . '">'
+                    .'<span class="btn btn-blue del"><i class="fa fa-trash"></i></span>'
                 .'</td>'
                 .'</tr>';
         };
@@ -67,16 +79,26 @@ class Collection extends AbstractHelper
                 '<div class="row">'
                 .'<span class="label">' . $opts['label'] . '</span>';
 
-            if($opts['options']) {
-                if(is_array($opts['options'])) {
-                    $select = new Select(' ', ['options' => $opts['options']]);
-                } else {
-                    $select = new TreeSelect('', ['collection' => $opts['options'], 'sort' => $opts['sort']]);
-                }
-                $select->setAttributes(['data-name' => $field]);
-                $html .= $this->getView()->formElement($select);
-            } else {
-                $html .= '<input type="text" data-name="' . $field . '" value="">';
+            if(!($type = $opts['type'])) {
+                $type = $opts['options'] ? 'select' : 'text';
+            }
+
+            switch ($type) {
+                case 'select':
+                    if(is_array($opts['options'])) {
+                        $select = new Select(' ', ['options' => $opts['options']]);
+                    } else {
+                        $select = new TreeSelect('', ['collection' => $opts['options'], 'sort' => $opts['sort']]);
+                    }
+                    $select->setAttributes(['data-name' => $field]);
+                    $html .= $this->getView()->formElement($select);
+                    break;
+                case 'textarea':
+                    $html .= '<textarea data-name="' . $field . '"></textarea>';
+                    break;
+                case 'text':
+                    $html .= '<input type="text" data-name="' . $field . '">';
+                    break;
             }
 
             $html .=

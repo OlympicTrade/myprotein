@@ -103,9 +103,21 @@ abstract class AbstractActionController extends ZendActionController
      * @param array $options
      * @return \stdClass
      */
-    protected function generateMeta($entity, $search = array(), $replace = array(), $options = array())
+    protected function generateMeta($entity, $search = [], $replace = [], $options = [])
     {
         $options = array_merge(array('prefix' => ''), $options);
+
+        $search = (array) $search;
+        $search[] ='{CITY_NAME}';
+        $search[] ='{CITY_NAME_R}';
+        $search[] ='{CITY_NAME_I}';
+        $search[] ='{CITY_NAME_B}';
+
+        $settings = Settings::getInstance();
+        $replace[] = $settings->get('city_name');
+        $replace[] = $settings->get('city_name_r');
+        $replace[] = $settings->get('city_name_i');
+        $replace[] = $settings->get('city_name_b');
 
         $meta = new \stdClass();
         $settings = $this->getServiceLocator()->get('Application\Model\Module')->getPlugin('settings');
