@@ -63,6 +63,8 @@ class DeliveryController extends AbstractActionController
                     ->notEqualTo('delivery_delay', 0)
                 ->unnest();
 
+        //$cities->d();
+
         $html = '';
         foreach ($cities as $city) {
             $html .= '<div class="row" data-name="' . $city->get('name') . '" data-id="' . $city->getId() . '">' . $city->get('name') . '</div>';

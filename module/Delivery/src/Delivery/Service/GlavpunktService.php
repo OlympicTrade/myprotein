@@ -33,8 +33,8 @@ class GlavpunktService extends AbstractService
             '<h3>Самовывооз:</h3>'.
             $this->updateCitiesAndRegions('pickup');
 
-        $sql->getAdapter()->getDriver()->getConnection()->commit();
-        $sql->getAdapter()->getDriver()->getConnection()->beginTransaction();
+        //$sql->getAdapter()->getDriver()->getConnection()->commit();
+        //$sql->getAdapter()->getDriver()->getConnection()->beginTransaction();
 
         $this->execute($sql->update(self::TABLE_POINTS)->set(['status' => 0]));
 
@@ -45,8 +45,8 @@ class GlavpunktService extends AbstractService
             '<h3>Регионы:</h3>'.
             $this->updatePoints(false);
 
-        $sql->getAdapter()->getDriver()->getConnection()->commit();
-        $sql->getAdapter()->getDriver()->getConnection()->beginTransaction();
+        //$sql->getAdapter()->getDriver()->getConnection()->commit();
+        //$sql->getAdapter()->getDriver()->getConnection()->beginTransaction();
 
         echo
             '<h2>Цены:</h2>'.
@@ -129,9 +129,9 @@ class GlavpunktService extends AbstractService
     public function updateCitiesAndRegions($type)
     {
         if($type == 'pickup') {
-            $data = $this->getData('/api/get_rf_cities');
+            $data = $this->getData('/api/get_rf_cities?cityFrom=SPB');
         } else {
-            $data = $this->getData('/api/get_courier_cities');
+            $data = $this->getData('/api/get_courier_cities?cityFrom=SPB');
         }
 
         $sql = $this->getSql();
@@ -172,6 +172,10 @@ class GlavpunktService extends AbstractService
             } else {
                 $this->execute($sql->update(self::TABLE_CITIES)->set($data)->where(['id' => $result['id']]));
                 $u++;
+
+                /*if($row->name == 'Москва') {
+                    dd($data);
+                }*/
             }
         }
 

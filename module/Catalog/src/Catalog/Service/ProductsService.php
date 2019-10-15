@@ -3,6 +3,7 @@
 namespace Catalog\Service;
 
 use Aptero\Db\Entity\EntityFactory;
+use Aptero\Debug\Chrome;
 use Aptero\Mail\Mail;
 use Aptero\String\Search;
 use Catalog\Model\Reviews;
