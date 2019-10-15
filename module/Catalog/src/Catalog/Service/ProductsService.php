@@ -549,7 +549,7 @@ class ProductsService extends AbstractService
 
             switch($filters['sort']) {
                 case 'discount':
-                    $select->order('price_base ' . ($filters['direct'] == 'up' ? 'ASC' : 'DESC'));
+                    $select->order('discount ' . ($filters['direct'] == 'up' ? 'ASC' : 'DESC'));
                     break;
                 case 'price':
                     $select->order('price_base ' . ($filters['direct'] == 'up' ? 'ASC' : 'DESC'));
