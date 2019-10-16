@@ -50,19 +50,55 @@ class OrdersController extends AbstractActionController
             'name'      => 'Имя',
             'type'      => TableService::FIELD_TYPE_TEXT,
             'field'     => 'attrs-name',
-            'width'     => '18',
+            'width'     => '12',
             'sort'      => [
                 'enabled'   => false
             ],
         ],
-        'adwords' => [
+        'adwords_id' => [
             'name'      => 'Источник',
             'type'      => TableService::FIELD_TYPE_TEXT,
-            'field'     => 'adwords_id',
             'filter'    => function($value, $row){
-                return $row->getPlugin('adwords')->get('source');
+                if(!($adw = $row->getPlugin('adwords')->load())) return '';
+                return '<span class="wrap border" title="' . $adw->get('source') . ' '  . $adw->get('campaign') . '">' . strtolower($adw->get('source')) . '</span>';
             },
-            'width'     => '9',
+            'width'     => '7',
+        ],
+        /*'platform' => [
+            'name'      => 'Платф.',
+            'type'      => TableService::FIELD_TYPE_TEXT,
+            'filter'    => function($value, $row){
+                return $row->getPlugin('attrs')->get('platform') == 'desktop' ? '<i class="fas fa-tv"></i>' : '<i class="fas fa-mobile-alt"></i>';
+            },
+            'width'     => '5',
+            'tdStyle'   => ['text-align' => 'center'],
+            'sort'      => ['enabled'   => false],
+        ],*/
+        'domain' => [
+            'name'      => 'Домен и пл.',
+            'type'      => TableService::FIELD_TYPE_TEXT,
+            'filter'    => function($value, $row){
+                $domain = $row->getPlugin('attrs')->get('domain');
+                $domainAliases = [
+                    'myprotein.spb.ru' => 'СПб',
+                    'myprotein.msk.ru' => 'Мск',
+                    'myprotein.com.ru' => 'Рос',
+                ];
+
+                $isDesktop = $row->getPlugin('attrs')->get('platform') == 'desktop';
+
+                return
+                    '<span class="wrap trans" title="' . ($isDesktop ? 'ПК' : 'Моб. телефон') . '" style="padding: 0; text-align: center; width: 23px;">'.
+                        ($isDesktop ? '<i class="fas fa-tv"></i>' : '<i class="fas fa-mobile-alt"></i>').
+                    '</span>'.
+                    ' '.
+                    '<span class="wrap trans" title="' . $domain . '">'.
+                        ($domainAliases[$domain] ?? '???').
+                    '</span>';
+            },
+            'width'     => '8',
+            //'tdStyle'   => ['text-align' => 'center'],
+            'sort'      => ['enabled'   => false],
         ],
         'phone' => array(
             'name'      => 'Телефон',
@@ -71,9 +107,7 @@ class OrdersController extends AbstractActionController
                 return $row->getPlugin('phone')->get('phone');
             },
             'width'     => '10',
-            'sort'      => [
-                'enabled'   => false
-            ],
+            'sort'      => ['enabled'   => false],
         ),
         'income' => [
             'name'      => 'Стоимость',

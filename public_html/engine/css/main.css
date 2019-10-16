@@ -780,6 +780,11 @@ span.wrap {
     line-height: normal;
 }
 
+a.wrap.trans,
+span.wrap.trans {
+    color: #000000;
+}
+
 a.wrap.yellow,
 span.wrap.yellow {
     background: #deca41;
@@ -828,6 +833,13 @@ span.wrap.pink {
 a.wrap.cyan,
 span.wrap.cyan {
     background: #3d93cb;
+}
+
+a.wrap.border,
+span.wrap.border {
+    background: #fff;
+    border: 1px solid #363636;
+    color: #000000;
 }
 
 .pagination {

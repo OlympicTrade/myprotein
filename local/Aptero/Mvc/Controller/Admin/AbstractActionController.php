@@ -27,12 +27,12 @@ abstract class AbstractActionController extends ZendActionController
             'type'      => TableService::FIELD_TYPE_LINK,
             'field'     => 'name',
             'width'     => '100',
-            'tdStyle'   => array(
+            'tdStyle'   => [
                 'text-align' => 'left'
-            ),
-            'thStyle'   => array(
+            ],
+            'thStyle'   => [
                 'text-align' => 'left'
-            )
+            ],
         ),
     );
 

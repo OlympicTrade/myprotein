@@ -2,6 +2,7 @@
 
 namespace Catalog\Service;
 
+use Application\Model\Settings;
 use Aptero\Db\Entity\EntityFactory;
 use Aptero\Delivery\Glavpunkt;
 use Aptero\Service\AbstractService;
@@ -437,6 +438,7 @@ class OrdersService extends AbstractService
 
         $platform = new \Aptero\Seo\Platform();
         $order->getPlugin('attrs')->set('platform', $platform->getPlatform());
+        $order->getPlugin('attrs')->set('domain', $_SERVER['HTTP_HOST']);
     }
 
     public function updateOrdersStatus($orderIds = null)
