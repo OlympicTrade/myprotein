@@ -154,7 +154,7 @@ class Module
             50 => PUBLIC_DIR . '/js/libs/cart.js',
             55 => PUBLIC_DIR . '/js/libs/form-validator.js',
             60 => PUBLIC_DIR . '/js/libs/owlcarousel.js',
-            65 => PUBLIC_DIR . '/js/libs/counter.js',
+            //65 => PUBLIC_DIR . '/js/libs/counter.js',
             70 => PUBLIC_DIR . '/js/main.js',
             75 => PUBLIC_DIR . '/js/catalog.js',
         ];
@@ -191,7 +191,7 @@ class Module
             45 => PUBLIC_DIR . '/js/libs/products-list.js',
             50 => PUBLIC_DIR . '/js/libs/cart.js',
             55 => PUBLIC_DIR . '/js/libs/form-validator.js',
-            65 => PUBLIC_DIR . '/js/libs/counter.js',
+            //65 => PUBLIC_DIR . '/js/libs/counter.js',
             67 => PUBLIC_DIR . '/mobile/js/libs/touchwipe.js',
             70 => PUBLIC_DIR . '/mobile/js/main.js',
             75 => PUBLIC_DIR . '/mobile/js/catalog.js',
