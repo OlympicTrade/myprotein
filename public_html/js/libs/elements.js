@@ -1,6 +1,4 @@
 let InputCounter = function() {
-    obj = this;
-
     this.setMax = function(max) {
         this.max = parseInt(max);
         this.counter > max ? this.setCount(max) : this.setCount(this.counter);
