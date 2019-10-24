@@ -106,11 +106,6 @@ class Compressor {
     {
         $newFile = $this->getFile($type, $platform, true);
 
-        /*if($type == 'css') {
-            $scss = new Compiler();
-            $content = $scss->compile($content);
-        }*/
-
         $content = '';
         foreach($files as $file) {
             if((new \SplFileInfo($file))->getExtension() == 'scss') {
@@ -121,16 +116,11 @@ class Compressor {
             }
         }
 
-        /*if($type == 'css') {
-            $scss = new Compiler();
-            $content = $scss->compile($content);
-        }*/
-
         $h = fopen($newFile, 'w');
         fwrite($h, $content);
         fclose($h);
 
-        switch($type) {
+        /*switch($type) {
             case 'css':
                 $minifier = new CSS();
                 break;
@@ -140,6 +130,6 @@ class Compressor {
         }
 
         $minifier->add($content);
-        $minifier->minify($newFile);
+        $minifier->minify($newFile);*/
     }
 }
