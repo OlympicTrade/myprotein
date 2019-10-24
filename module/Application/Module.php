@@ -188,7 +188,7 @@ class Module
             30 => PUBLIC_DIR . '/js/libs/inputmask.js',
             35 => PUBLIC_DIR . '/js/libs/aptero.js',
             40 => PUBLIC_DIR . '/js/libs/cookie.js',
-            45 => PUBLIC_DIR . '/js/libs/products-list.js',
+            //45 => PUBLIC_DIR . '/js/libs/products-list.js',
             50 => PUBLIC_DIR . '/js/libs/cart.js',
             55 => PUBLIC_DIR . '/js/libs/form-validator.js',
             //65 => PUBLIC_DIR . '/js/libs/counter.js',

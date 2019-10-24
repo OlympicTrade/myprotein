@@ -101,7 +101,6 @@ $.fn.inputCounter = function (options) {
     var sl = el.data(dataName);
 
     if (sl === undefined || sl === '') {
-        dd('create');
         sl = new InputCounter($(this), options);
         el.data(dataName, sl);
     }

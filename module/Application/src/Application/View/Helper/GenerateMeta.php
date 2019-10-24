@@ -20,8 +20,9 @@ class GenerateMeta extends AbstractHelper
         $view = $this->getView();
         $meta = $view->meta;
         $settings = Settings::getInstance();
+        $domain = $settings->get('domain');
 
-        $view->headTitle($meta->title);
+            $view->headTitle($meta->title);
 
         $view->headMeta()
             ->appendProperty('og:site_name', 'Myprotein')
@@ -55,15 +56,15 @@ class GenerateMeta extends AbstractHelper
             ->appendAlternate(['rel' => 'apple-touch-icon', 'href' => '/images/logos/120.png', 'sizes' => '120x120'])
             ->appendAlternate(['rel' => 'apple-touch-icon', 'href' => '/images/logos/144.png', 'sizes' => '144x144'])
             ->appendAlternate(['rel' => 'apple-touch-icon', 'href' => '/images/logos/152.png', 'sizes' => '152x152'])
-
-            ->appendAlternate(['rel' => 'manifest', 'href' => '/manifest.json'])
         ;
 
         if($mobile) {
             $view->headLink()
-                ->appendAlternate(array('rel' => 'canonical', 'href' => $settings->get('domain') . $view->canonical));
+                ->appendAlternate(array('rel' => 'canonical', 'href' => $settings->get('mdomain') . $view->canonical))
+                ->appendAlternate(['rel' => 'manifest', 'href' => $settings->get('mdomain') . '/manifest.json']);
         } else {
             $view->headLink()
+                ->appendAlternate(['rel' => 'manifest', 'href' => $settings->get('domain') . '/manifest.json'])
                 ->appendAlternate(array('rel' => 'canonical', 'href' => $settings->get('domain') . $view->canonical))
                 ->appendAlternate(array('rel' => 'alternative', 'href' => $settings->get('mdomain') . $view->canonical));
         }

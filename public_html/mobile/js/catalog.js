@@ -30,8 +30,8 @@ function orderForm() {
 
 $(function() {
     /*$('.pr-link').on('click', function() {
-        let link = $(this);
-        let prEl = link.hasClass('product') ? link : link.closest('.product');
+        var link = $(this);
+        var prEl = link.hasClass('product') ? link : link.closest('.product');
 
         $.ajax({
             url: '/catalog/get-product-info/',
@@ -47,7 +47,7 @@ $(function() {
                     variant:    prInfo.variant
                 });
 
-                let clickOpts = {};
+                var clickOpts = {};
 
                 if(prEl.data('list')) { clickOpts.list = prEl.data('list') }
 
@@ -72,19 +72,19 @@ function productView(box) {
         historyMode: true
     });
 
-    let viewedProducts = new Products().init();
+    /*var viewedProducts = new Products().init();
     viewedProducts.add({
         id: $('[name="product_id"]', $('.type-box', box)).val()
-    });
+    });*/
 
-    let product = box;
-    let pic = $('.images .pic', product);
-    let img = $('img', pic);
-    let thumbs = $('.thumb', product);
+    var product = box;
+    var pic = $('.images .pic', product);
+    var img = $('img', pic);
+    var thumbs = $('.thumb', product);
 
     thumbs.on('click', function () {
-        let el = $(this);
-        let img = $('img', pic);
+        var el = $(this);
+        var img = $('img', pic);
 
         el.addClass('active').siblings().removeClass('active');
         pic.data('size', el.data('size'))
@@ -99,7 +99,7 @@ function productView(box) {
 
     toCartForm(product, {
         priceUpdate: function (resp) {
-            let counter = $('.std-counter', product).inputCounter();
+            var counter = $('.std-counter', product).inputCounter();
 
             if(resp.stock) {
                 counter.setMax(resp.stock).setMin(1);
@@ -126,9 +126,9 @@ function productView(box) {
             $('.in-cart', product).addClass('to-cart').removeClass('in-cart').text('В корзину');
 
             thumbs.each(function () {
-                let thumb = $(this);
-                let th_size_id = thumb.data('size');
-                let th_taste_id = thumb.data('taste');
+                var thumb = $(this);
+                var th_size_id = thumb.data('size');
+                var th_taste_id = thumb.data('taste');
 
                 if((th_size_id && th_size_id != size_id) || (th_taste_id && th_taste_id != taste_id)) {
                     thumb.addClass('hide');
@@ -151,13 +151,13 @@ function productView(box) {
 function toCartForm(box, options) {
     if(!box.length) { return; }
 
-    let typeBox = $('.type-box', box);
-    let sizeSelect  = $('.js-size-select', typeBox);
-    let tasteSelect = $('.js-taste-select', typeBox);
-    let countSelect = $('.js-count', typeBox);
+    var typeBox = $('.type-box', box);
+    var sizeSelect  = $('.js-size-select', typeBox);
+    var tasteSelect = $('.js-taste-select', typeBox);
+    var countSelect = $('.js-count', typeBox);
 
     function updatePrice() {
-        let data = $.aptero.serializeArray(typeBox);
+        var data = $.aptero.serializeArray(typeBox);
 
         $.ajax({
             url: '/catalog/get-price/',
@@ -174,8 +174,8 @@ function toCartForm(box, options) {
             data: $.aptero.serializeArray(typeBox),
             success: function(resp) {
                 $('option', tasteSelect).each(function() {
-                    let el = $(this);
-                    let id = el.attr('value');
+                    var el = $(this);
+                    var id = el.attr('value');
 
                     if(parseInt(resp[sizeSelect.val()].taste[id])) {
                         el.addClass('green').removeClass('red');
@@ -210,8 +210,8 @@ function toCartForm(box, options) {
         data: $.aptero.serializeArray(typeBox),
         success: function (resp) {
             $('option', sizeSelect).each(function () {
-                let el = $(this);
-                let id = el.attr('value');
+                var el = $(this);
+                var id = el.attr('value');
 
                 if (parseInt(resp[id].stock)) {
                     el.addClass('green').removeClass('red');
@@ -246,7 +246,7 @@ function toCartForm(box, options) {
     });
 
     $('.js-cart-add', box).on('click', function() {
-        let btn = $(this);
+        var btn = $(this);
 
         if(btn.hasClass('to-cart')) {
             $.cart.add($.aptero.serializeArray(typeBox));
@@ -257,15 +257,15 @@ function toCartForm(box, options) {
 }
 
 function cartView() {
-    let box = $('.cart-list');
+    var box = $('.cart-list');
     if (!box.length) { return; }
 
     $('.js-cart-count', box).each(function () {
-        let el = $(this);
+        var el = $(this);
 
         el.on('change', function () {
-            let counter = el.inputCounter();
-            let product = el.closest('.product');
+            var counter = el.inputCounter();
+            var product = el.closest('.product');
 
             if(counter.getCount() > 0) {
                 $.cart.add({
@@ -279,7 +279,7 @@ function cartView() {
     });
 
     box.on('click', '.js-cart-del', function() {
-        let product = $(this).closest('.product');
+        var product = $(this).closest('.product');
         product.fadeOut(200);
         $.cart.del(product.data());
     });
@@ -287,10 +287,10 @@ function cartView() {
 
 function cartRender() {
     $.cart.on('render', function () {
-        for (let i in $.cart.cart) {
-            let product = $.cart.cart[i];
+        for (var i in $.cart.cart) {
+            var product = $.cart.cart[i];
 
-            let productEl = $('.product' +
+            var productEl = $('.product' +
                 '[data-product_id="' + product.product_id + '"]' +
                 '[data-size_id="' + product.size_id + '"]' +
                 '[data-taste_id="' + product.taste_id + '"]', '.cart-list');
@@ -298,8 +298,8 @@ function cartRender() {
             $('.sum span', productEl).text($.aptero.price(product.price * product.count));
         }
 
-        let navCart = $('.item.cart', '#header');
-        let orderForm = $('.order-form');
+        var navCart = $('.item.cart', '#header');
+        var orderForm = $('.order-form');
 
         if ($.cart.count) {
             $('.desc', navCart).html($.aptero.price($.cart.sum) + ' <i class="fa fa-rub"></i>');
@@ -307,7 +307,7 @@ function cartRender() {
             $('.cart-price').text($.aptero.price($.cart.sum));
 
             if (orderForm.length) {
-                let deliveryPrice = 0;
+                var deliveryPrice = 0;
 
                 switch ($('[name="attrs-delivery"]', orderForm).val()) {
                     case 'courier':
