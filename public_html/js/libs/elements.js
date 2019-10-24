@@ -96,9 +96,9 @@ function pluginGenerator(els, className, options) {
 }
 */
 $.fn.inputCounter = function (options) {
-    let el = $(this);
-    let dataName = 'obj-InputCounter'.toLowerCase();
-    let sl = el.data(dataName);
+    var el = $(this);
+    var dataName = 'obj-InputCounter'.toLowerCase();
+    var sl = el.data(dataName);
 
     if (sl === undefined || sl === '') {
         dd('create');
