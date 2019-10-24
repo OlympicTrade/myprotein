@@ -12,6 +12,7 @@
         "nixsolutions/yandex-php-library": "dev-master",
         "phpoffice/phpspreadsheet": "dev-master",
         "matthiasmullie/minify":"*",
-        "leafo/scssphp": "*"
+        "leafo/scssphp": "*",
+        "mobiledetect/mobiledetectlib": "*"
     }
 }
