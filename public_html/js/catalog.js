@@ -136,6 +136,7 @@ function productView(box) {
 
     toCartForm(product, {
         priceUpdate: function (resp) {
+            //let counter = $('.counter .std-counter', product).inputCounter();
             let counter = $('.counter .std-counter', product).inputCounter();
 
             if(resp.stock) {

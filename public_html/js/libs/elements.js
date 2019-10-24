@@ -96,26 +96,17 @@ function pluginGenerator(els, className, options) {
 }
 */
 $.fn.inputCounter = function (options) {
-    var initDE = function(el) {
-        let sl = el.data('db-input-counter');
+    let el = $(this);
+    let dataName = 'obj-InputCounter'.toLowerCase();
+    let sl = el.data(dataName);
 
-        if (sl === undefined || sl === '') {
-            sl = new InputCounter(el, options);
-            el.data('db-input-counter', sl);
-        }
-
-        return sl;
-    };
-
-    if($(this).length === 1) {
-        return initDE($(this));
+    if (sl === undefined || sl === '') {
+        dd('create');
+        sl = new InputCounter($(this), options);
+        el.data(dataName, sl);
     }
 
-    $(this).each(function () {
-        initDE($(this));
-    });
-
-    return this;
+    return sl;
 };
 /*
 $.fn.inputCounter = function () {
