@@ -96,7 +96,7 @@ function pluginGenerator(els, className, options) {
 }
 */
 $.fn.inputCounter = function (options) {
-    let initDE = function(el) {
+    var initDE = function(el) {
         let sl = el.data('db-input-counter');
 
         if (sl === undefined || sl === '') {
