@@ -1,4 +1,6 @@
 var InputCounter = function(el, options) {
+    var obj = this;
+
     this.setMax = function(max) {
         this.max = parseInt(max);
         this.counter > max ? this.setCount(max) : this.setCount(this.counter);
@@ -38,7 +40,6 @@ var InputCounter = function(el, options) {
         this.counter = newCount;
         this.input.val(this.counter);
 
-        let obj = this;
         clearTimeout(this.changeTimer);
         this.changeTimer = setTimeout(function() {
             obj.input.trigger('change');
@@ -56,7 +57,6 @@ var InputCounter = function(el, options) {
     this.min = this.input.attr('min') ? parseInt(this.input.attr('min')) : 1;
     this.max = this.input.attr('max') ? parseInt(this.input.attr('max')) : 999;
 
-    let obj = this;
 
     this.incr.on('click', function() {
         obj.setCount(obj.counter + 1);
@@ -68,7 +68,7 @@ var InputCounter = function(el, options) {
 
     this.setCount(this.counter)
 };
-
+/*
 function pluginGenerator(els, className, options) {
     els = $(els);
 
@@ -94,7 +94,7 @@ function pluginGenerator(els, className, options) {
 
     return this;
 }
-
+*/
 $.fn.inputCounter = function (options) {
     let initDE = function(el) {
         let sl = el.data('db-input-counter');
