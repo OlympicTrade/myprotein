@@ -26,7 +26,6 @@ $phone = $order->getPlugin('phone');
                     <div class="label">Заказа</div>
                     №<?php echo $order->getId() ?> Дата: <?php echo $this->date($order->get('time_create'), array('time' => true)); ?>
                 </div>
-                <?php //echo $this->AdminFormRow($form->get('status')); ?>
 
                 <div class="row">
                     <div class="label">Статус "<?php echo \CatalogAdmin\Model\Orders::$processStatuses[$order->get('status')] ?>"</div>
@@ -70,6 +69,8 @@ $phone = $order->getPlugin('phone');
                     ?>
                     </div>
                 </div>
+
+                <?php echo $this->AdminFormRow($form->get('status')); ?>
 
                 <?php echo $this->AdminFormRow($form->get('paid')); ?>
 
