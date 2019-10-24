@@ -1,4 +1,4 @@
-let InputCounter = function() {
+let InputCounter = function(el, options) {
     this.setMax = function(max) {
         this.max = parseInt(max);
         this.counter > max ? this.setCount(max) : this.setCount(this.counter);
@@ -68,7 +68,6 @@ let InputCounter = function() {
 
     this.setCount(this.counter)
 };
-
 
 /*
 class InputCounter {
@@ -144,7 +143,8 @@ class InputCounter {
 
         return this;
     };
-}*/
+}
+*/
 function pluginGenerator(els, className, options) {
     els = $(els);
 
