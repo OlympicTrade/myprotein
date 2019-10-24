@@ -120,7 +120,7 @@ class Compressor {
         fwrite($h, $content);
         fclose($h);
 
-        /*switch($type) {
+        switch($type) {
             case 'css':
                 $minifier = new CSS();
                 break;
@@ -130,6 +130,6 @@ class Compressor {
         }
 
         $minifier->add($content);
-        $minifier->minify($newFile);*/
+        $minifier->minify($newFile);
     }
 }
