@@ -9,7 +9,7 @@ $(function() {
 });
 
 function initMetric() {
-    let url = $.aptero.url();
+    var url = $.aptero.url();
     url.init();
 
     $.ajax({
@@ -44,11 +44,11 @@ function initElements(box) {
     });
 
     $('.select-group', box).each(function () {
-        let group = $(this);
-        let vals = $('span', group);
-        let input = $('input', group);
+        var group = $(this);
+        var vals = $('span', group);
+        var input = $('input', group);
 
-        let setActive = function (val) {
+        var setActive = function (val) {
             if(input.val() == val) { return; }
 
             input.val(val).trigger('change');
@@ -62,7 +62,7 @@ function initElements(box) {
             setActive($(this).data('value'));
         });
 
-        let initVal = input.val() ? input.val() : vals.eq(0).data('value');
+        var initVal = input.val() ? input.val() : vals.eq(0).data('value');
         input.val('');
         setActive(initVal);
     });
@@ -72,17 +72,17 @@ function initElements(box) {
 
 function initPopups() {
     $('body').on('click', '.popup, .popup-img', function() {
-        let el = $(this);
-        let type = el.hasClass('popup-img') ? 'image' : 'ajax';
+        var el = $(this);
+        var type = el.hasClass('popup-img') ? 'image' : 'ajax';
 
         if(el.hasClass('popup-img')) {
-            let imgs = [];
+            var imgs = [];
 
             if(el.attr('rel')) {
-                let repeats = [];
+                var repeats = [];
 
                 $('a[rel="' + el.attr('rel') + '"]').each(function() {
-                    let url = $(this).attr('href');
+                    var url = $(this).attr('href');
                     if($.inArray(url, repeats) >= 0) return;
 
                     repeats.push(url);
@@ -149,7 +149,7 @@ function initPopups() {
     });
 
     /*$('body').on('click', '.popup', function() {
-        let el = $(this);
+        var el = $(this);
 
         $.fancybox.open({
             src: el.attr('href'),
@@ -181,9 +181,9 @@ function initNav() {
         $('#fog').stop().fadeOut(200);
     }
 
-    let header = $('#header');
-    let nav = $('#nav');
-    let navTopLine = nav.offset().top;
+    var header = $('#header');
+    var nav = $('#nav');
+    var navTopLine = nav.offset().top;
     $(window).on('scroll', function() {
         if(navTopLine <= $(this).scrollTop()) {
             if(nav.hasClass('fixed')) {
@@ -197,7 +197,7 @@ function initNav() {
         }
     }).trigger('scroll');
 
-    let navTimer = null;
+    var navTimer = null;
     $('.catalog', nav).hover(function() {
         navTimer = setTimeout(function () {
             $('.catalog .box', nav).fadeIn(200);
@@ -245,17 +245,17 @@ function initDatepicker() {
 }
 
 function initAutocomplete() {
-    let input = $('.search .query');
-    let url   = '/catalog/search/';
+    var input = $('.search .query');
+    var url   = '/catalog/search/';
 
     function stars(stars) {
-        let html =
+        var html =
             '<div class="stars">';
 
-        let starFilling;
-        let starClass = '';
+        var starFilling;
+        var starClass = '';
 
-        for(let i = 0; i <= 4; i++) {
+        for(var i = 0; i <= 4; i++) {
             starFilling = stars - i;
 
             if(starFilling >= 0.6) {
@@ -281,7 +281,7 @@ function initAutocomplete() {
             $('.add-to-cart').menu("option", "disabled", true);
         },
         _renderItem: function(ul, item) {
-            let li = $('<li></li>');
+            var li = $('<li></li>');
             li.addClass('ac-item');
 
             switch(item.type) {
@@ -345,7 +345,7 @@ function initAutocomplete() {
         }
     });
 
-    let pos = {my: "left top", at: "left bottom"};
+    var pos = {my: "left top", at: "left bottom"};
 
     input.catcomplete({
         position: pos,
@@ -369,7 +369,7 @@ function initAutocomplete() {
         },
         open: function(event, ui) {
             $('.order-box .js-to-cart', '.ac-product').on('click', function(e) {
-                let el = $(this);
+                var el = $(this);
 
                 cart.add({
                     id:    el.data('id'),
@@ -389,10 +389,10 @@ function initAutocomplete() {
     });
 }
 
-let mapsArr = [];
+var mapsArr = [];
 
 function setPickupMap(options) {
-    let map = null;
+    var map = null;
 
     $.each(mapsArr, function (key, val) {
         if(val.id == options.id) {
@@ -402,8 +402,8 @@ function setPickupMap(options) {
     });
 
     $.getScript(libs.libYandexMaps, function() {
-        let data = options.pointsData ? options.pointsData : {};
-        let url = options.url ? options.url : '/delivery/points-map-data/';
+        var data = options.pointsData ? options.pointsData : {};
+        var url = options.url ? options.url : '/delivery/points-map-data/';
 
         $.ajax({
             url: url,
@@ -420,7 +420,7 @@ function setPickupMap(options) {
         });
     });
 
-    let initMap = function (options) {
+    var initMap = function (options) {
         if(!options.center.lat || !options.center.lon) {
             return;
         }
@@ -432,14 +432,14 @@ function setPickupMap(options) {
                 zoom: (options.zoom ? options.zoom : 11)
             });
 
-            let clusterer = new ymaps.Clusterer({
+            var clusterer = new ymaps.Clusterer({
                 preset: 'twirl#invertedBlueClusterIcons',
                 clusterDisableClickZoom: false,
             });
 
-            let markers = [];
+            var markers = [];
             options.points.forEach(function(point) {
-                let marker = new ymaps.Placemark([point.lat, point.lon], {
+                var marker = new ymaps.Placemark([point.lat, point.lon], {
                     balloonContent: point.desc
                 }, {
                     //preset: "islands#blackHomeIcon",

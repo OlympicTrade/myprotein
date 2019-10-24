@@ -345,7 +345,7 @@
                 if (options.postMessage) {
                     // window.postMessage does not allow sending FormData
                     // objects, so we just add the File/Blob objects to
-                    // the formData array and let the postMessage window
+                    // the formData array and var the postMessage window
                     // create the FormData object out of this array:
                     formData = this._getFormData(options);
                     if (options.blob) {

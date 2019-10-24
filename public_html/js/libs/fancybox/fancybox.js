@@ -239,7 +239,7 @@
     // Put focus back to active element after closing
     backFocus: true,
 
-    // Do not let user to focus on element outside modal content
+    // Do not var user to focus on element outside modal content
     trapFocus: true,
 
     // Module specific options

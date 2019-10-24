@@ -136,7 +136,7 @@ function productView(box) {
 
     toCartForm(product, {
         priceUpdate: function (resp) {
-            let counter = $('.counter .std-counter', product).inputCounter();
+            var counter = $('.counter .std-counter', product).inputCounter();
 
             if(resp.stock) {
                 counter.setMax(resp.stock).setMin(1);
@@ -306,11 +306,11 @@ function cartView() {
     if (!box.length) { return; }
 
     $('.js-cart-count', box).each(function () {
-        let el = $(this);
+        var el = $(this);
 
         el.on('change', function () {
-            let counter = el.inputCounter();
-            let product = el.closest('.product');
+            var counter = el.inputCounter();
+            var product = el.closest('.product');
 
             if(counter.getCount() > 0) {
                 $.cart.add({

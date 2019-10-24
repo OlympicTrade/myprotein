@@ -117,7 +117,7 @@
                         <div class="dl-element">
                             <div class="pt date"><input type="text" name="attrs-date" placeholder="Дата*" readonly="true"></div>
                             <?php
-                            /** @let \Delivery\Model\City $city */
+                            /** @var \Delivery\Model\City $city */
                             $city = \Delivery\Model\Delivery::getInstance()->getCity();
 
                             if($city->isSpb()) {
@@ -275,14 +275,14 @@
     <script>
         window.___gcfg = {lang: 'ru_RU'};
 
-        let box = $('.order-form');
-        let progress = $('.progress', box);
-        let steps = $('.steps', box);
-        let step1 = $('.step[data-step="1"]', box);
-        let step2 = $('.step[data-step="2"]', box);
-        let step3 = $('.step[data-step="3"]', box);
-        let step4 = $('.step[data-step="4"]', box);
-        let $orderId = $('[name="oid"]', steps);
+        var box = $('.order-form');
+        var progress = $('.progress', box);
+        var steps = $('.steps', box);
+        var step1 = $('.step[data-step="1"]', box);
+        var step2 = $('.step[data-step="2"]', box);
+        var step3 = $('.step[data-step="3"]', box);
+        var step4 = $('.step[data-step="4"]', box);
+        var $orderId = $('[name="oid"]', steps);
 
         //initElements(box);
 
@@ -298,7 +298,7 @@
             $('.step[data-step="' + nextStep + '"]', steps).addClass('active');
 
             $('.step', progress).each(function() {
-                let step = $(this);
+                var step = $(this);
 
                 nextStep = nextStep == 3 ? 2 : nextStep;
 
@@ -342,7 +342,7 @@
         }
 
         function validate(stepNbr) {
-            let validate = true;
+            var validate = true;
 
             if(stepNbr == 1) {
                 validate &= step1Validate();
@@ -379,20 +379,20 @@
             return validate;
         }
 
-        let smsTimer = null;
+        var smsTimer = null;
         function step2Validate() {
-            let validate = true;
+            var validate = true;
 
-            let dtInput = $('[name="attrs-delivery"]', steps);
-            let express = $('.express.form', step2);
-            let courier = $('.courier.form', step2);
-            let pickup  = $('.pickup.form', step2);
-            let post    = $('.post.form', step2);
+            var dtInput = $('[name="attrs-delivery"]', steps);
+            var express = $('.express.form', step2);
+            var courier = $('.courier.form', step2);
+            var pickup  = $('.pickup.form', step2);
+            var post    = $('.post.form', step2);
             if(dtInput.val() == 'courier') {
                 $('.row', courier).removeClass('invalid');
-                let fields = ['attrs-street', 'attrs-house', 'attrs-date', 'attrs-time_from'];
+                var fields = ['attrs-street', 'attrs-house', 'attrs-date', 'attrs-time_from'];
                 fields.forEach(function(item, i) {
-                    let el = $('[name="' + item + '"]', courier);
+                    var el = $('[name="' + item + '"]', courier);
                     if(!el.val()) {
                         validate &= false;
                         el.closest('.row').addClass('invalid');
@@ -400,25 +400,25 @@
                 });
             } else if(dtInput.val() == 'post') {
                 $('.row', post).removeClass('invalid');
-                let fields = ['attrs-street', 'attrs-house', 'attrs-index', 'attrs-city'];
+                var fields = ['attrs-street', 'attrs-house', 'attrs-index', 'attrs-city'];
                 fields.forEach(function(item, i) {
-                    let el = $('[name="' + item + '"]', post);
+                    var el = $('[name="' + item + '"]', post);
                     if(!el.val()) {
                         validate &= false;
                         el.closest('.row').addClass('invalid');
                     }
                 });
             } else if(dtInput.val() == 'pickup') {
-                let el = $('[name="attrs-point"]', pickup);
+                var el = $('[name="attrs-point"]', pickup);
                 if(!el.val()) {
                     validate &= false;
                     $('.map-open', pickup).closest('.row').addClass('invalid');
                 }
             } else if(dtInput.val() == 'express') {
                 $('.row', courier).removeClass('invalid');
-                let fields = ['attrs-street', 'attrs-house', 'attrs-time_from'];
+                var fields = ['attrs-street', 'attrs-house', 'attrs-time_from'];
                 fields.forEach(function(item, i) {
-                    let el = $('[name="' + item + '"]', express);
+                    var el = $('[name="' + item + '"]', express);
                     if(!el.val()) {
                         validate &= false;
                         el.closest('.row').addClass('invalid');
@@ -433,7 +433,7 @@
                 return  false;
             }
 
-            let data;
+            var data;
 
             switch (dtInput.val()) {
                 case 'courier':
@@ -494,11 +494,11 @@
                 }
             });
 
-            let counter = $('.sms-resend .counter', step3);
-            let resend = $('.sms-resend .resend', step3);
-            //let skip = $('.sms-resend .skip', step3);
+            var counter = $('.sms-resend .counter', step3);
+            var resend = $('.sms-resend .resend', step3);
+            //var skip = $('.sms-resend .skip', step3);
 
-            let count = 8;
+            var count = 8;
 
             if(smsTimer) {clearInterval(smsTimer); }
             $('span', counter).text(count);
@@ -518,11 +518,11 @@
         }
 
         function step1Validate() {
-            let validate = true;
+            var validate = true;
 
-            let name  = $('[name="attrs-name"]', step1);
-            let email = $('[name="attrs-email"]', step1);
-            let phone = $('[name="phone"]', step1);
+            var name  = $('[name="attrs-name"]', step1);
+            var email = $('[name="attrs-email"]', step1);
+            var phone = $('[name="phone"]', step1);
 
             if(!name.val()) {
                 validate &= false;
@@ -534,7 +534,7 @@
                 phone.closest('.row').addClass('invalid');
             }
 
-            let emailRegExp = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var emailRegExp = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             if(email.val() !== '' && !emailRegExp.test(email.val())) {
                 validate &= false;
                 email.closest('.row').addClass('invalid');
@@ -595,20 +595,20 @@
         }
 
         function step1init() {
-            let phone = $('[name="phone"]', step1);
+            var phone = $('[name="phone"]', step1);
             phone.inputmask('+7 (999) 999-99-99');
             phone.on('keyup', function () {
-                let str = phone.val().match(/\d/g);
+                var str = phone.val().match(/\d/g);
                 if(str != null && str.length === 11) { phone.closest('.row').removeClass('invalid'); }
             });
 
-            let name = $('[name="attrs-name"]', step1);
+            var name = $('[name="attrs-name"]', step1);
             name.on('keyup', function () {
                 if(name.val()) { name.closest('.row').removeClass('invalid'); }
             });
 
-            let email = $('[name="attrs-email"]', step1);
-            let emailRegExp = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var email = $('[name="attrs-email"]', step1);
+            var emailRegExp = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             email.on('keyup', function () {
                 if(email.val() === '' || emailRegExp.test(email.val())) {
                     email.closest('.row').removeClass('invalid');
@@ -623,14 +623,14 @@
         }
 
         function step2init() {
-            let dtInput = $('[name="attrs-delivery"]', steps);
+            var dtInput = $('[name="attrs-delivery"]', steps);
 
-            let express = $('.express.form', step2);
-            let courier = $('.courier.form', step2);
-            let pickup  = $('.pickup.form', step2);
+            var express = $('.express.form', step2);
+            var courier = $('.courier.form', step2);
+            var pickup  = $('.pickup.form', step2);
 
             $('.type .op', step2).on('click', function () {
-                let type = $(this).data('type');
+                var type = $(this).data('type');
                 dtInput.val(type);
 
                 $('.type .op', step2).removeClass('active');
@@ -644,7 +644,7 @@
                 $('.type', step2).removeClass('invalid');
             });
 
-            let expAddress = $('.row.address', express);
+            var expAddress = $('.row.address', express);
             $('.pt', expAddress).on('keyup change', function () {
                 if(
                     $('[name="attrs-street"]', expAddress).val()
@@ -654,7 +654,7 @@
                 }
             });
 
-            let courAddress = $('.row.address', courier);
+            var courAddress = $('.row.address', courier);
             $('.pt', courAddress).on('keyup change', function () {
                 if(
                     $('[name="attrs-street"]', courAddress).val()
@@ -664,14 +664,14 @@
                 }
             });
 
-            let courDate = $('.row.date', courier);
+            var courDate = $('.row.date', courier);
             $('.pt', courDate).on('keyup change', function () {
                 if($('[name="attrs-date"]', courDate).val() && $('[name="attrs-time_from"]', courDate).val()) {
                     courDate.removeClass('invalid');
                 }
             });
 
-            let map = $('.map-wrap', step2);
+            var map = $('.map-wrap', step2);
             $('.map-open', pickup).on('click', function () {
                 map.fadeIn(200);
             });
@@ -681,9 +681,9 @@
         }
 
         function step3init() {
-            let counter = $('.sms-resend .counter', step3);
-            let resend = $('.sms-resend .resend', step3);
-            let skip = $('.sms-resend .skip', step3);
+            var counter = $('.sms-resend .counter', step3);
+            var resend = $('.sms-resend .resend', step3);
+            var skip = $('.sms-resend .skip', step3);
 
             $('.tr', skip).on('click', function () {
                 $('.nx', skip).fadeIn(200);
@@ -713,7 +713,7 @@
         }
 
         function step4init() {
-            let items = $('.item', step4);
+            var items = $('.item', step4);
 
             items.on('click', function (){
                 items.removeClass('active');
@@ -729,15 +729,15 @@
                 method: 'post',
                 data: {id: $orderId.val()},
                 success: function (resp) {
-                    let price = function (price) {
+                    var price = function (price) {
                         return price ? price + ' руб.' : 'бесплатно';
                     };
 
-                    let deliveryData = resp.delivery;
+                    var deliveryData = resp.delivery;
                     $('[data-pickup-date]').text(deliveryData.pickup.date);
                     $('[data-pickup-price]').text(price(deliveryData.pickup.price.income));
 
-                    let dateStr = 'Завтра';
+                    var dateStr = 'Завтра';
                     if(deliveryData.courier.date !== '<?= (new \DateTime())->modify('+1 day')->format('d.m') ?>') {
                         dateStr = 'от ' + deliveryData.courier.date;
                     }
@@ -771,17 +771,17 @@
         }
 
         function updateDatepicker(el, startDelay, excludedDays) {
-            let options = $.config.datepicker;
+            var options = $.config.datepicker;
             options.minDate = startDelay;
 
-            let dates = [];
+            var dates = [];
 
             excludedDays.forEach(function (exDate) {
                 dates.push(exDate);
             });
 
             options.beforeShowDay = function(date){
-                let string = $.datepicker.formatDate("dd.mm.yy", date);
+                var string = $.datepicker.formatDate("dd.mm.yy", date);
                 return [dates.indexOf(string) == -1]
             };
 
@@ -799,8 +799,8 @@
                             data: { id: $(this).data('id') },
                             method: 'post',
                             success: function(resp) {
-                                let pickup = $('.pickup.form', step2);
-                                let map = $('.map-wrap', step2);
+                                var pickup = $('.pickup.form', step2);
+                                var map = $('.map-wrap', step2);
 
                                 $('.map-open', pickup).text(resp.address).addClass('chosen').closest('.row').removeClass('invalid');
                                 $('.notice', pickup).css({display: 'block'});
@@ -818,7 +818,7 @@
         });
 
         $('.controls .prev', box).on('click', function () {
-            let prevStep = parseInt($(this).closest('.step').data('step')) - 1;
+            var prevStep = parseInt($(this).closest('.step').data('step')) - 1;
             setStep($(this).closest('.step').data('step'), prevStep);
         });
 

@@ -72,9 +72,9 @@ var InputCounter = function(el, options) {
 function pluginGenerator(els, className, options) {
     els = $(els);
 
-    let init = function(el) {
-        let dataName = 'obj' + className.toLowerCase();
-        let sl = el.data(dataName);
+    var init = function(el) {
+        var dataName = 'obj' + className.toLowerCase();
+        var sl = el.data(dataName);
 
         if (sl === undefined || sl === '') {
             sl = eval('new ' + className + '(el, options)');
