@@ -449,18 +449,6 @@ class CatalogController extends AbstractActionController
             if($tab['url'] == $tabUrl) {
                 switch($tab['tab']) {
                     case 'default':
-                        if($product->get('title')) {
-                            $product->set('title', $product->get('title') . ' | {BRAND_NAME}');
-                        }
-
-                        if($product->get('keywords')) {
-                            $product->set('keywords', $product->get('keywords') . ', спортивное питание, {BRAND_NAME}');
-                        }
-
-                        if($product->get('description')) {
-                            $product->set('description', rtrim($product->get('description'), '. ') . '. Доставка по Москве и Санкт-Петербургу.');
-                        }
-
                         $meta = $this->generateMeta($product, $metaSearch, $metaReplace);
                         break;
                     case 'video':

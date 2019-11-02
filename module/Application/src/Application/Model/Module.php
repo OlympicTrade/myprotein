@@ -5,17 +5,17 @@ use Aptero\Db\Entity\EntityHierarchy;
 
 class Module extends EntityHierarchy
 {
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->setTable('site_modules');
 
         $this->addProperties(array(
-            'name'    => array(),
-            'module'  => array(),
-            'section' => array(),
-            'sort'    => array(),
-            'sitemap' => array(),
-            'admin'   => array(),
+            'name'    => [],
+            'module'  => [],
+            'section' => [],
+            'sort'    => [],
+            'sitemap' => [],
+            'admin'   => [],
         ));
 
         $this->addPlugin('settings', function() {
@@ -47,7 +47,7 @@ class Module extends EntityHierarchy
         return $this;
     }
 
-    static $settingsCash = array();
+    static $settingsCash = [];
     static public function getSettings($name, $section)
     {
         $cashName = $name . ' - ' . $section;

@@ -111,10 +111,10 @@ abstract class AbstractActionController extends ZendActionController
         $options = array_merge(array('prefix' => ''), $options);
 
         $search = (array) $search;
-        $search[] ='{CITY_NAME}';
-        $search[] ='{CITY_NAME_R}';
-        $search[] ='{CITY_NAME_I}';
-        $search[] ='{CITY_NAME_B}';
+        $search[] ='{CITY_NAME}';   //Москва
+        $search[] ='{CITY_NAME_R}'; //Москве
+        $search[] ='{CITY_NAME_I}'; //в Москве
+        $search[] ='{CITY_NAME_B}'; //по Москве
 
         $settings = Settings::getInstance();
         $replace[] = $settings->get('city_name');

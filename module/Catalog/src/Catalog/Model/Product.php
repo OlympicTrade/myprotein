@@ -1,6 +1,8 @@
 <?php
 namespace Catalog\Model;
 
+use Application\Model\Module;
+use Application\Model\Settings;
 use Aptero\Db\Entity\Entity;
 use Aptero\Db\Entity\EntityFactory;
 use Blog\Model\Article;
@@ -53,6 +55,18 @@ class Product extends Entity
             'sort'              => [],
             'popularity'        => [],
         ));
+
+        $this->addPropertyFilterOut('title', function($model, $value) {
+            $title = (new Module(['name' => 'catalog', 'section' => 'products']))->getPlugin('settings')->get('title');
+
+            if($value) {
+                $title = str_replace(['{PRODUCT_NAME}'], [$value], $title);
+            } else {
+                $title = str_replace(['{PRODUCT_NAME}'], [$model->get('name')], $title);
+            }
+
+            return $title;
+        });
 
         $this->addPropertyFilterOut('price', function($model) {
             $price = $model->get('price_base') * $model->get('coefficient');
