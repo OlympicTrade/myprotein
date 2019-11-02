@@ -50,11 +50,14 @@ abstract class AbstractActionController extends ZendActionController
         $canonical = $page->get('url');
 
         //Meta
-        $meta = (object) [
+        /*$meta = (object) [
             'title'        => $page->get('title') ? $page->get('title') : $header,
             'description'  => $page->get('description'),
             'keywords'     => $page->get('keywords'),
-        ];
+        ];*/
+        $meta = $this->generateMeta($page);
+
+        $this->generateMeta($page, [], []);
 
         $contacts = new Contacts();
         $contacts->setId(1);
@@ -118,6 +121,7 @@ abstract class AbstractActionController extends ZendActionController
         $replace[] = $settings->get('city_name_r');
         $replace[] = $settings->get('city_name_i');
         $replace[] = $settings->get('city_name_b');
+        //dd($replace);
 
         $meta = new \stdClass();
         $settings = $this->getServiceLocator()->get('Application\Model\Module')->getPlugin('settings');
