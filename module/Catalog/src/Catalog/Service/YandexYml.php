@@ -43,7 +43,7 @@ class YandexYml extends AbstractService
         $sheet->setCellValue('F1', 'Популярный товар');
         $sheet->setCellValue('G1', 'В наличии');
 
-        $domain = Settings::getInstance()->get('domain');
+        $domain = rtrim(Settings::getInstance()->get('domain'), '/');
         $row = 1;
         foreach ($products as $product) {
             if(!$product->getPlugin('image')->hasImage()) {
@@ -234,7 +234,7 @@ class YandexYml extends AbstractService
 
             $offerXML->addAttribute('fee',  '100');
 
-            $url = $settings->get('domain') . $product->getUrl('url');
+            $url = rtrim($settings->get('domain'), '/') . $product->getUrl('url');
             if(!empty($uploadOpts['utm'])) {
                 $url .= (strpos($url, '?') ? '&' : '?') . implode('&', $uploadOpts['utm']);
                 $url = str_replace('&', '&amp;', $url);
@@ -293,7 +293,7 @@ class YandexYml extends AbstractService
                 $offerXML->addChild('market_category', $catalog->get('market_category'));
             }
 
-            @$offerXML->addChild('picture', $settings->get('domain') . $product->getPlugin('image')->getImage('hr'));
+            @$offerXML->addChild('picture', rtrim($settings->get('domain'), '/') . $product->getPlugin('image')->getImage('hr'));
 
             if(!$product->get('preview')) {
                 $offerXML->addChild('description', $product->get('preview'));
