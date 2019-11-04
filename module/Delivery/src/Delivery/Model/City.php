@@ -1,6 +1,7 @@
 <?php
 namespace Delivery\Model;
 
+use ApplicationAdmin\Model\Domain;
 use Aptero\Db\Entity\Entity;
 use Aptero\Delivery\RussianPost;
 use Catalog\Model\Order;
@@ -183,31 +184,6 @@ class City extends Entity
     public function detectDeliveryCompany($order)
     {
         return Delivery::COMPANY_GLAVPUNKT;
-
-        /*
-        Устаревшая тема
-        $attrs = $order->getPlugin('attrs');
-
-        if($attrs->get('delivery') == Delivery::TYPE_COURIER) {
-            if($order->getPlugin('city')->isCapital()) {
-                $company = Delivery::COMPANY_INDEX_EXPRESS;
-            } else {
-                $company = Delivery::COMPANY_GLAVPUNKT;
-            }
-        } else {
-            $point = $order->getPickupPoint();
-
-            if($point->get('index_express')) {
-                $company = Delivery::COMPANY_INDEX_EXPRESS;
-            } elseif($point->get('glavpunkt')) {
-                $company = Delivery::COMPANY_GLAVPUNKT;
-            } else {
-                $company = Delivery::COMPANY_UNKNOWN;
-            }
-        }
-
-        return $company;
-        */
     }
 
     protected function getRussianPostDelay()
@@ -218,59 +194,6 @@ class City extends Entity
 
         return $delay;
     }
-/*
-    protected function getIndexExpressDelay(\DateTime $dt)
-    {
-        //Будешь менять Незабудь также обновить Yandex YML!!11one
-
-        switch ($dt->format('N')) {
-            case 7:
-                $delay = 2;
-                break;
-            case 6:
-                $delay = ($dt->format('H') < 11) ? 2 : 3;
-                break;
-            default:
-                $delay = ($dt->format('H') < 15) ? 1 : 2;
-                break;
-        }
-
-        return $delay;
-    }
-
-    protected function getShopLogisticDelay(\DateTime $dt)
-    {
-        $delay = $this->get('delivery_delay');
-        $delay = max($delay, 1);
-
-        switch ($dt->format('N')) {
-            case 7:
-                $delay++;
-                break;
-            case 6:
-                $delay += ($dt->format('H') < 10) ? 1 : 2;
-                break;
-            default:
-                $delay = ($dt->format('H') < 15) ? 1 : 2;
-                break;
-        }
-
-        if($this->get('name') != 'Санкт-Петербург') {
-            $delay++;
-        }
-
-        $dt->modify('+' . $delay . ' days');
-        if($dt->format('N') == 7 && $this->get('name') != 'Москва') {
-            $delay++;
-        }
-
-        if(!in_array($this->get('name'), ['Москва', 'Санкт-Петербург'])) {
-            $delay += 2;
-        }
-
-        return $delay;
-    }
-    */
 
     public function getFreeDeliveryPrice($options = ['type' => 'delivery'])
     {
@@ -304,6 +227,25 @@ class City extends Entity
     {
         $session = new Container();
 
+        /*if($session->offsetExists('city') && $session->city->id) {
+            $this->unserialize($session->city);
+
+            if($_COOKIE['city'] == $this->getId()) {
+                return $this;
+            }
+            $this->clear();
+        }
+
+        if(!empty($_COOKIE['city'])) {
+            $this->select()->where(['id' => $_COOKIE['city']]);
+
+            if($this->load()) {
+                $session->city = $this->serialize(['serializePlugins' => false]);
+                return $this;
+            }
+            $this->clear();
+        }*/
+
         if($session->offsetExists('city') && $session->city->id) {
             $this->unserialize($session->city);
 
@@ -320,6 +262,18 @@ class City extends Entity
                 $session->city = $this->serialize(['serializePlugins' => false]);
                 return $this;
             }
+            $this->clear();
+        }
+
+        $domain = Domain::getInstance();
+        if($domain->get('region_name') != 'Россия') {
+            $this->select()->where(['name' => $domain->get('region_name')]);
+
+            if($this->load()) {
+                $session->city = $this->serialize(['serializePlugins' => false]);
+                return $this;
+            }
+            $this->clear();
         }
 
         include_once(MAIN_DIR . '/vendor/sxgeo/SxGeo.php');
@@ -357,6 +311,7 @@ class City extends Entity
 
         $session->city = $this->serialize();
         $_COOKIE['city'] = $this->getId();
+
         return $this;
     }
 

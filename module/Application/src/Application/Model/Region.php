@@ -1,6 +1,7 @@
 <?php
 namespace Application\Model;
 
+use ApplicationAdmin\Model\Domain;
 use Aptero\Db\Entity\Entity;
 use Zend\Session\Container;
 
@@ -55,6 +56,20 @@ class Region extends Entity
 
             self::$instance = $region;
         }
+        d(self::$instance->get('name'));
+
+        $rDomain = new Domain();
+        $rDomain->select()->where(['region_name' => self::$instance->get('name')]);
+        //$rDomain->load();
+
+        //$rDomain->d();
+
+        $cDomain = Settings::getInstance()->domain;
+
+        /*d($rDomain->getId());
+        dd($cDomain->getId());
+
+        dd($region->get('name'));*/
 
         return self::$instance;
     }

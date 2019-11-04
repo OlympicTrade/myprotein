@@ -3,19 +3,54 @@
 namespace Aptero\Mvc\Controller;
 
 use Application\Model\Page;
+use Application\Model\Region;
 use Application\Model\Settings;
+use ApplicationAdmin\Model\Domain;
 use Contacts\Model\Contacts;
+use Delivery\Model\City;
+use Mobile_Detect;
 use Zend\Mvc\Controller\AbstractActionController as ZendActionController;
 use Zend\View\Model\ViewModel;
 
 abstract class AbstractActionController extends ZendActionController
 {
+    protected function regionRedirect()
+    {
+        $redirect = function($url, $code = '302') {
+            header('Location: https://' . $url);
+            header('HTTP/1.1 ' . $code);
+            die();
+        };
+
+        $cDomain = Domain::getInstance();
+
+        if((int) $_GET['city'] && $nCity = (new City())->setId($_GET['city'])->load()) {
+            setcookie ( 'city', $nCity->getId(), time() + 3600, '/');
+            $redirect($cDomain->getDomain() . $this->getRequest()->getUri()->getPath());
+        }
+
+        $aCity   = \Delivery\Model\Delivery::getInstance()->getCity();
+
+        $aDomain = (new Domain)->loadFromCity($aCity);
+
+        if($cDomain->getId() != $aDomain->getId()) {
+            $redirect(
+                $aDomain->getDomain() .
+                $_SERVER['REQUEST_URI'] .
+                ($aDomain->isGlobal() ? '?city=' . $aCity->getId() : '')
+            );
+        }
+    }
+
     /**
      * @param null $url
      * @return ViewModel
      */
     public function generate($url = null)
     {
+        $this->regionRedirect();
+        $settings = Settings::getInstance();
+
         $sm = $this->getServiceLocator();
 
         $page = new Page();
@@ -66,7 +101,7 @@ abstract class AbstractActionController extends ZendActionController
             'route'        => $sm->get('Application')->getMvcEvent()->getRouteMatch(),
             'canonical'    => $canonical,
             'contacts'     => $contacts,
-            'settings'     => Settings::getInstance(),
+            'settings'     => $settings,
             'breadcrumbs'  => $this->getBreadcrumbs($page),
             'header'       => $header,
             'meta'         => $meta,

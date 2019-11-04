@@ -326,6 +326,7 @@ class Entity extends AbstractDb implements EventManagerAwareInterface, ArrayAcce
         $result = $this->fetchRow($select);
 
         if(empty($result)) {
+            $this->setId(0);
             return false;
         }
 

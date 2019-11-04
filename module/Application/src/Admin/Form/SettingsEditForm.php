@@ -150,6 +150,7 @@ class SettingsEditForm extends Form
                     'robots'      => ['label' => 'Robots.txt', 'width' => 250, 'type' => 'textarea'],
                     'html_head'   => ['label' => 'Тег head', 'width' => 250, 'type' => 'textarea'],
                     'html_body'   => ['label' => 'Тег body', 'width' => 250, 'type' => 'textarea'],
+                    'region_name' => ['label' => 'Регион', 'width' => 100],
                     'city_name'   => ['label' => 'Город', 'width' => 100],
                     'city_name_r' => ['label' => 'Города', 'width' => 100],
                     'city_name_i' => ['label' => 'в Городе', 'width' => 100],
