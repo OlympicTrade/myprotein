@@ -17,6 +17,7 @@ abstract class AbstractActionController extends ZendActionController
     protected function regionRedirect()
     {
         $redirect = function($url, $code = '302') {
+            //dd($url);
             header('Location: https://' . $url);
             header('HTTP/1.1 ' . $code);
             die();
@@ -24,16 +25,18 @@ abstract class AbstractActionController extends ZendActionController
 
         $cDomain = Domain::getInstance();
 
-        if((int) $_GET['city'] && $nCity = (new City())->setId($_GET['city'])->load()) {
+        if($cDomain->isGlobal() && $_GET['city'] && $nCity = (new City())->setId($_GET['city'])->load()) {
             setcookie ( 'city', $nCity->getId(), time() + 3600, '/');
             $redirect($cDomain->getDomain() . $this->getRequest()->getUri()->getPath());
         }
 
-        $aCity   = \Delivery\Model\Delivery::getInstance()->getCity();
+        $aCity = \Delivery\Model\Delivery::getInstance()->getCity();
 
         $aDomain = (new Domain)->loadFromCity($aCity);
+        //dd($aDomain->get('region_name'));
 
         if($cDomain->getId() != $aDomain->getId()) {
+            setcookie ( 'city', null, time() + 3600, '/');
             $redirect(
                 $aDomain->getDomain() .
                 $_SERVER['REQUEST_URI'] .
