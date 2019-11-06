@@ -123,7 +123,7 @@ class OrdersService extends AbstractService
         $prevOrder->select()
             ->columns(['id'])
             ->where
-                ->greaterThan('time_create', (new \DateTime())->modify('-20 minutes')->format('Y-m-d H:i:s'))
+                ->greaterThan('time_create', (new \DateTime())->modify('-40 minutes')->format('Y-m-d H:i:s'))
                 ->equalTo('status', Order::STATUS_NEW)
                 ->equalTo('phone_id', $phone->getId());
 
