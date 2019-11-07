@@ -55,7 +55,6 @@ class DeliveryController extends AbstractActionController
             ->order('points DESC')
             ->where
                 ->equalTo('region_id', $regionId)
-                //->equalTo('shoplogistic', 1)
                 ->lessThanOrEqualTo('delivery_income', City::$maxDeliveryPrice)
                 ->nest()
                     ->notEqualTo('pickup_delay', 0)

@@ -26,17 +26,18 @@ abstract class AbstractActionController extends ZendActionController
         $cDomain = Domain::getInstance();
 
         if($cDomain->isGlobal() && $_GET['city'] && $nCity = (new City())->setId($_GET['city'])->load()) {
-            setcookie ( 'city', $nCity->getId(), time() + 3600, '/');
+            setcookie('city', $nCity->getId(), time() + 3600, '/');
             $redirect($cDomain->getDomain() . $this->getRequest()->getUri()->getPath());
         }
 
         $aCity = \Delivery\Model\Delivery::getInstance()->getCity();
 
         $aDomain = (new Domain)->loadFromCity($aCity);
+        //d($cDomain->get('region_name'));
         //dd($aDomain->get('region_name'));
 
         if($cDomain->getId() != $aDomain->getId()) {
-            setcookie ( 'city', null, time() + 3600, '/');
+            setcookie('city', null, time() + 3600, '/');
             $redirect(
                 $aDomain->getDomain() .
                 $_SERVER['REQUEST_URI'] .
