@@ -468,8 +468,6 @@ class OrdersService extends AbstractService
 
             switch ($status) {
                 case Glavpunkt::STATUS_TRANSFER:
-                    $order->set('status', Order::STATUS_DELIVERY);
-                    break;
                 case Glavpunkt::STATUS_DELIVERING:
                     $order->set('status', Order::STATUS_DELIVERY);
                     break;
@@ -480,8 +478,6 @@ class OrdersService extends AbstractService
                     $order->set('status', Order::STATUS_COMPLETE);
                     break;
                 case Glavpunkt::STATUS_RETURNED:
-                    $order->set('status', Order::STATUS_RETURN);
-                    break;
                 case Glavpunkt::STATUS_AW_RETURNED:
                     $order->set('status', Order::STATUS_RETURN);
                     break;

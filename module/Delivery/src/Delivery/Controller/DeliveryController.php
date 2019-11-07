@@ -13,8 +13,15 @@ class DeliveryController extends AbstractActionController
 {
     public function updateDeliveryAction()
     {
-    	
-        echo $this->getGlavpunktService()->fullUpdate();
+        switch ($this->params()->fromQuery('type')) {
+            case 'points':
+                echo $this->getGlavpunktService()->deliveryUpdatePoints();
+                break;
+            case 'price':
+                echo $this->getGlavpunktService()->deliveryUpdatePrice();
+                break;
+        }
+
         die('END');
     }
 

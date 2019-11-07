@@ -17,7 +17,8 @@ class GlavpunktService extends AbstractService
     
     public $fullUpdate = true;
 
-    public function fullUpdate()
+    //Points update
+    public function deliveryUpdatePoints()
     {
         $sql = $this->getSql();
 
@@ -45,8 +46,25 @@ class GlavpunktService extends AbstractService
             '<h3>Регионы:</h3>'.
             $this->updatePoints(false);
 
-        //$sql->getAdapter()->getDriver()->getConnection()->commit();
-        //$sql->getAdapter()->getDriver()->getConnection()->beginTransaction();
+        $sql->getAdapter()->getDriver()->getConnection()->commit();
+
+
+        return;
+
+        /*$this->getSql()->getAdapter()->getDriver()->getConnection()->beginTransaction();
+
+        echo
+            $this->updateYandexData().
+            '<br>';
+
+        $this->getSql()->getAdapter()->getDriver()->getConnection()->commit();*/
+    }
+
+    //Price update
+    public function deliveryUpdatePrice()
+    {
+        $sql = $this->getSql();
+        $sql->getAdapter()->getDriver()->getConnection()->beginTransaction();
 
         echo
             '<h2>Цены:</h2>'.
@@ -60,16 +78,6 @@ class GlavpunktService extends AbstractService
             '<br>';
 
         $sql->getAdapter()->getDriver()->getConnection()->commit();
-
-        return;
-
-        /*$this->getSql()->getAdapter()->getDriver()->getConnection()->beginTransaction();
-
-        echo
-            $this->updateYandexData().
-            '<br>';
-
-        $this->getSql()->getAdapter()->getDriver()->getConnection()->commit();*/
     }
 
     protected function getRegionId($name)
@@ -303,10 +311,6 @@ class GlavpunktService extends AbstractService
         $select = $sql
             ->select(self::TABLE_CITIES)
             ->columns(['id', 'name']);
-
-		/*if(!$this->fullUpdate) {
-        	$select->where->equalTo('delivery_income', 0);
-		}*/
 
         $i = 0; $u = 0;
         foreach($this->execute($select) as $row) {
