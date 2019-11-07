@@ -36,8 +36,11 @@ abstract class AbstractActionController extends ZendActionController
         //d($cDomain->get('region_name'));
         //dd($aDomain->get('region_name'));
 
-        if($cDomain->getId() != $aDomain->getId()) {
+        if(!$cDomain->isGlobal()) {
             setcookie('city', null, time() + 3600, '/');
+        }
+
+        if($cDomain->getId() != $aDomain->getId()) {
             $redirect(
                 $aDomain->getDomain() .
                 $_SERVER['REQUEST_URI'] .
