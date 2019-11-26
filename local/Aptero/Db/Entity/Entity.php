@@ -804,7 +804,7 @@ class Entity extends AbstractDb implements EventManagerAwareInterface, ArrayAcce
      */
     public function unserializeArray($data)
     {
-        $dataPlugins = array();
+        $dataPlugins = [];
 
         foreach($data as $name => $value) {
 
@@ -813,7 +813,7 @@ class Entity extends AbstractDb implements EventManagerAwareInterface, ArrayAcce
 
             if($pluginName) {
                 if(!isset($dataPlugins[$pluginName])) {
-                    $dataPlugins[$pluginName] = array();
+                    $dataPlugins[$pluginName] = [];
                 }
 
                 $key = substr($name, $sepPos + 1);

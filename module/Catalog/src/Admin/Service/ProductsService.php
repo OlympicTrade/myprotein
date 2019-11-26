@@ -11,6 +11,14 @@ class ProductsService extends TableService
     const TABLE_STOCK       = 'products_stock';
     const TABLE_STOCK_LIMIT = 'products_stock_limit';
 
+    public function getListBaseSelect()
+    {
+        $list = $this->getModel()->getCollection();
+        $list->select()->order('sort DESC');
+
+        return $list;
+    }
+
     public function getStatistic($productId, $filters = [])
     {
         $select =
