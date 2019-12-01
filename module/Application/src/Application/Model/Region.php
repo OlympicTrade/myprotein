@@ -60,16 +60,7 @@ class Region extends Entity
 
         $rDomain = new Domain();
         $rDomain->select()->where(['region_name' => self::$instance->get('name')]);
-        //$rDomain->load();
-
-        //$rDomain->d();
-
         $cDomain = Settings::getInstance()->domain;
-
-        /*d($rDomain->getId());
-        dd($cDomain->getId());
-
-        dd($region->get('name'));*/
 
         return self::$instance;
     }

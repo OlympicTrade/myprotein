@@ -19,9 +19,7 @@
         <div class="clear"></div>
     </div>
 </div>
-<?php
-echo $this->settings->get('html_body')
-?>
+<?= \ApplicationAdmin\Model\Domain::getInstance()->get('html_body'); ?>
 <noscript><div><img src="https://mc.yandex.ru/watch/47855381" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 </body>
 </html>

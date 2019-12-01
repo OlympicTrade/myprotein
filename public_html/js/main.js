@@ -484,4 +484,3 @@ function setPickupMap(options) {
 
     return map;
 }
-

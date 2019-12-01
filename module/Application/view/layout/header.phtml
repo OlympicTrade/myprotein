@@ -25,11 +25,10 @@ $this->headScript()
     echo $this->headMeta()  . "\n";
     echo $this->headLink()  . "\n";
     echo $this->headScript()  . "\n";
-    echo $this->settings->get('html_head')
+    echo \ApplicationAdmin\Model\Domain::getInstance()->get('html_head');
     ?>
 </head>
 <body>
-<noscript><div><img src="https://mc.yandex.ru/watch/47855381" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <div id="fog"></div>
 <div id="header">
     <div class="top">
