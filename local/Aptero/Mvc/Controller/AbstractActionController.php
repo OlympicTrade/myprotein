@@ -49,7 +49,7 @@ abstract class AbstractActionController extends ZendActionController
      */
     public function generate($url = null)
     {
-        $this->regionRedirect();
+        //$this->regionRedirect();
         $settings = Settings::getInstance();
 
         $sm = $this->getServiceLocator();

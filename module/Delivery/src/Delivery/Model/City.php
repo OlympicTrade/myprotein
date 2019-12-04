@@ -109,9 +109,9 @@ class City extends Entity
             $dt = new \DateTime();
         }
 
-        if($this->isSpb() && $options['type'] == Delivery::TYPE_COURIER) {
+        /*if($this->isSpb() && $options['type'] == Delivery::TYPE_COURIER) {
             return 1;
-        }
+        }*/
 
         switch ($dt->format('N')) {
             case 5:

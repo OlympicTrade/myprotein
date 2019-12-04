@@ -46,10 +46,12 @@
                 <div class="type">
                     <div class="notice">Выберите способ доставки</div>
                     <div class="box">
+                        <?php /*
                         <div class="op" data-type="express">
                             <div class="name">Express</div>
                             <div class="desc">Сегодня (<span data-express-price></span>)</div>
                         </div>
+                        */ ?>
                         <div class="op" data-type="courier">
                             <div class="name">Доставка</div>
                             <div class="desc">
@@ -73,9 +75,9 @@
                     </div>
                     <input type="hidden" name="attrs-delivery">
                     <div class="clear"></div>
-                    <div class="info" data-type="express">
+                    <?php /*<div class="info" data-type="express">
                         Доставим уже сегодня. Курьер позвонит за час до прибытия.
-                    </div>
+                    </div> */ ?>
                     <div class="info" data-type="pickup">
                         О прибытии товаров на точку вас оповетит SMS. Заказ будет жидать вас 7 дней.
                     </div>
@@ -120,13 +122,13 @@
                             /** @var \Delivery\Model\City $city */
                             $city = \Delivery\Model\Delivery::getInstance()->getCity();
 
-                            if($city->isSpb()) {
+                            /*if($city->isSpb()) {
                                 $timeOptions = '';
                                 for ($i = 12; $i < 20; $i++) {
                                     $form = $i . ':00'; $to =  ($i + 1) . ':00';
                                     $timeOptions .= '<option value="' . $form . '-' . $to . '">c ' . $form . ' до ' . $to . '</option>';
                                 }
-                            } elseif ($city->isMoscow()) {
+                            } else*/if ($city->isMoscow() || $city->isSpb()) {
                                 $timeOptions =
                                     '<option value="09:00-14:00">c 09:00 до 14:00</option>'.
                                     '<option value="11:00-16:00">c 11:00 до 16:00</option>'.
@@ -149,7 +151,7 @@
                     </div>
                 </div>
 
-                <div class="express address form">
+                <?php /*<div class="express address form">
                     <div class="row address">
                         <div class="dl-element">
                             <div class="pt street"><input type="text" name="attrs-street" placeholder="Улица*"></div>
@@ -179,7 +181,7 @@
                         </div>
                         <div class="error">Введите дату и время доставки</div>
                     </div>
-                </div>
+                </div>*/ ?>
 
                 <div class="post address form">
                     <div class="row address">
@@ -323,15 +325,15 @@
                         gtag('event', 'purchase', resp);
 
                         window.metrikaEc.push({ecommerce: {
-                            add: {
-                                actionField: {
-                                    id: resp.orderId,
-                                    goal_id: 39331183,
-                                    revenue: resp.value,
-                                },
-                                products: resp.items,
-                            }
-                        }});
+                                add: {
+                                    actionField: {
+                                        id: resp.orderId,
+                                        goal_id: 39331183,
+                                        revenue: resp.value,
+                                    },
+                                    products: resp.items,
+                                }
+                            }});
                     }
                 });
 
@@ -384,7 +386,7 @@
             var validate = true;
 
             var dtInput = $('[name="attrs-delivery"]', steps);
-            var express = $('.express.form', step2);
+            //var express = $('.express.form', step2);
             var courier = $('.courier.form', step2);
             var pickup  = $('.pickup.form', step2);
             var post    = $('.post.form', step2);
@@ -414,7 +416,7 @@
                     validate &= false;
                     $('.map-open', pickup).closest('.row').addClass('invalid');
                 }
-            } else if(dtInput.val() == 'express') {
+            /*} else if(dtInput.val() == 'express') {
                 $('.row', courier).removeClass('invalid');
                 var fields = ['attrs-street', 'attrs-house', 'attrs-time_from'];
                 fields.forEach(function(item, i) {
@@ -423,7 +425,7 @@
                         validate &= false;
                         el.closest('.row').addClass('invalid');
                     }
-                });
+                });*/
             } else {
                 validate &= false;
                 $('.type', step2).addClass('invalid');
@@ -442,9 +444,9 @@
                 case 'pickup':
                     data = $.aptero.serializeArray(pickup);
                     break;
-                case 'express':
+                /*case 'express':
                     data = $.aptero.serializeArray(express);
-                    break;
+                    break;*/
                 case 'post':
                     data = $.aptero.serializeArray(post);
                     break;
@@ -625,7 +627,7 @@
         function step2init() {
             var dtInput = $('[name="attrs-delivery"]', steps);
 
-            var express = $('.express.form', step2);
+            //var express = $('.express.form', step2);
             var courier = $('.courier.form', step2);
             var pickup  = $('.pickup.form', step2);
 
@@ -644,7 +646,7 @@
                 $('.type', step2).removeClass('invalid');
             });
 
-            var expAddress = $('.row.address', express);
+            /*var expAddress = $('.row.address', express);
             $('.pt', expAddress).on('keyup change', function () {
                 if(
                     $('[name="attrs-street"]', expAddress).val()
@@ -652,7 +654,7 @@
                 {
                     expAddress.removeClass('invalid');
                 }
-            });
+            });*/
 
             var courAddress = $('.row.address', courier);
             $('.pt', courAddress).on('keyup change', function () {
@@ -745,7 +747,7 @@
                     $('[data-courier-price]').text(price(deliveryData.courier.price.income));
                     updateDatepicker($('[name="attrs-date"]', step2), deliveryData.courier.delay, deliveryData.courier.exclude);
 
-                    $('[data-express-price]').text(price(deliveryData.express.price.income));
+                    //$('[data-express-price]').text(price(deliveryData.express.price.income));
 
                     if(deliveryData.pickup.points > 0) {
                         $('.op[data-type="pickup"]', step2).css({display: 'block'});
@@ -759,11 +761,11 @@
                         $('.op[data-type="courier"]', step2).css({display: 'none'});
                     }
 
-                    if(deliveryData.express.price.income > 0) {
+                    /*if(deliveryData.express.price.income > 0) {
                         $('.op[data-type="express"]', step2).css({display: 'block'});
                     } else {
                         $('.op[data-type="express"]', step2).css({display: 'none'});
-                    }
+                    }*/
 
                     $('.op:visible', step2).trigger('click');
                 }

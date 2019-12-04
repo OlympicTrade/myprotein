@@ -55,7 +55,7 @@
             $pickupFree = $city->getFreeDeliveryPrice(['type' => 'pickup']);
             $pickupDelay = $city->getDeliveryDelay(['type' => 'pickup']);
 
-            if($city->isSpb()) {
+            /*if($city->isSpb()) {
                 $expressPrice = $city->getExpressData()['price']['income'];
                 $expressFree = $city->getFreeDeliveryPrice(['type' => 'express']);
                 echo
@@ -65,7 +65,7 @@
                     ' от ' . $this->price($expressFree) . ' руб. - <strong>бесплатно</strong></p>'.
                     '<p>Доставим ваш заказ уже сегодня с точностью до 1 часа. Услуга доступна до 16 часов дня!</p>'.
                 '</div>';
-            }
+            }*/
 
             if($city->get('delivery_income')) {
                 echo
