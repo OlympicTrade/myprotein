@@ -187,7 +187,7 @@ $product = $this->model;
                                 echo '<td>' . $sizeArr[$j - 1]['name'] . '</td>';
                             } else {
                                 $stockId = $product->getId() . '-' . $sizeArr[$j - 1]['id'] . '-' . $tasteArr[$i - 1]['id'];
-                                echo '<td class="count">' . $stockId . '</td>';
+                                echo '<td class="count"><input value="' . $stockId . '"></td>';
                             }
                         }
                         echo '</tr>';
