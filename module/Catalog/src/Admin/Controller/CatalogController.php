@@ -27,6 +27,11 @@ class CatalogController extends AbstractActionController
         ),
     );
 
+    public function ozonAction()
+    {
+        $this->getService()->sendOzonFile();
+    }
+
     public function tableAction()
     {
         $products = Product::getEntityCollection();

@@ -23,6 +23,9 @@
         <?php $form = $this->filterForm ?>
         <?php echo $this->form()->openTag($form) ?>
         <a href="<?php echo $addUrl ?>" class="btn btn-blue">Добавить</a>
+
+        <a class="btn btn-blue" href="/admin/catalog/catalog/ozon/">Файл для Ozon</a>
+
         <div class="filter search">
             <?php echo $this->formElement($form->get('search')) ?>
             <span class="btn btn-blue btn-submit">Применить</span>

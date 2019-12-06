@@ -130,7 +130,10 @@ $product = $this->model;
                             } else {
                                 $key = $tasteArr[$i - 1]['id'] . '-' . $sizeArr[$j - 1]['id'];
                                 $val = isset($stockArr[$key]) ? $stockArr[$key] : 0;
-                                echo '<td class="count"><input data-taste="' . $tasteArr[$i - 1]['id'] . '" data-size="' . $sizeArr[$j - 1]['id'] . '" value="' . $val . '"></td>';
+
+                                $stockId = $product->getId() . '-' . $sizeArr[$j - 1]['id'] . '-' . $tasteArr[$i - 1]['id'];
+
+                                echo '<td class="count"><input title="' . $stockId . '" data-taste="' . $tasteArr[$i - 1]['id'] . '" data-size="' . $sizeArr[$j - 1]['id'] . '" value="' . $val . '"></td>';
                             }
                         }
                         echo '</tr>';
