@@ -174,6 +174,27 @@ $product = $this->model;
                     ?>
                 </table>
 
+                <table class="std-table2" style="width: 601px">
+                    <?php
+                    for($i = 0; $i <= count($tasteArr); $i++) {
+                        echo '<tr>';
+                        for($j = 0; $j <= count($sizeArr); $j++) {
+                            if($i == 0 && $j == 0) {
+                                echo '<td></td>';
+                            } elseif($j == 0) {
+                                echo '<td>' . $tasteArr[$i - 1]['name'] . '</td>';
+                            } elseif($i == 0) {
+                                echo '<td>' . $sizeArr[$j - 1]['name'] . '</td>';
+                            } else {
+                                $stockId = $product->getId() . '-' . $sizeArr[$j - 1]['id'] . '-' . $tasteArr[$i - 1]['id'];
+                                echo '<td class="count">' . $stockId . '</td>';
+                            }
+                        }
+                        echo '</tr>';
+                    }
+                    ?>
+                </table>
+
                 <script>
                     var srtTimer;
                     $('.stock-real input').on('keyup', function() {

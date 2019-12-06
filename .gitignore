@@ -1,6 +1,7 @@
 vendor
 data
 .idea
+public_html/robots.txt
 public_html/index.php
 public_html/files
 composer.lock
