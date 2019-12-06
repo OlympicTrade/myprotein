@@ -115,6 +115,8 @@ $product = $this->model;
                 }
                 ?>
 
+                <?php echo $this->AdminFormRow($form->get('sort')); ?>
+
                 <h2 class="separator">Товара на складе</h2>
                 <table class="std-table2 stock-table stock-real">
                     <?php
@@ -149,9 +151,6 @@ $product = $this->model;
                 ?>
 
                 <h2 class="separator">Товара нужно</h2>
-                
-                <?php echo $this->AdminFormRow($form->get('sort')); ?>
-
                 <table class="std-table2 stock-table stock-limit">
                     <?php
                     for($i = 0; $i <= count($tasteArr); $i++) {
