@@ -36,11 +36,11 @@ $phone = $order->getPlugin('phone');
                     $tasteStr = $taste;
                 }
 
-                $productName = $cartRow->getPlugin('product')->get('name');
-
                 $size = $cartRow->getPlugin('size')->get('name');
-                if($size) {
-                    $productName .= ' <span style="color: #000">(' . $cartRow->getPlugin('size')->get('name') . ')</span>';
+
+                $count = 'Кол-во: ' . $cartRow->get('count') . ' шт';
+                if($cartRow->get('count') > 1) {
+                    $productName .= ' <span class="red">' . $count . '</span>';
                 }
 
                 $html .=
