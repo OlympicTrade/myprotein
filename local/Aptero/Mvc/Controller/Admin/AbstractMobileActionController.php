@@ -74,7 +74,7 @@ class AbstractMobileActionController extends ZendActionController
         $page = (int) $this->params()->fromQuery('page', 1);
 
         $list->setCurrentPageNumber($page);
-        $list->setItemCountPerPage(30);
+        $list->setItemCountPerPage(20);
 
         $view->setVariables([
             'list'   => $list,

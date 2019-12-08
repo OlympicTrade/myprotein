@@ -53,6 +53,7 @@ a {
 #search input {
     border: none;
     height: 60px;
+    background: #ffffff;
 }
 
 #search input {
@@ -282,12 +283,52 @@ a {
     margin: 0;
     cursor: pointer;
     border-bottom: 1px solid #cccccc;
-    padding: 7px 15px;
-    font-size: 16px;
+    padding: 8px 15px;
+    font-size: 18px;
     color: #222222;
 }
 
+.pagination {
+    margin: 2px 0 0 0;
+    position: relative;
+    text-align: center;
+    min-height: 30px;
+}
 
+.pagination ul {
+    display: inline-block;
+}
+
+.pagination ul li {
+    float: left;
+    margin: 0 2px 2px 0;
+}
+
+.pagination ul li a {
+    display: block;
+    min-width: 40px;
+    height: 40px;
+    line-height: 40px;
+    transition: all .2s;
+    background: #4e4e50;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.pagination ul li.active a,
+.pagination ul li.active a:hover {
+    background: #b7b7b9;
+    color: #4E4E50;
+}
+
+.pagination ul li.disabled a,
+.pagination ul li.disabled a:hover {
+    background: #b9b9bb;
+}
+
+.pagination .prev, .pagination .next {
+    display: none;
+}
 
 
 
