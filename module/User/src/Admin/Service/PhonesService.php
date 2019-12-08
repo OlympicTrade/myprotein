@@ -6,16 +6,16 @@ use Aptero\Service\Admin\TableService;
 class PhonesService extends TableService
 {
     /**
-     * @param \Aptero\Db\Entity\EntityCollection $collection
+     * @param \Aptero\Db\Entity\EntityCollection $list
      * @param $filters
      * @return \Aptero\Db\Entity\EntityCollection
      */
-    public function setFilter($collection, $filters)
+    public function setFilter($list, $filters)
     {
         if($filters['search']) {
-            $collection->select()->where->like('t.phone', '%' . $filters['search'] . '%');
+            $list->select()->where->like('t.phone', '%' . $filters['search'] . '%');
         }
 
-        return $collection;
+        return $list;
     }
 }

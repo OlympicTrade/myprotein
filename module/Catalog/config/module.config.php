@@ -8,6 +8,7 @@ return [
             'Catalog\Controller\Sync'    => 'Catalog\Controller\SyncController',
             'Catalog\Controller\Parser'  => 'Catalog\Controller\ParserController',
             'Catalog\Controller\Yandex'  => 'Catalog\Controller\YandexController',
+
             'CatalogAdmin\Controller\Catalog'   => 'CatalogAdmin\Controller\CatalogController',
             'CatalogAdmin\Controller\Products'  => 'CatalogAdmin\Controller\ProductsController',
             'CatalogAdmin\Controller\Brands'    => 'CatalogAdmin\Controller\BrandsController',
@@ -18,6 +19,8 @@ return [
             'Catalog\Controller\MobileCatalog'  => 'Catalog\Controller\MobileCatalogController',
             'Catalog\Controller\MobileOrders'   => 'Catalog\Controller\MobileOrdersController',
             'Catalog\Controller\MobilePayment'  => 'Catalog\Controller\MobilePaymentController',
+
+            'CatalogAdmin\Controller\OrdersMobile'  => 'CatalogAdmin\Controller\OrdersMobileController',
         ],
     ],
     'router' => [
@@ -724,6 +727,24 @@ return [
                         'section'    => 'Payment',
                         'controller' => 'Catalog\Controller\Payment',
                         'action'     => 'confirm',
+                    ],
+                ],
+            ],
+            'adminMobileOrders' => [
+                'type'    => 'segment',
+                'priority' => 600,
+                'options' => [
+                    'route'    => '/admin/mobile/catalog/orders[/:action][/:id]/',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'module'     => 'Catalog',
+                        'section'    => 'Orders',
+                        'controller' => 'CatalogAdmin\Controller\OrdersMobile',
+                        'action'     => 'index',
+                        'side'       => 'admin'
                     ],
                 ],
             ],

@@ -6,12 +6,12 @@ use Aptero\Service\Admin\TableService;
 class PointsService extends TableService
 {
 
-    public function setFilter($collection, $filters)
+    public function setFilter($list, $filters)
     {
-        $collection = parent::setFilter($collection, $filters);
+        $list = parent::setFilter($list, $filters);
 
         if($filters['search']) {
-            $collection->select()
+            $list->select()
                 ->join(['c' => 'delivery_cities'], 'c.id = t.city_id' , [])
                 ->where
                     ->like('t.name', '%' . $filters['search'] . '%')
@@ -22,6 +22,6 @@ class PointsService extends TableService
                 ;
         }
 
-        return $collection;
+        return $list;
     }
 }

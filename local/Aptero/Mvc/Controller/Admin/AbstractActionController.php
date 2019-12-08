@@ -41,17 +41,9 @@ abstract class AbstractActionController extends ZendActionController
      */
     protected $headerField = 'name';
 
+
     public function __construct()
     {
-        /*Client::getInstance()->auth(['redirect' => '/admin/']);
-
-        $session = new Container();
-        if($session->redirect) {
-            $redirect = $session->redirect;
-            $session->redirect = null;
-            return $this->redirect()->toUrl($redirect);
-        }*/
-
         $this->getEventManager()->attach('dispatch', array($this, 'init'), 100);
     }
 

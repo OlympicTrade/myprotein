@@ -257,39 +257,63 @@ class OrdersService extends TableService
         );
     }
 
-    /**
-     * @param \Aptero\Db\Entity\EntityCollection $collection
-     * @param $filters
-     * @return \Aptero\Db\Entity\EntityCollection
-     */
-    public function setFilter($collection, $filters)
+    public function setFilter($list, $filters)
     {
+        $model = $list->getPrototype();
+
         if($filters['search']) {
-            $collection->select()
-                ->join(['uf' => 'users_phones'], 'uf.id = t.phone_id', [])
-                ->where
-                    ->like('t.id', '%' . $filters['search'] . '%')
-                    ->or
-                    ->like('uf.phone', '%' . $filters['search'] . '%');
+            $list = $this->setSearchFilter($list, $filters['search']);
+            unset($filters['search']);
         }
 
-        unset($filters['search']);
-
-        if(isset($_GET['product_id']) && $filters['product_id'] = $_GET['product_id']) {
-            $collection->select()
-                ->join(['c' => 'orders_cart'], 'c.order_id = t.id', [])
-                ->where(['c.product_id' => $filters['product_id']]);
+        $status = [];
+        switch ($filters['status']) {
+            case 'active':
+                $status = [
+                    Order::STATUS_PENDING,
+                    Order::STATUS_PROCESSING,
+                    Order::STATUS_COLLECTED,
+                    Order::STATUS_DELIVERY,
+                    Order::STATUS_ABANDONED,
+                    Order::STATUS_PROBLEM,
+                    Order::STATUS_WAITING,
+                ];
+                break;
+            case 'delivery':
+                $status = [
+                    Order::STATUS_PENDING,
+                    Order::STATUS_PROCESSING,
+                ];
+                break;
+            default:
         }
 
-        foreach($filters as $field => $val) {
-            if(!empty($val)) {
-                $collection->select()->where(array($field => $val));
-            }
+        if($status) {
+            $list->select()->where(['status' => $status]);
         }
 
-        $collection->select()->group('t.id');
 
-        return $collection;
+        $list->select()
+            ->order('id DESC')
+            ->group('t.id');
+
+        return $list;
+    }
+
+    public function setSearchFilter($list, $query)
+    {
+        if(!$query) return $list;
+
+        $list->select()
+            ->join(['uf' => 'users_phones'], 'uf.id = t.phone_id', [])
+            ->where
+            ->nest()
+                ->like('t.id', '%' . $query . '%')
+                ->or
+                ->like('uf.phone', '%' . $query . '%')
+            ->unnest();
+
+        return $list;
     }
 
     /**

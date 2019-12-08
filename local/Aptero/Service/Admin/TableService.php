@@ -58,6 +58,33 @@ class TableService extends AbstractService
         return true;
     }
 
+    public function getAutoComplete($filters)
+    {
+        $result = [];
+
+        if(!$filters['search']) {
+            return $result;
+        }
+
+        $model = $this->getModel();
+
+        $list = $model->getCollection();
+
+        $list->select()
+            ->limit(10);
+
+        $list = $this->setFilter($list, $filters);
+
+        foreach ($list as $item) {
+            $result[] = [
+                'label' => ($model->hasProperty('name') ? $item['name'] : $item['id']),
+                'url'   => str_replace('/admin/', '/admin/mobile/', $item->getEditUrl()),
+            ];
+        }
+
+        return$result;
+    }
+
     /**
      * @param string $sort
      * @param string $direct
@@ -65,10 +92,9 @@ class TableService extends AbstractService
      * @param int $parentId
      * @return Paginator
      */
-    public function getList($sort, $direct, $filters =[], $parentId = 0)
+    public function getList($sort = '', $direct = '', $filters = [], $parentId = 0)
     {
         $collection = $this->getListBaseSelect();
-
 
         if($collection instanceof EntityCollectionHierarchy) {
             $collection->setParentId($parentId);
@@ -79,6 +105,69 @@ class TableService extends AbstractService
         $collection = $this->setListOrder($collection, $sort, $direct);
 
         return $collection->getPaginator();
+    }
+
+    /**
+     * @param EntityCollection $list
+     * @param $filters
+     * @return EntityCollection
+     */
+    public function setFilter($list, $filters)
+    {
+        $model = $list->getPrototype();
+
+        if($filters['search']) {
+            $list = $this->setSearchFilter($list, $filters['search']);
+            unset($filters['search']);
+        }
+
+        foreach($_GET as $key => $value) {
+            if($value && $model->hasProperty($key)) {
+                $list->select()->where(array($key => $value));
+            }
+        }
+
+        foreach($filters as $field => $val) {
+            if(!empty($val)) {
+                $list->select()->where(array($field => $val));
+            }
+        }
+
+        if($model->hasProperty('sort')) {
+            $list->select()->order('sort');
+        } else {
+            $list->select()->order('id DESC');
+        }
+
+        $list->select()->group('t.id');
+
+        return $list;
+    }
+
+    /**
+     * @param Entity $model
+     * @param EntityCollection $list
+     * @param $query
+     * @return mixed
+     */
+    public function setSearchFilter($list, $query)
+    {
+        $model = $list->getPrototype();
+
+        $list->select()->where
+            ->nest()
+                ->like('id', '%' . $query . '%');
+
+        if($model->hasProperty('name')) {
+            $list->select()->where
+                ->or
+                ->like('name', '%' . $query . '%');
+        }
+
+        $list->select() ->where
+            ->unnest();
+
+        return $list;
     }
 
     /**
@@ -105,35 +194,6 @@ class TableService extends AbstractService
     public function getListBaseSelect()
     {
         return $this->getModel()->getCollection();
-    }
-
-    /**
-     * @param \Aptero\Db\Entity\EntityCollection $collection
-     * @param $filters
-     * @return \Aptero\Db\Entity\EntityCollection
-     */
-    public function setFilter($collection, $filters)
-    {
-        if($filters['search']) {
-            $collection->select()->where->like('t.name', '%' . $filters['search'] . '%');
-        }
-
-        unset($filters['search']);
-
-        $prototype = $collection->getPrototype();
-        foreach($_GET as $key => $value) {
-            if($value && $prototype->hasProperty($key)) {
-                $collection->select()->where(array($key => $value));
-            }
-        }
-
-        foreach($filters as $field => $val) {
-            if(!empty($val)) {
-                $collection->select()->where(array($field => $val));
-            }
-        }
-
-        return $collection;
     }
 
     /**

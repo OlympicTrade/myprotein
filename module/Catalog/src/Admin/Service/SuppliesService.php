@@ -324,38 +324,38 @@ class SuppliesService extends TableService
     }
 
     /**
-     * @param \Aptero\Db\Entity\EntityCollection $collection
+     * @param \Aptero\Db\Entity\EntityCollection $list
      * @param $filters
      * @return \Aptero\Db\Entity\EntityCollection
      */
-    public function setFilter($collection, $filters)
+    public function setFilter($list, $filters)
     {
         if($filters['search']) {
-            $collection->select()->where->like('t.name', '%' . $filters['search'] . '%');
+            $list->select()->where->like('t.name', '%' . $filters['search'] . '%');
         }
 
         unset($filters['search']);
 
         if(isset($_GET['product_id']) && $filters['product_id'] = $_GET['product_id']) {
-            $collection->select()
+            $list->select()
                 ->join(['c' => 'supplies_products'], 'c.supply_id = t.id', [])
                 ->where(['c.product_id' => $filters['product_id']]);
         }
 
         if(isset($_GET['user_id']) && $filters['user_id'] = $_GET['user_id']) {
-            $collection->select()
+            $list->select()
                 ->where(['t.user_id' => $filters['user_id']]);
         }
 
         foreach($filters as $field => $val) {
             if(!empty($val)) {
-                $collection->select()->where(array($field => $val));
+                $list->select()->where(array($field => $val));
             }
         }
 
-        $collection->select()->group('t.id');
+        $list->select()->group('t.id');
 
-        return $collection;
+        return $list;
     }
 
     /**

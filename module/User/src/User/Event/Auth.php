@@ -80,7 +80,6 @@ class Auth implements ServiceManagerAwareInterface, CacheAwareInterface
 
     protected function getResourceName(\Zend\Mvc\Router\Http\RouteMatch $routeMatch)
     {
-
         $contrArr = explode('\\', $routeMatch->getParam('controller'));
 
         $module  = $routeMatch->getParam('module') ?? $contrArr[0];
@@ -90,6 +89,8 @@ class Auth implements ServiceManagerAwareInterface, CacheAwareInterface
         $module  = strtolower($module);
         $section = strtolower($section);
         $action  = strtolower($action);
+
+        $module .= $module != 'admin' && $routeMatch->getParam('side') == 'admin' ? 'admin' : '';
 
         $resource = rtrim($module . ':' . $section . ':' . $action);
 

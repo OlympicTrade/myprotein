@@ -1,0 +1,72 @@
+<?php
+$form = $this->editForm;
+$order = $this->model;
+$cart = $order->getPlugin('cart');
+$attrs = $order->getPlugin('attrs');
+$phone = $order->getPlugin('phone');
+?>
+
+
+<div class="std-window">
+    <div class="header">
+        <?= $model->getId() ?>
+    </div>
+    <div class="body">
+        <div class="block info">
+            <div class="row">
+                <i class="fal fa-user"></i> <?= $attrs->get('name') ?>
+            </div>
+            <div class="row">
+                <i class="fal fa-phone"></i> <?= $phone->get('phone') ?>
+            </div>
+        </div>
+
+        <div class="block products">
+            <?php
+            $html =
+                '<div class="products">';
+
+            foreach ($cart as $cartRow) {
+                $product = $cartRow->getPlugin('product');
+
+                $taste = $cartRow->getPlugin('taste')->get('name');
+                if(!in_array($taste, array('', 'Без вкуса', 'Натуральный вкус'))) {
+                    $tasteStr = '<b class="red">' . $taste . '</b>';
+                } else {
+                    $tasteStr = $taste;
+                }
+
+                $productName = $cartRow->getPlugin('product')->get('name');
+
+                $size = $cartRow->getPlugin('size')->get('name');
+                if($size) {
+                    $productName .= ' <span style="color: #000">(' . $cartRow->getPlugin('size')->get('name') . ')</span>';
+                }
+
+                $html .=
+                    '<div class="item">'.
+                        '<div class="pic">'.
+                            '<img src="' . $product->getPlugin('image')->getImage('a') . '">'.
+                        '</div>'.
+                        '<div class="info">'.
+                            '<div class="name">'.
+                                $product->get('name').
+                            '</div>'.
+                            '<div class="row">' . $taste. '</div>'.
+                            '<div class="row">' . $size . '</div>'.
+                        '</div>'.
+                    '</div>';
+            }
+
+            $html .=
+                '</div>';
+
+            echo $html;
+            ?>
+        </div>
+
+        <div class="block close">
+            <span data-fancybox-close class="btn">Закрыть</span>
+        </div>
+    </div>
+</div>

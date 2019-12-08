@@ -30,7 +30,7 @@ return array(
         'routes' => array(
             'mobile' => array(
                 'type' => 'Hostname',
-                'priority' => 600,
+                'priority' => 550,
                 'options' => array(
                     'route' => 'm.:domain',
                     'constraints' => array('domain' => '.*',),
@@ -131,33 +131,13 @@ return array(
             ),
             'adminIndex' => array(
                 'type'    => 'Zend\Mvc\Router\Http\Literal',
-                'priority' => 1000,
+                'priority' => 600,
                 'options' => array(
                     'route'    => '/admin/',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Index',
                         'action'     => 'index',
                         'side'       => 'admin',
-                    ),
-                ),
-            ),
-            'admin' => array(
-                'type'    => 'segment',
-                'priority' => 600,
-                'options' => array(
-                    'route'    => '/admin/:module/:section[/:action][/:id]/',
-                    'constraints' => array(
-                        'module' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'section' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'module'     => 'application',
-                        'section'    => 'page',
-                        'controller' => 'Admin\Controller\Page',
-                        'action'     => 'index',
-                        'side'       => 'admin'
                     ),
                 ),
             ),
@@ -251,7 +231,7 @@ return array(
             ),
             'adminContentItems' => array(
                 'type'    => 'segment',
-                'priority' => 600,
+                'priority' => 1000,
                 'options' => array(
                     'route'    => '/admin/application/content[/:action]/',
                     'constraints' => array(
@@ -286,7 +266,7 @@ return array(
             ),
             'admin' => array(
                 'type'    => 'segment',
-                'priority' => 500,
+                'priority' => 600,
                 'options' => array(
                     'route'    => '/admin[/:module][/:section][/:action][/:id]/',
                     'constraints' => array(
@@ -308,8 +288,8 @@ return array(
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\Error',
                         'action'     => 'index',
-                    )
-                )
+                    ),
+                ),
             ),
             'textPage' => array(
                 'type' => 'segment',
@@ -322,8 +302,8 @@ return array(
                     'defaults' => array(
                         'controller' => __NAMESPACE__ . '\Controller\Index',
                         'action'     => 'page',
-                    )
-                )
+                    ),
+                ),
             ),
         ),
     ),

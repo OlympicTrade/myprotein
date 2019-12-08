@@ -2,13 +2,17 @@
 namespace ApplicationAdmin\Controller;
 
 use Aptero\Mvc\Controller\Admin\AbstractActionController;
-
-use Aptero\Service\Admin\TableService;
+use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
 
+    }
+
+    public function mobileAction()
+    {
+        return $this->redirect()->toUrl('/admin/catalog/orders/mobile/');
     }
 }

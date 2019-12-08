@@ -1,0 +1,42 @@
+<form action="/admin/mobile/<?= $module->get('module') ?>/<?= $module->get('section') ?>/list/" id="search">
+    <i class="fal fa-search"></i>
+    <input name="search" type="text" placeholder="Поиск">
+
+    <?php
+    $element = new \Zend\Form\Element\Select('status', [
+        'options' => [
+            'all'       => 'Все',
+            'active'    => 'Только активные',
+            'delivery'  => 'В доставку',
+        ]
+    ]);
+    $element->setValue($_GET['status']);
+    echo $this->formElement($element);
+    ?>
+</form>
+
+<?php
+
+$html =
+    '<div class="std-list" data-module="' . $module->get('module') . '" data-section="' . $module->get('section') . '">';
+
+foreach ($list as $row) {
+    $html .= '<div class="item" data-id="' . $row->getId() . '">';
+
+    foreach ($fields as $field => $opts) {
+        $value = $row->get($field);
+
+        $html .=
+            '<div class="col ' . $field . '" style="flex: 0 ' . $opts['width'] . '%;">'.
+                (!empty($opts['filter']) ? call_user_func_array($opts['filter'], [$value, $row, $this]) : $value).
+            '</div>';
+    }
+
+    $html .= '</div>';
+}
+
+$html .=
+    '</div>';
+
+echo $html;
+?>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <?php echo $this->headTitle($this->translate('Admin')) ?>
+
+        <?php
+        echo $this->headLink()
+            ->prependStylesheet('/engine/css/mobile.css')
+            ->prependStylesheet('/engine/css/libs/fancybox.css')
+            ->prependStylesheet('/engine/css/grid.css')
+            ->prependStylesheet('/engine/css/reset.css')
+            ->prependStylesheet('//fonts.googleapis.com/css?family=Open+Sans&display=swap')
+            ->prependStylesheet('/fonts/fontawesome/font.css')
+            ->prependStylesheet('/fonts/proxima-nova/font.css')
+            ;
+        ?>
+
+        <?php
+        echo $this->headScript()
+            ->prependFile('/engine/js/mobile.js')
+            ->prependFile('/engine/js/libs/aptero.js')
+            ->prependFile('/engine/js/libs/messages.js')
+            ->prependFile('/engine/js/libs/inputmask.js')
+            ->prependFile('/engine/js/libs/fancybox/thumbs.js')
+            ->prependFile('/engine/js/libs/fancybox/fancybox.js')
+
+            ->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js')
+            ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js');
+        ?>
+    </head>
+    <body>
+        <ul id="nav">
+            <li><a href="/admin/catalog/orders/mobile/">Заказы</a></li>
+            <li><a href="/admin/catalog/products/mobile/">Товары</a></li>
+        </ul>
+
+        <?php echo $this->content; ?>
+    </body>
+</html>

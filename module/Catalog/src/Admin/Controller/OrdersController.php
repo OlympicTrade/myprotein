@@ -14,29 +14,25 @@ use Zend\View\Model\ViewModel;
 
 class OrdersController extends AbstractActionController
 {
+    protected $statusColors = [
+        1  => 'gray',
+        3  => 'brown',
+        5  => 'blue',
+        7  => 'pink',
+        10 => 'yellow',
+        15 => 'green',
+        20 => 'gray',
+        30 => 'red',
+        35 => 'violet',
+        40 => 'cyan',
+    ];
+
     public function __construct() {
         parent::__construct();
 
-        $classes = [
-            1  => 'gray',
-            3  => 'brown',
-            5  => 'blue',
-            7  => 'pink',
-            10 => 'yellow',
-            15 => 'green',
-            20 => 'gray',
-            30 => 'red',
-            35 => 'violet',
-            40 => 'cyan',
-        ];
+        $statusColors = $this->statusColors;
 
         $this->setFields([
-        /*'cb' => [
-            'name'      => '',
-            'type'      => TableService::CHECKBOX,
-            'field'     => 'id',
-            'width'     => '3'
-        ],*/
         'id' => [
             'name'      => 'id',
             'type'      => TableService::FIELD_TYPE_TEXT,
@@ -64,16 +60,6 @@ class OrdersController extends AbstractActionController
             },
             'width'     => '7',
         ],
-        /*'platform' => [
-            'name'      => 'Платф.',
-            'type'      => TableService::FIELD_TYPE_TEXT,
-            'filter'    => function($value, $row){
-                return $row->getPlugin('attrs')->get('platform') == 'desktop' ? '<i class="fas fa-tv"></i>' : '<i class="fas fa-mobile-alt"></i>';
-            },
-            'width'     => '5',
-            'tdStyle'   => ['text-align' => 'center'],
-            'sort'      => ['enabled'   => false],
-        ],*/
         'domain' => [
             'name'      => 'Домен и пл.',
             'type'      => TableService::FIELD_TYPE_TEXT,
@@ -131,15 +117,15 @@ class OrdersController extends AbstractActionController
             'type'      => TableService::FIELD_TYPE_TEXT,
             'field'     => 'status',
             'width'     => '10',
-            'filter'    => function($value, $row) use ($classes){
+            'filter'    => function($value, $row) use ($statusColors){
                 if($value == Orders::STATUS_PROBLEM) {
                     $call = new Call();
                     $call->select()->where(['item_id' => $row->getId()]);
                     $call->load();
-                    return '<a href="/admin/callcenter/callcenter/edit/?id=' . $call->getId() . '" class="wrap ' . $classes[$value] . '">' . Orders::$processStatuses[$value]. '</a>';
+                    return '<a href="/admin/callcenter/callcenter/edit/?id=' . $call->getId() . '" class="wrap ' . $statusColors[$value] . '">' . Orders::$processStatuses[$value]. '</a>';
                 }
 
-                return '<span class="wrap ' . $classes[$value] . '">' . Orders::$processStatuses[$value]. '</span>';
+                return '<span class="wrap ' . $statusColors[$value] . '">' . Orders::$processStatuses[$value]. '</span>';
             },
             'sort'      => [
                 'enabled'   => false
@@ -148,7 +134,7 @@ class OrdersController extends AbstractActionController
         'time_create' => [
             'name'      => 'Дата заказа',
             'type'      => TableService::FIELD_TYPE_TEXT,
-            'filter'    => function($value, $row) use ($classes){
+            'filter'    => function($value, $row) use ($statusColors){
                 return (new Date($value))->toStr(['time' => true, 'months' => 'short']);
             },
             'field'     => 'time_create',
@@ -191,6 +177,57 @@ class OrdersController extends AbstractActionController
                 ],
             ],
         ]);
+    }
+
+    public function mobileAction()
+    {
+        $view = $this->generateMobile();
+
+        $list = $this->getService()->getList();
+
+        $statusColors = $this->statusColors;
+
+        $fields = [
+            'id' => [
+                'width'     => '25',
+            ],
+            'status' => [
+                'width'     => '40',
+                'filter'    => function($value, $row) use ($statusColors){
+                    return '<div class="dot ' . $statusColors[$value] . '"></div>' . Orders::$processStatuses[$value];
+                },
+                'sort'      => [
+                    'enabled'   => false
+                ],
+            ],
+            'time_create' => [
+                'filter'    => function($value, $row) use ($statusColors){
+                    return (new Date($value))->toStr(['months' => 'short', 'year' => false]);
+                },
+                'width'     => '20',
+            ],
+            'income' => [
+                'filter'    => function($value, $row, $view) {
+                    $str = $row->getPrice() . ' <i class="fal fa-ruble-sign"></i>';
+
+                    if($row->isPaid()) {
+                        $str .= ' <i class="fal fa-check-circle"></i>';
+                    } elseif($row->get('paid')) {
+                        $str .= ' <i class="fal fa-exclamation-triangle"></i>';
+                    }
+
+                    return $str;
+                },
+                'width'     => '15',
+            ],
+        ];
+
+        $view->setVariables([
+            'list'   => $list,
+            'fields' => $fields,
+        ]);
+
+        return $view;
     }
 	
 	public function stockAction()

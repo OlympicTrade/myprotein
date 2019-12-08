@@ -12,29 +12,29 @@ use BalanceAdmin\Model\Balance;
 class CashService extends TableService
 {
     /**
-     * @param \Aptero\Db\Entity\EntityCollection $collection
+     * @param \Aptero\Db\Entity\EntityCollection $list
      * @param $filters
      * @return \Aptero\Db\Entity\EntityCollection
      */
-    public function setFilter($collection, $filters)
+    public function setFilter($list, $filters)
     {
         if($filters['search']) {
-            $collection->select()->where->like('t.name', '%' . $filters['search'] . '%');
+            $list->select()->where->like('t.name', '%' . $filters['search'] . '%');
         }
 
         if($filters['type']) {
-            $collection->select()->where(['type' => $filters['type']]);
+            $list->select()->where(['type' => $filters['type']]);
         }
 
         if(!empty($filters['date_from'])) {
-            $collection->select()->where->greaterThanOrEqualTo('date', $filters['date_from']);
+            $list->select()->where->greaterThanOrEqualTo('date', $filters['date_from']);
         }
 
         if(!empty($filters['date_to'])) {
-            $collection->select()->where->lessThanOrEqualTo('date', $filters['date_to']);
+            $list->select()->where->lessThanOrEqualTo('date', $filters['date_to']);
         }
 
-        return $collection;
+        return $list;
     }
 
     public function updateBalance()
