@@ -40,7 +40,7 @@ $phone = $order->getPlugin('phone');
 
                 $count = 'Кол-во: ' . $cartRow->get('count') . ' шт';
                 if($cartRow->get('count') > 1) {
-                    $productName .= ' <span class="red">' . $count . '</span>';
+                    $count = ' <b class="red">' . $count . '</b>';
                 }
 
                 $html .=
@@ -52,9 +52,9 @@ $phone = $order->getPlugin('phone');
                             '<div class="name">'.
                                 $product->get('name').
                             '</div>'.
-                            '<div class="row">' . $taste. '</div>'.
+                            '<div class="row">' . $tasteStr. '</div>'.
                             '<div class="row">' . $size . '</div>'.
-                            '<div class="row">Кол-во: ' . $cartRow->get('count') . ' шт</div>'.
+                            '<div class="row">' . $count . '</div>'.
                         '</div>'.
                     '</div>';
             }
