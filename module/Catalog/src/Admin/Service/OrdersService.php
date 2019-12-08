@@ -281,7 +281,6 @@ class OrdersService extends TableService
                 break;
             case 'delivery':
                 $status = [
-                    Order::STATUS_PENDING,
                     Order::STATUS_PROCESSING,
                 ];
                 break;
