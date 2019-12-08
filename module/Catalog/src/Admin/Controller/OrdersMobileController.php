@@ -41,7 +41,7 @@ class OrdersMobileController extends AbstractMobileActionController
                 'filter'    => function($value, $row) use ($statusColors){
                     return (new Date($value))->toStr(['months' => 'short', 'year' => false]);
                 },
-                'width'     => '20',
+                'width'     => '22',
             ],
             'income' => [
                 'filter'    => function($value, $row, $view) {
