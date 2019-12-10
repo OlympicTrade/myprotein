@@ -154,18 +154,18 @@ class TableService extends AbstractService
     {
         $model = $list->getPrototype();
 
-        $list->select()->where
-            ->nest()
-                ->like('id', '%' . $query . '%');
 
         if($model->hasProperty('name')) {
             $list->select()->where
-                ->or
-                ->like('name', '%' . $query . '%');
+                ->nest()
+                    ->like('id', '%' . $query . '%')
+                    ->or
+                    ->like('name', '%' . $query . '%')
+                ->unnest();
+        } else {
+            $list->select()->where
+                ->like('id', '%' . $query . '%');
         }
-
-        $list->select() ->where
-            ->unnest();
 
         return $list;
     }
