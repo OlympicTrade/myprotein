@@ -32,7 +32,6 @@ class Orders extends Entity
     const STATUS_UNPAID     = 0;
 
     static public $processStatuses = [
-        self::STATUS_NEW        => 'Новый заказ',
         self::STATUS_PENDING    => 'Отложен',
         self::STATUS_NEW        => 'Новый заказ',
         self::STATUS_PROCESSING => 'В обработке',
@@ -160,7 +159,7 @@ class Orders extends Entity
 
                 $this->set('status', Orders::STATUS_RETURN);
 
-                (new Task())->setVariables([
+                /*(new Task())->setVariables([
                     'task_id'       => Task::TYPE_ORDER_RETURN,
                     'item_id'       => $this->getId(),
                     'name'          => 'Обработка возврата',
@@ -176,7 +175,7 @@ class Orders extends Entity
                     'desc'       => '',
                 ]);
 
-                $this->clearCart($this->getId());
+                $this->clearCart($this->getId());*/
 
                 break;
             default:

@@ -145,7 +145,7 @@ class OrdersService extends TableService
 
                 $order->set('status', Orders::STATUS_RETURN);
 
-                (new Task())->setVariables([
+                /*(new Task())->setVariables([
                     'task_id'       => Task::TYPE_ORDER_RETURN,
                     'item_id'       => $order->getId(),
                     'name'          => 'Обработка возврата',
@@ -159,9 +159,9 @@ class OrdersService extends TableService
                     'name'       => $order->getPlugin('attrs')->get('name'),
                     'theme'      => 'Не забрали заказ',
                     'desc'       => '',
-                ]);
+                ]);*/
 
-                $this->clearCart($order->getId());
+                //$this->clearCart($order->getId());
                 break;
             default:
                 $error = 'Неизвестный статус';
